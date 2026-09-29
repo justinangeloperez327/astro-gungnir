@@ -6,7 +6,7 @@ The site is built with Astro and focuses on the public framework conventions use
 
 ## Requirements
 
-- Node.js 22.12.0 or newer
+- Node.js 22.23.3 or newer supported release
 - npm
 
 ## Development

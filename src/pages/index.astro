@@ -1,5 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const controllerExample = `controller UserController
+{
+    Response index()
+    {
+        const users = User::all();
+
+        return view("users/index", {
+            "users": users
+        });
+    }
+}`;
 ---
 
 <BaseLayout>
@@ -22,17 +34,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         <div class="hero-code" aria-label="Gungnir code example">
           <div class="hero-code-header">app/controllers/user_controller.gnr</div>
-          <pre><code>controller UserController
-{
-    Response index()
-    {
-        const users = User::all();
-
-        return view("users/index", {
-            "users": users
-        });
-    }
-}</code></pre>
+          <pre><code>{controllerExample}</code></pre>
         </div>
       </div>
     </section>
