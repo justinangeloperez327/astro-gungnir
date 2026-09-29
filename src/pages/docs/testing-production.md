@@ -1,46 +1,45 @@
 ---
 layout: ../../layouts/DocsLayout.astro
 title: Testing & Production
-description: Keep application behavior testable and build native release artifacts for deployment.
+description: Test application behavior through the real routing stack, build release artifacts, and configure production lifecycle concerns explicitly.
 ---
 
-Gungnir provides testing foundations around HTTP behavior and application services while retaining ordinary native build output.
+## HTTP Testing
 
-## Application tests
+Gungnir provides HTTP testing helpers over the real router and request/response types. Tests can dispatch requests without opening a network socket, allowing route and middleware behavior to be exercised directly.
 
-Focus tests on observable application behavior:
+Use tests to cover application behavior such as:
 
-- route responses and status codes
-- validation failures
-- authenticated and guest behavior
-- authorization decisions
-- model queries and persistence
-- rendered views
-- queued jobs, events, mail, and notifications
+- response status codes and bodies;
+- route and middleware behavior;
+- validation failures;
+- authenticated and guest requests;
+- authorization decisions;
+- model queries and persistence;
+- rendered views;
+- queued jobs, events, mail, and notifications.
 
-Use in-memory or test-specific adapters only when their semantics match what the test is intended to prove.
+## Response Assertions
 
-## Framework CLI
+Testing helpers can assert status codes, body fragments, and headers. Failed assertions raise focused errors suitable for the project's native test runner.
 
-Build the application through the framework CLI:
+## Test Isolation
 
-~~~text
-gungnir build
-~~~
+The testing layer does not silently reset external state. Database transactions, cache stores, sessions, queues, and other resources should be isolated explicitly by the test environment.
 
-For production:
+## Release Builds
+
+Build a production-oriented application artifact with:
 
 ~~~text
 gungnir build --release
 ~~~
 
-The CLI manages generated native source and the CMake integration under `.gungnir/`.
+The resulting application is a native artifact and should be deployed with the runtime libraries and adapters required by the application's selected database, TLS, queue, mail, storage, and other integrations.
 
-## Production configuration
+## Production Environment
 
-Set production configuration through environment variables rather than committing secrets into source control.
-
-Typical production settings include:
+Set production behavior through the environment:
 
 ~~~text
 APP_ENV=production
@@ -49,14 +48,26 @@ APP_HOST=0.0.0.0
 APP_PORT=8000
 ~~~
 
-Configure the production database, session, cache, queue, mail, and storage adapters appropriate to the deployment.
+Do not commit production secrets to source control or expose them through error pages and logs.
 
-## Health and observability
+## Health and Readiness
 
-Production applications should expose health behavior appropriate to the environment and configure structured logs, request identifiers, timing, and operational telemetry through the framework's observability facilities.
+Gungnir distinguishes process liveness from application readiness. Register readiness checks for dependencies that must be available before an instance receives traffic.
 
-## Deployment model
+Keep health endpoints inexpensive enough for the frequency at which infrastructure probes them.
 
-A Gungnir application builds to a native application artifact. Deployment therefore follows the target operating system and runtime dependencies of the selected database, TLS, queue, mail, storage, and other native adapters.
+## Graceful Shutdown
 
-Pin and validate the Gungnir version used for a deployment until the framework publishes a stable public API policy.
+The HTTP runtime supports cooperative draining. On shutdown, the listener stops accepting new work, active requests are given time to finish, and remaining request cancellation tokens can be signaled when the configured deadline expires.
+
+Queue workers and the scheduler expose cooperative shutdown behavior as well. Production hosting can coordinate them through the framework's supervision/runtime-host facilities.
+
+## Reverse Proxies
+
+Forwarded headers must not be trusted simply because they are present. Applications deployed behind a reverse proxy should configure a clear trust policy for forwarded client, host, and protocol information.
+
+## HTTPS and TLS
+
+Gungnir can terminate HTTPS directly when built with optional TLS support. TLS integration uses OpenSSL and remains opt-in so the default core build does not require OpenSSL.
+
+Whether TLS terminates in Gungnir or at a reverse proxy is a deployment decision. Validate connection limits, timeouts, shutdown behavior, and throughput under representative production load.

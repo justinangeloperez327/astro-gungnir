@@ -1,26 +1,24 @@
 ---
 layout: ../../layouts/DocsLayout.astro
-title: Installation & Setup
-description: Create a Gungnir application and start building with the framework conventions.
+title: Installation
+description: Install Gungnir, create a new application, and run your first route.
 ---
-
-Gungnir applications use the `.gnr` source format for application code while compiling to native C++23 applications.
-
-> Gungnir is currently under active development. Pin the framework version or commit your project has been validated against.
 
 ## Requirements
 
 A Gungnir development environment requires:
 
-- a C++23-capable toolchain
-- CMake 3.25 or newer
-- the Gungnir framework and `gungnir` CLI installed
+- a C++23-capable compiler;
+- CMake 3.25 or newer;
+- the Gungnir framework and `gungnir` command-line tool.
 
-The framework supports native toolchains across Linux, macOS, and Windows as the project matures.
+Gungnir applications use `.gnr` files for normal application code while retaining interoperability with native C++ where needed.
 
-## Create an application
+> Gungnir is under active development. Pin the framework version or commit your application has been validated against.
 
-Use the framework CLI to scaffold a conventional application:
+## Creating an Application
+
+Create a new application from the command line:
 
 ~~~text
 gungnir new my-app
@@ -28,17 +26,17 @@ cd my-app
 gungnir run
 ~~~
 
-The generated project keeps framework plumbing out of normal application code. Your work primarily lives in `app/`, `routes/`, `database/`, `views/`, and `config/`.
+The `new` command creates the conventional application structure and `run` builds and starts the application from the project root.
 
-## Your first route
+## Your First Route
 
-Open `routes/web.gnr` and define a route:
+Open `routes/web.gnr` and register a route:
 
 ~~~gungnir
 Route::get("/", HomeController::index);
 ~~~
 
-Then create a controller:
+Create the controller in `app/controllers/`:
 
 ~~~gungnir
 controller HomeController
@@ -50,39 +48,41 @@ controller HomeController
 }
 ~~~
 
-Run the application:
+Run the application again:
 
 ~~~text
 gungnir run
 ~~~
 
-## Build for release
+## Generating Application Classes
 
-Use a release build when preparing the application for deployment:
+The CLI can generate common application types:
+
+~~~text
+gungnir make:model User
+gungnir make:controller UserController
+gungnir make:middleware AuthMiddleware
+gungnir make:migration create_users_table
+~~~
+
+Generated files follow Gungnir's standard directories so application code stays predictable as the project grows.
+
+## Building an Application
+
+Create a development build with:
+
+~~~text
+gungnir build
+~~~
+
+For a release build:
 
 ~~~text
 gungnir build --release
 ~~~
 
-Gungnir handles the application build pipeline while keeping the generated native build artifacts under the framework-managed `.gungnir/` directory.
+Framework-managed generated build files live under `.gungnir/`. Treat that directory as build output rather than application source.
 
-## Configuration
+## Next Steps
 
-Application configuration begins with `.env`. Common keys include:
-
-~~~text
-APP_NAME=MyApp
-APP_ENV=local
-APP_DEBUG=true
-APP_HOST=127.0.0.1
-APP_PORT=8000
-
-DB_CONNECTION=postgresql
-DB_HOST=127.0.0.1
-DB_PORT=5432
-DB_DATABASE=my_app
-DB_USERNAME=postgres
-DB_PASSWORD=
-~~~
-
-Process environment variables take precedence over values loaded from `.env`.
+Continue with [Configuration](/docs/configuration/) and [Directory Structure](/docs/project-structure/), then move into [Routing](/docs/routing/) and [Controllers](/docs/controllers/).

@@ -1,10 +1,12 @@
 ---
 layout: ../../layouts/DocsLayout.astro
 title: Database & Migrations
-description: Configure database access and evolve application storage through explicit migrations.
+description: Configure database connectivity and evolve application storage with explicit, backend-aware migrations.
 ---
 
-Database configuration is normally supplied through the application environment:
+## Configuration
+
+Database connection values are normally supplied through the environment:
 
 ~~~text
 DB_CONNECTION=postgresql
@@ -15,17 +17,23 @@ DB_USERNAME=postgres
 DB_PASSWORD=
 ~~~
 
-Gungnir defines framework contracts for PostgreSQL, MySQL/MariaDB, SQL Server, and MongoDB adapters. A concrete backend adapter must be available and registered for the selected connection.
+Gungnir defines application-level contracts for PostgreSQL, MySQL/MariaDB, SQL Server, and MongoDB adapters. The matching concrete adapter must be available in the application build.
 
-## Migrations
+## Database Access
 
-Create migrations through the CLI:
+Application code should depend on the framework's database abstractions rather than native client libraries. This keeps connection management, transactions, query observation, and model persistence behind one application-facing contract.
+
+## Creating Migrations
+
+Generate a migration through the CLI:
 
 ~~~text
 gungnir make:migration create_users_table
 ~~~
 
-Migration code uses table and column terminology:
+A migration describes how storage changes when moving forward and, where appropriate, how to reverse that change.
+
+A relational migration can define a table using Gungnir's table/column vocabulary:
 
 ~~~cpp
 class CreateUsersTable : public Migration {
@@ -45,22 +53,28 @@ public:
 };
 ~~~
 
-## Migration operations
+## Migration Operations
 
-The migration layer supports common operations including:
+The migration layer supports common schema work including:
 
-- table create, alter, rename, and drop
-- scalar, text, JSON, UUID, and temporal columns
-- indexes and composite indexes
-- foreign keys and referential actions
-- timestamps and soft deletes
-- column rename and removal
-- index and foreign-key removal
+- table create, alter, rename, and drop operations;
+- scalar, text, JSON, UUID, and temporal columns;
+- indexes and composite indexes;
+- foreign keys and referential actions;
+- timestamps and soft deletes;
+- column rename/drop operations;
+- index and foreign-key removal.
 
-Backend-specific SQL belongs to the database compiler rather than application migrations.
+Backend-specific SQL belongs to the database implementation rather than application migrations.
 
-## Migration lifecycle
+## Migration Lifecycle
 
-The migration runner provides pending migration execution, rollback of the latest batch, reset, and status reporting.
+The migration runner supports pending migrations, rollback of the latest batch, reset, and status reporting.
 
-DDL transaction guarantees depend on the selected database engine. MongoDB schema evolution is treated according to document database semantics rather than pretending it has relational DDL behavior.
+Migration names are persistent database identities. Do not casually rename migrations after they have been deployed.
+
+## Backend Differences
+
+DDL transaction guarantees vary by database engine. Gungnir does not claim atomic schema changes when the selected backend cannot provide them.
+
+MongoDB schema evolution follows document-database semantics rather than pretending to behave like relational DDL.

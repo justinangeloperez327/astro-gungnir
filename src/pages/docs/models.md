@@ -1,10 +1,12 @@
 ---
 layout: ../../layouts/DocsLayout.astro
-title: Models & ORM
-description: Define application models with conventions for fields, queries, relationships, timestamps, and persistence.
+title: Models & Relationships
+description: Define convention-first models, query records, persist data, and work with explicit relationships and eager loading.
 ---
 
-A Gungnir model automatically receives ORM behavior.
+## Defining Models
+
+A Gungnir model receives ORM behavior automatically:
 
 ~~~gungnir
 model User
@@ -16,11 +18,11 @@ model User
 }
 ~~~
 
-By convention, the model uses the `users` table, an incrementing integer `id` primary key, and timestamp attributes.
+By convention, `User` maps to the `users` table and uses an incrementing integer `id` primary key. Timestamp attributes are enabled by default.
 
-## Model configuration
+## Model Configuration
 
-Override conventions when needed:
+Override conventions only when the application needs to:
 
 ~~~gungnir
 model AuditUser
@@ -34,9 +36,9 @@ model AuditUser
 }
 ~~~
 
-## Querying
+## Querying Models
 
-Use expressive model query methods:
+Use model query methods to retrieve application records:
 
 ~~~gungnir
 const user = User::findOrFail(id);
@@ -46,9 +48,9 @@ const users = User::where("active", true)
     .get();
 ~~~
 
-Additional query helpers include operations such as `whereIn`, ordering, soft-delete scopes, and record creation or persistence.
+Common expressive aliases include operations such as `findOrFail`, `whereIn`, `orderBy`, and soft-delete scopes.
 
-## Creating records
+## Creating Records
 
 ~~~gungnir
 const user = User::create({
@@ -56,6 +58,8 @@ const user = User::create({
     "email": "ada@example.com"
 });
 ~~~
+
+Validated request data can be passed into model creation when the model's assignable fields match the validated payload.
 
 ## Relationships
 
@@ -84,12 +88,22 @@ model User
 }
 ~~~
 
-Supported relationship foundations include `hasOne`, `hasMany`, `belongsTo`, `belongsToMany`, and through relationships.
+Relationship foundations include `hasOne`, `hasMany`, `belongsTo`, `belongsToMany`, and through relationships.
 
-## Eager loading
+Conventional foreign keys, local keys, and pivot names are inferred where the relationship allows it. Explicit values can override the convention.
 
-Prefer explicit eager loading when related data is required. Gungnir intentionally avoids silently hiding database queries behind implicit lazy loading because that makes N+1 problems difficult to detect.
+## Eager Loading
 
-## Timestamps and soft deletes
+Load relationships explicitly when they will be used with a collection of parent records.
 
-Timestamp-enabled models maintain `created_at` and `updated_at`. Models configured with `softDeletes = true` gain soft-delete behavior and a `deleted_at` attribute.
+Gungnir intentionally avoids silently issuing hidden lazy-loading queries by default. Hidden relationship queries make N+1 behavior difficult to detect and reason about.
+
+## Many-to-Many Relationships
+
+Many-to-many relationships keep pivot metadata explicit. Attach, detach, and sync operations should be treated as database-backed relationship mutations, not merely in-memory collection changes.
+
+## Timestamps and Soft Deletes
+
+Timestamp-enabled models maintain `created_at` and `updated_at` during persistence.
+
+Models configured with `softDeletes = true` gain soft-delete behavior and a `deleted_at` attribute. Framework-managed timestamp and soft-delete fields are not intended to be mass-assigned from arbitrary request input.

@@ -2,7 +2,28 @@
 
 Official documentation website for **Gungnir**, an expressive web framework built in C++.
 
-The site is built with Astro and focuses on the public framework conventions used to build applications: routing, controllers, requests and responses, models and ORM, database migrations, middleware, validation, views, authentication and authorization, application services, testing, and production.
+The site is built with Astro and presents Gungnir as a conventional application framework: installation, configuration, routing, controllers, middleware, requests and responses, validation, views, sessions, security, database access, ORM, application services, testing, and production.
+
+## Visual System
+
+The documentation UI uses the Gungnir colorway:
+
+- Blue: `#145DA0`
+- White: `#FFFFFF`
+- Silver: `#C7CBD1`
+- Black: `#0B0D10`
+
+The layout follows the information-density and navigation patterns common to mature framework documentation sites while retaining Gungnir branding.
+
+## Public Images
+
+Public image assets belong in:
+
+~~~text
+public/images/
+~~~
+
+Files placed there are available from `/images/<filename>`.
 
 ## Requirements
 
@@ -31,10 +52,4 @@ The development server is available at `http://localhost:4321`.
 
 GitHub Actions verifies the website on pushes to `main`, pull requests targeting `main`, and manual workflow runs.
 
-The CI workflow installs dependencies and runs the Astro production build. Deployment is intentionally not configured in this repository until a deployment platform is selected.
-
-## Documentation Structure
-
-Framework documentation lives under `src/pages/docs/`. Shared documentation navigation and presentation are defined by `src/layouts/DocsLayout.astro`.
-
-The public documentation deliberately focuses on how developers use Gungnir. Compiler frontend and generated-code implementation details belong in the framework repository rather than the normal application documentation.
+The CI workflow installs dependencies and runs the Astro production build. Deployment is intentionally not configured until a deployment platform is selected.

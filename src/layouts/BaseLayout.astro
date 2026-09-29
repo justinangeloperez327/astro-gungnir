@@ -4,14 +4,16 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  docs?: boolean;
 }
 
 const {
   title = 'Gungnir',
-  description = 'Gungnir is an expressive web framework built in C++.'
+  description = 'Gungnir is an expressive web framework built in C++.',
+  docs = false,
 } = Astro.props;
 
-const pageTitle = title === 'Gungnir' ? title : title + ' · Gungnir';
+const pageTitle = title === 'Gungnir' ? title : `${title} · Gungnir`;
 ---
 
 <!doctype html>
@@ -21,20 +23,47 @@ const pageTitle = title === 'Gungnir' ? title : title + ' · Gungnir';
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#071B33" />
+    <meta name="theme-color" content="#145DA0" />
     <title>{pageTitle}</title>
   </head>
   <body>
-    <header class="site-header">
+    <header class:list={['site-header', docs && 'docs-header']}>
       <div class="shell header-inner">
-        <a class="brand" href="/" aria-label="Gungnir home">
-          <span class="brand-mark" aria-hidden="true">G</span>
-          <span>GUNGNIR</span>
-        </a>
-        <nav class="site-nav" aria-label="Primary navigation">
-          <a href="/docs/">Documentation</a>
-          <a href="https://github.com/justinangeloperez327/gungnir">GitHub</a>
-        </nav>
+        {docs ? (
+          <div class="docs-branding">
+            <a class="brand" href="/" aria-label="Gungnir home">
+              <span class="brand-mark" aria-hidden="true">G</span>
+              <span>GUNGNIR</span>
+            </a>
+            <span class="docs-divider" aria-hidden="true"></span>
+            <a class="docs-label" href="/docs/">Documentation</a>
+            <span class="version-pill">0.1</span>
+          </div>
+        ) : (
+          <a class="brand" href="/" aria-label="Gungnir home">
+            <span class="brand-mark" aria-hidden="true">G</span>
+            <span>GUNGNIR</span>
+          </a>
+        )}
+
+        {docs ? (
+          <div class="docs-search-wrap">
+            <input class="docs-search" type="search" placeholder="Search documentation" aria-label="Search documentation" data-doc-search />
+            <span class="search-shortcut" aria-hidden="true">/</span>
+          </div>
+        ) : (
+          <nav class="site-nav" aria-label="Primary navigation">
+            <a href="/docs/">Documentation</a>
+            <a href="https://github.com/justinangeloperez327/gungnir">GitHub</a>
+          </nav>
+        )}
+
+        {docs && (
+          <nav class="docs-header-actions" aria-label="Documentation links">
+            <a href="/">Home</a>
+            <a href="https://github.com/justinangeloperez327/gungnir">GitHub</a>
+          </nav>
+        )}
       </div>
     </header>
 

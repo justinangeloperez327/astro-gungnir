@@ -1,10 +1,12 @@
 ---
 layout: ../../layouts/DocsLayout.astro
 title: Controllers
-description: Controllers organize request handling into focused application actions.
+description: Organize HTTP request handling into focused controller actions with dependency injection and explicit async behavior.
 ---
 
-Controllers use the `controller` declaration.
+## Writing Controllers
+
+A controller groups related HTTP actions:
 
 ~~~gungnir
 controller UserController
@@ -20,11 +22,11 @@ controller UserController
 }
 ~~~
 
-Controller actions are public application actions by convention.
+Controller actions are application-facing actions by convention, so normal Gungnir source does not need C++ access-specifier boilerplate.
 
-## Request parameters
+## Receiving the Request
 
-An action can receive the current request:
+An action may receive the current request:
 
 ~~~gungnir
 Response store(Request request)
@@ -35,9 +37,11 @@ Response store(Request request)
 }
 ~~~
 
-## Dependency injection
+Use the request object for input, headers, cookies, route parameters, sessions, authentication state, and validation.
 
-Declare container-managed dependencies with `inject`:
+## Dependency Injection
+
+Declare a container-managed dependency with `inject`:
 
 ~~~gungnir
 controller AuditController
@@ -53,29 +57,29 @@ controller AuditController
 }
 ~~~
 
-Gungnir resolves controller dependencies through the application container. Application code does not need to manually construct controller dependencies.
+The controller itself does not need to manually construct its dependencies.
 
-## Async actions
+## Async Actions
 
-Use `async` and `await` when the work is genuinely asynchronous:
+Use `async` and `await` for operations that genuinely suspend:
 
 ~~~gungnir
 controller ReportController
 {
     async Response show(Request request)
     {
-        const result = await fetchReport(request.parameter("id"));
+        const report = await fetchReport(request.parameter("id"));
 
-        return json(result);
+        return json(report);
     }
 }
 ~~~
 
-Do not mark synchronous database or ORM work asynchronous merely for syntax consistency. Gungnir keeps suspension points explicit.
+Gungnir keeps suspension explicit. Synchronous ORM or database operations remain synchronous until the underlying runtime provides a true asynchronous implementation.
 
-## Returning responses
+## Returning Responses
 
-Controller actions may return framework responses such as:
+Controller actions can return the standard response helpers:
 
 ~~~gungnir
 return text("Created", 201);
@@ -83,3 +87,5 @@ return json(user);
 return view("users/show", { "user": user });
 return response("Accepted", 202);
 ~~~
+
+The framework exception handler covers common application failures such as validation, authentication, authorization, missing models, and unexpected server errors.

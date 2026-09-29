@@ -1,35 +1,28 @@
 ---
 layout: ../../layouts/DocsLayout.astro
 title: Events, Queues & Mail
-description: Coordinate application events, background work, mail, and notification delivery through explicit service boundaries.
+description: Coordinate application events, background work, scheduled tasks, mail, and notification delivery through explicit service boundaries.
 ---
-
-Gungnir separates in-process events, queued work, and delivery transports so each concern has clear behavior.
 
 ## Events
 
-Application events notify listeners synchronously on the current execution path.
+Events allow one part of the application to announce that something has happened without directly calling every interested component.
 
-Use events when other parts of the application need to react to something that has already happened without coupling the originating code directly to each listener.
+Gungnir's application event dispatcher is synchronous and in-process. Listeners run on the caller's execution path, and listener exceptions are not silently swallowed.
 
-Listeners execute in priority order and exceptions are not silently swallowed.
+Use events for immediate application reactions. Use a queue when work should happen later or outside the request path.
 
-## Queues
+## Queues and Jobs
 
-Queues are for work that should be processed outside the immediate request path.
+Queued work is represented by an explicit envelope containing a stable job name, serialized payload, identifier, and retry metadata.
 
-A queued job has:
+A queue driver defines the lifecycle operations needed to push, reserve/pop, acknowledge, release, and fail jobs.
 
-- a stable job name
-- a serialized payload
-- an identifier
-- retry metadata
-
-Queue drivers define push, pop, acknowledge, release, and failure operations. Development or test drivers should not be mistaken for production queue infrastructure.
+The important application rule is to serialize stable job data rather than trying to persist arbitrary C++ object memory.
 
 ## Mail
 
-Mail separates message construction from transport:
+Mail separates message construction from message delivery.
 
 ~~~cpp
 mail::Message message;
@@ -38,12 +31,20 @@ message.subject("Welcome");
 message.text("Your account is ready.");
 ~~~
 
-Configure a real transport for production delivery. SMTP or provider transports are responsible for TLS, credentials, timeouts, provider errors, and retry behavior.
+A configured transport owns SMTP or provider-specific behavior such as TLS, credentials, timeouts, provider errors, and retry policy.
+
+Development/test transports should not be treated as production delivery infrastructure.
 
 ## Notifications
 
-Notifications declare which channels should receive a message. Channel implementations provide the actual provider behavior for email, SMS, push, chat, or another delivery mechanism.
+Notifications declare a stable notification and the channels through which it should be delivered. Concrete channels implement the provider behavior for mail, SMS, push, chat, or another delivery mechanism.
 
-## Deferred delivery
+Provider credentials should remain at the transport/channel boundary rather than inside notification payloads.
 
-When mail or notifications should be delivered later, enqueue a stable job payload rather than making the transport itself pretend to be asynchronous.
+## Deferred Delivery
+
+When mail or a notification should be delivered later, place a stable job payload on a queue instead of making a synchronous transport pretend to be asynchronous.
+
+## Scheduling
+
+The scheduler is intended for recurring application work. Keep scheduled tasks explicit and operationally observable, and coordinate scheduler shutdown with the rest of the application runtime in production.

@@ -1,10 +1,12 @@
 ---
 layout: ../../layouts/DocsLayout.astro
 title: Middleware
-description: Run request logic before and after controller dispatch, or stop the request early.
+description: Filter and transform requests before they reach a controller, or perform work around the downstream response.
 ---
 
-Middleware wraps route execution.
+## Defining Middleware
+
+Middleware participates in the HTTP request pipeline before controller dispatch.
 
 ~~~gungnir
 middleware AuthMiddleware
@@ -20,33 +22,47 @@ middleware AuthMiddleware
 }
 ~~~
 
-Attach it to a route:
+Middleware is resolved through the application container, so its dependencies can use the same injection model as controllers.
+
+## Attaching Middleware
+
+Attach middleware to an individual route:
 
 ~~~gungnir
 Route::get("/dashboard", DashboardController::index)
     .middleware(AuthMiddleware);
 ~~~
 
-## Short-circuiting
+Application-level middleware can also be registered globally when every request should pass through it.
 
-Middleware can return a response without calling `next`. This is useful for authentication, authorization, rate limiting, host checks, request limits, and similar guards.
+## Short-Circuiting Requests
 
-## Continuing the pipeline
+Middleware does not have to call `next`. Returning a response immediately stops the pipeline:
 
-When middleware continues, call and await the next handler:
+~~~gungnir
+if (request.header("authorization").empty()) {
+    return text("Unauthorized", 401);
+}
+~~~
+
+This pattern is appropriate for authentication, authorization checks, request limits, host validation, CSRF enforcement, rate limiting, and similar guards.
+
+## Continuing the Pipeline
+
+When a middleware allows the request to continue, call and await the downstream handler:
 
 ~~~gungnir
 return await next(request);
 ~~~
 
-The continuation is asynchronous because downstream middleware or the controller may suspend.
+The continuation is asynchronous because later middleware or the controller may suspend.
 
-## Application middleware
+## Middleware Aliases and Groups
 
-Gungnir supports application-level middleware registration, aliases, groups, and priority ordering. Use these mechanisms for reusable middleware stacks such as browser/session routes or API routes.
+Reusable middleware may be registered under aliases and composed into groups. A browser-oriented group, for example, can combine sessions, CSRF protection, and authentication in one standard stack.
 
-Global middleware executes before middleware attached to an individual route.
+A priority order may be configured where middleware ordering is important.
 
-## Dependency injection
+## Request-Scoped Dependencies
 
-Middleware is resolved through the application container, so its dependencies can be managed by the same IoC system used by controllers.
+Request-scoped dependencies are owned by the request lifecycle. Middleware should resolve scoped services through the container rather than manually starting or ending container scopes.

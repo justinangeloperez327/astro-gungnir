@@ -1,14 +1,18 @@
 ---
 layout: ../../layouts/DocsLayout.astro
 title: Authentication & Authorization
-description: Establish the current identity, maintain request-scoped authentication state, and enforce application abilities.
+description: Establish the request identity, manage session-backed authentication, protect browser requests, and enforce application abilities.
 ---
 
-Authentication answers who is making the request. Authorization decides what that identity is allowed to do.
+## Authentication and Authorization
 
-## Request authentication
+Authentication determines **who** is making the request. Authorization determines **what** that identity may do.
 
-Once authentication middleware establishes the request identity:
+Gungnir keeps those responsibilities separate.
+
+## Request Authentication
+
+Once authentication middleware establishes an identity, controller code can read it from the request:
 
 ~~~gungnir
 Response profile(Request request)
@@ -23,19 +27,40 @@ Response profile(Request request)
 }
 ~~~
 
-Authentication state belongs to the request execution context rather than process-global state.
+Authentication state belongs to the request execution context rather than global state.
 
-## Session authentication
+## Guards
 
-Browser applications can combine session lifecycle middleware, CSRF protection, and session authentication. Only the stable identity identifier should be stored in the session; current identity roles and attributes can be resolved for each request.
+A guard resolves an application credential into an identity. The credential may come from a session, opaque token, signed token, or another application-specific authentication scheme.
 
-## Login and logout
+The core authentication API deliberately does not assume one credential format for every application.
 
-The authentication context supports login and logout flows. Session-backed login rotates the session identifier, and logout removes the authenticated identity while preserving unrelated session values unless the whole session is invalidated.
+## Session Authentication
 
-## Authorization
+For browser applications, register middleware in the order required by the request lifecycle:
 
-Define abilities against an identity:
+~~~text
+session middleware
+→ CSRF middleware
+→ session authentication
+→ application routes
+~~~
+
+Session authentication stores only the stable identity identifier. The current identity can then be resolved again on each request so roles and attributes do not become permanently stale inside the session.
+
+## Login and Logout
+
+Login and logout update the request authentication context. Session-backed authentication rotates the session identifier when authentication state changes.
+
+Use a full session invalidation when logout should also clear unrelated session data.
+
+## CSRF Protection
+
+State-changing browser routes using session authentication should use CSRF protection. The CSRF token is tied to the session lifecycle and rotates when the session identity is regenerated or invalidated.
+
+## Authorization Abilities
+
+Authorization policies return an explicit decision:
 
 ~~~cpp
 auth::Authorization authorization;
@@ -47,12 +72,12 @@ authorization.define("posts.update", [](const auth::Identity& user) {
 });
 ~~~
 
-Authorization is default-deny. An undefined ability is not silently granted.
+Undefined abilities are denied by default.
 
 ## Policies
 
-Keep resource-specific authorization rules in policies or explicit ability registrations rather than embedding permission logic throughout controllers.
+Keep resource-specific permission rules in policies or explicit ability registrations rather than scattering role checks throughout controllers.
 
 ## Passwords
 
-Use a vetted password hashing implementation such as Argon2id or bcrypt through an appropriate security adapter. Gungnir does not replace password hashing with a generic hash function.
+Use a vetted password hashing backend such as Argon2id or bcrypt. A generic cryptographic hash is not a password-storage strategy, and Gungnir does not provide a home-grown password hashing algorithm.

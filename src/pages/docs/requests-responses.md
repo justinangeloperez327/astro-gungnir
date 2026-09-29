@@ -1,12 +1,12 @@
 ---
 layout: ../../layouts/DocsLayout.astro
 title: Requests & Responses
-description: Read HTTP input through one request API and return clear framework responses.
+description: Read HTTP input through the Request API and return text, JSON, views, or custom status responses.
 ---
 
-The `Request` object exposes route parameters, query input, form input, JSON input, cookies, and headers without forcing controllers to work with HTTP parser details.
+## Request Input
 
-## Reading input
+The request object keeps query strings, form bodies, JSON, cookies, headers, and route parameters behind a compact application-facing API.
 
 ~~~gungnir
 Response store(Request request)
@@ -23,49 +23,74 @@ Response store(Request request)
 }
 ~~~
 
-Body input takes precedence over query input when using the flat input helpers.
+When using flat input helpers, body input takes precedence over query input.
 
-## Selecting fields
+## Selecting Input
 
-Use the request helpers to keep controller input explicit:
+Use selection helpers to make the controller's expected input explicit:
 
 ~~~gungnir
-const data = request.all();
+const all = request.all();
 const selected = request.only(["name", "email"]);
 const filtered = request.except(["password"]);
 ~~~
 
-Use `request.json()` when nested JSON values need to retain their typed structure.
+Use `request.json()` when nested JSON data needs to retain its typed structure.
 
-## Headers and cookies
+## Headers and Cookies
 
 ~~~gungnir
 const token = request.header("authorization");
 const theme = request.cookie("theme");
 ~~~
 
-## Route parameters
+## Route Parameters
 
 ~~~gungnir
 const id = request.parameter("id");
 ~~~
 
-## JSON responses
+Route parameters come from the path matched by the router.
 
-Models, collections, maps, ranges, and scalar values can be serialized through the JSON response helper:
+## JSON Responses
+
+The JSON response helper can serialize common application values, including models and ORM collections:
 
 ~~~gungnir
 return json(user);
 return json(users, 200);
 ~~~
 
-## Status codes
-
-Pass an HTTP status code when the default is not appropriate:
+## Text and Generic Responses
 
 ~~~gungnir
 return text("Created", 201);
+return response("Accepted", 202);
 return response("", 204);
 ~~~
 
-Framework exceptions provide centralized handling for common HTTP failure cases such as validation, authentication, authorization, missing models, and unexpected errors.
+## View Responses
+
+For server-rendered HTML:
+
+~~~gungnir
+return view("users/show", {
+    "user": user
+});
+~~~
+
+See [Views](/docs/views/) for template syntax and escaping behavior.
+
+## Exceptions and Error Responses
+
+Common framework exceptions have default HTTP mappings:
+
+| Failure | Default status |
+| --- | ---: |
+| Validation | 422 |
+| Authentication | 401 |
+| Authorization | 403 |
+| Model not found | 404 |
+| Unexpected server error | 500 |
+
+Requests that prefer JSON receive a JSON error representation from the framework exception layer.

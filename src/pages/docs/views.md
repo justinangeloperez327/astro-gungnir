@@ -1,10 +1,12 @@
 ---
 layout: ../../layouts/DocsLayout.astro
 title: Views
-description: Render server-side HTML with safe interpolation and application data.
+description: Render server-side HTML templates with escaped interpolation, loops, nested values, models, and collections.
 ---
 
-Return a view directly from a controller:
+## Creating a View Response
+
+Return a view from a controller with the `view` helper:
 
 ~~~gungnir
 Response index()
@@ -18,9 +20,9 @@ Response index()
 }
 ~~~
 
-Views resolve from the application's configured `views` directory.
+View names resolve underneath the application's configured `views` directory.
 
-## Template expressions
+## Displaying Data
 
 Use double braces for escaped output:
 
@@ -31,15 +33,19 @@ Use double braces for escaped output:
 
 HTML escaping is enabled by default.
 
-Use triple braces only for trusted raw HTML:
+## Raw HTML
+
+Triple braces render raw output:
 
 ~~~html
 {{{ trustedHtml }}}
 ~~~
 
+Only use raw output for content you trust. User-controlled content should remain escaped.
+
 ## Loops
 
-Iterate over arrays or ORM collections with `#each`:
+Use `#each` to iterate arrays or collections:
 
 ~~~html
 <ul>
@@ -49,19 +55,21 @@ Iterate over arrays or ORM collections with `#each`:
 </ul>
 ~~~
 
-Models are exposed through their generated model attributes, and collections are converted into iterable view values.
+Inside the loop, each item becomes the current context. Nested object paths are also supported.
 
-## View data
+## Models and Collections
 
-Pass values using object-style syntax:
+Models can be passed directly to a view using their exposed attributes, and ORM collections become iterable view values. Controllers do not need a separate conversion layer just to display normal model data.
 
 ~~~gungnir
 return view("users/show", {
     "user": user,
-    "canEdit": canEdit
+    "posts": posts
 });
 ~~~
 
-## Safety
+## Template Safety
 
-Template paths must remain under the configured view root. Parent traversal, absolute paths, and unsafe symlink resolution are rejected by the view engine.
+View paths must stay under the configured view root. Absolute paths, parent traversal, and unsafe symlink resolution are rejected.
+
+Template rendering is tied to the active application/request context, including when request execution suspends and resumes through Gungnir's async runtime.

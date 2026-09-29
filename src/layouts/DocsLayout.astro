@@ -9,62 +9,154 @@ const groups = [
     label: 'Getting Started',
     items: [
       ['Introduction', '/docs/'],
-      ['Installation & Setup', '/docs/getting-started/'],
-      ['Project Structure', '/docs/project-structure/']
-    ]
+      ['Installation', '/docs/getting-started/'],
+      ['Configuration', '/docs/configuration/'],
+      ['Directory Structure', '/docs/project-structure/'],
+    ],
   },
   {
-    label: 'Essentials',
+    label: 'Architecture Concepts',
+    items: [
+      ['Request Lifecycle', '/docs/request-lifecycle/'],
+      ['Service Container', '/docs/container/'],
+    ],
+  },
+  {
+    label: 'The Basics',
     items: [
       ['Routing', '/docs/routing/'],
+      ['Middleware', '/docs/middleware/'],
       ['Controllers', '/docs/controllers/'],
       ['Requests & Responses', '/docs/requests-responses/'],
-      ['Middleware', '/docs/middleware/'],
+      ['Views', '/docs/views/'],
       ['Validation', '/docs/validation/'],
-      ['Views', '/docs/views/']
-    ]
+      ['Sessions & Cache', '/docs/sessions-cache/'],
+    ],
   },
   {
-    label: 'Data',
+    label: 'Digging Deeper',
     items: [
-      ['Models & ORM', '/docs/models/'],
-      ['Database & Migrations', '/docs/database/']
-    ]
+      ['Events, Queues & Mail', '/docs/application-services/'],
+    ],
   },
   {
-    label: 'Application',
+    label: 'Security',
     items: [
       ['Authentication & Authorization', '/docs/auth/'],
-      ['Events, Queues & Mail', '/docs/application-services/'],
-      ['Testing & Production', '/docs/testing-production/']
-    ]
-  }
+    ],
+  },
+  {
+    label: 'Database',
+    items: [
+      ['Database & Migrations', '/docs/database/'],
+    ],
+  },
+  {
+    label: 'ORM',
+    items: [
+      ['Models & Relationships', '/docs/models/'],
+    ],
+  },
+  {
+    label: 'Testing & Deployment',
+    items: [
+      ['Testing & Production', '/docs/testing-production/'],
+    ],
+  },
 ];
 ---
 
-<BaseLayout title={frontmatter.title} description={frontmatter.description}>
-  <div class="docs-shell shell">
-    <aside class="docs-sidebar" aria-label="Documentation">
-      <a class="docs-home" href="/docs/">Documentation</a>
-      {groups.map((group) => (
-        <section class="docs-nav-group">
-          <h2>{group.label}</h2>
-          <nav>
-            {group.items.map(([label, href]) => (
-              <a class:list={[currentPath === href && 'active']} href={href}>{label}</a>
-            ))}
-          </nav>
-        </section>
-      ))}
-    </aside>
+<BaseLayout title={frontmatter.title} description={frontmatter.description} docs={true}>
+  <div class="docs-page">
+    <div class="docs-grid">
+      <aside class="docs-sidebar" aria-label="Documentation navigation" data-doc-nav>
+        <p class="docs-empty-search" data-empty-search>No matching documentation page.</p>
+        {groups.map((group) => (
+          <section class="docs-nav-group" data-nav-group>
+            <h2>{group.label}</h2>
+            <nav>
+              {group.items.map(([label, href]) => (
+                <a class:list={[currentPath === href && 'active']} href={href} data-nav-link>{label}</a>
+              ))}
+            </nav>
+          </section>
+        ))}
+      </aside>
 
-    <main class="docs-main">
-      <div class="docs-eyebrow">Gungnir Documentation</div>
-      <article class="docs-content">
-        <h1>{frontmatter.title}</h1>
-        {frontmatter.description && <p class="docs-lead">{frontmatter.description}</p>}
-        <slot />
-      </article>
-    </main>
+      <main class="docs-main">
+        <div class="docs-breadcrumbs">
+          <a href="/docs/">Documentation</a>
+          <span>/</span>
+          <span>{frontmatter.title}</span>
+        </div>
+        <article class="docs-content" data-doc-content>
+          <h1>{frontmatter.title}</h1>
+          {frontmatter.description && <p class="docs-lead">{frontmatter.description}</p>}
+          <slot />
+        </article>
+      </main>
+
+      <aside class="docs-toc" aria-label="On this page">
+        <p class="docs-toc-title">On this page</p>
+        <nav data-doc-toc></nav>
+      </aside>
+    </div>
   </div>
+
+  <script is:inline>
+    (() => {
+      const search = document.querySelector('[data-doc-search]');
+      const links = [...document.querySelectorAll('[data-nav-link]')];
+      const groups = [...document.querySelectorAll('[data-nav-group]')];
+      const empty = document.querySelector('[data-empty-search]');
+
+      const filterNavigation = () => {
+        if (!search) return;
+        const query = search.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        links.forEach((link) => {
+          const match = !query || link.textContent.toLowerCase().includes(query);
+          link.hidden = !match;
+          if (match) visibleCount += 1;
+        });
+
+        groups.forEach((group) => {
+          const hasVisibleLink = [...group.querySelectorAll('[data-nav-link]')].some((link) => !link.hidden);
+          group.hidden = !hasVisibleLink;
+        });
+
+        empty?.classList.toggle('visible', visibleCount === 0);
+      };
+
+      search?.addEventListener('input', filterNavigation);
+      document.addEventListener('keydown', (event) => {
+        if (event.key === '/' && document.activeElement !== search) {
+          event.preventDefault();
+          search?.focus();
+        }
+      });
+
+      const content = document.querySelector('[data-doc-content]');
+      const toc = document.querySelector('[data-doc-toc]');
+      if (!content || !toc) return;
+
+      const headings = [...content.querySelectorAll('h2, h3')];
+      headings.forEach((heading, index) => {
+        if (!heading.id) {
+          heading.id = (heading.textContent || `section-${index}`)
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-|-$/g, '');
+        }
+
+        const link = document.createElement('a');
+        link.href = `#${heading.id}`;
+        link.textContent = heading.textContent;
+        if (heading.tagName === 'H3') link.classList.add('toc-h3');
+        toc.appendChild(link);
+      });
+    })();
+  </script>
 </BaseLayout>

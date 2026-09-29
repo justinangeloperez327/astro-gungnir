@@ -1,10 +1,12 @@
 ---
 layout: ../../layouts/DocsLayout.astro
 title: Validation
-description: Validate incoming request data close to the controller action using concise rules.
+description: Validate incoming request data with concise rule declarations before passing it to application or model code.
 ---
 
-Validate request input directly:
+## Validating a Request
+
+Validate request input directly in the controller:
 
 ~~~gungnir
 Response store(Request request)
@@ -21,11 +23,11 @@ Response store(Request request)
 }
 ~~~
 
-Successful validation returns the validated fields declared in the rule set.
+Successful validation returns the fields declared by the validation rules.
 
-## Available rules
+## Available Rules
 
-The core validator includes rules such as:
+The core validation rules include:
 
 - `required`
 - `present`
@@ -44,14 +46,20 @@ The core validator includes rules such as:
 - `same`
 - `confirmed`
 
-## Validation failures
+## Validation Failures
 
-Validation failures raise the framework validation exception. The HTTP exception layer maps them to a `422` response by default.
+`request.validate()` uses the exception-oriented flow. A failed validation raises the framework validation exception and is mapped to HTTP `422` by default.
 
-## Check without throwing
+## Checking Without Throwing
 
-The validation subsystem also exposes a result-oriented check flow for code that needs to inspect errors without using the exception path.
+The validation subsystem also provides a result-oriented check flow for code that wants to inspect validation errors without using exceptions.
 
-## Dedicated validation requests
+Use the exception flow for normal HTTP request validation and the result flow when the caller needs direct control over error handling.
 
-For larger applications, use validation-oriented request classes to centralize rule sets instead of duplicating them across controller actions.
+## Dedicated Validation Requests
+
+As validation grows, move repeated rule sets into validation-oriented request classes. This keeps controllers focused on application actions instead of duplicating long rule declarations.
+
+## Database-Aware Validation
+
+Database-backed rules should use the shared database abstraction rather than issuing ad-hoc SQL from the HTTP layer. Treat backend-dependent validation as database integration, not as a special case hidden inside the basic validator.

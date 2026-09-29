@@ -1,12 +1,12 @@
 ---
 layout: ../../layouts/DocsLayout.astro
 title: Routing
-description: Route incoming HTTP requests to controller actions with clear, expressive declarations.
+description: Define application endpoints, route parameters, controller actions, and middleware.
 ---
 
-Routes are normally defined in `routes/web.gnr`.
+## Basic Routing
 
-## Basic routes
+Web routes are normally defined in `routes/web.gnr`.
 
 ~~~gungnir
 Route::get("/", HomeController::index);
@@ -15,11 +15,11 @@ Route::post("/users", UserController::store);
 Route::delete("/users/{id}", UserController::destroy);
 ~~~
 
-Controller routes resolve the controller through the application container and dispatch the selected action.
+A route maps an HTTP method and path to a controller action. Controllers are resolved through the application container when the route is dispatched.
 
-## Route parameters
+## Route Parameters
 
-Declare parameters with braces:
+Dynamic path segments use braces:
 
 ~~~gungnir
 Route::get("/users/{id}", UserController::show);
@@ -36,25 +36,27 @@ Response show(Request request)
 }
 ~~~
 
-## Route middleware
+Route parameters are request-owned and repopulated for each dispatch.
 
-Attach middleware directly to a route:
+## Route Middleware
+
+Attach middleware to a route when the endpoint requires additional request processing:
 
 ~~~gungnir
 Route::get("/dashboard", DashboardController::index)
     .middleware(AuthMiddleware);
 ~~~
 
-Global middleware runs before route middleware.
+Global middleware executes before route middleware. A middleware may return a response immediately or continue the request to the next middleware/controller.
 
-## Route groups
+## Route Groups
 
-Use route groups when several routes share a prefix, middleware set, or another common route concern. Keep group configuration at the route layer rather than repeating the same options on every endpoint.
+Use route groups when several endpoints share a common concern such as a URL prefix or middleware set. Grouping keeps repeated route configuration in one place while leaving controller actions focused on application behavior.
 
-## Named routes
+## Named Routes
 
-Named routes give stable application-level identifiers to URLs. Prefer names for links and redirects that should not depend on a hard-coded path.
+Named routes provide stable application-level identifiers for URLs. Prefer a route name when code should refer to a destination without depending on the route's literal path.
 
-## Request lifecycle
+## Controllers and Routes
 
-Once a route matches, Gungnir populates route parameters, resolves middleware and the controller through the container, then dispatches the action. Exceptions pass through the framework exception handler before becoming HTTP responses.
+Keep route declarations small. If a route begins accumulating input handling, database access, or business rules, move that logic into a controller or application service and keep the route responsible only for dispatch configuration.
