@@ -27,6 +27,16 @@ The development server is available at `http://localhost:4321`.
 | `npm run preview` | Preview the production build locally |
 | `npm run astro -- --help` | Run Astro CLI commands |
 
+## CI/CD
+
+GitHub Actions provides automated build verification and deployment.
+
+- **CI** runs on pushes and pull requests targeting `main` and verifies that the Astro production build succeeds.
+- **CD** runs after pushes to `main`, builds the site using GitHub Pages metadata, uploads the `dist/` artifact, and deploys it to the `github-pages` environment.
+- Both workflows can also be started manually from the Actions tab.
+
+The Astro configuration reads `SITE_URL` and `BASE_PATH` during deployment so links and assets work whether the Pages site is hosted at the account root, under the repository path, or later behind a configured custom domain.
+
 ## Documentation Structure
 
 Framework documentation lives under `src/pages/docs/`. Shared documentation navigation and presentation are defined by `src/layouts/DocsLayout.astro`.

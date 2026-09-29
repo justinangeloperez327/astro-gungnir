@@ -12,6 +12,8 @@ const {
 } = Astro.props;
 
 const pageTitle = title === 'Gungnir' ? title : title + ' · Gungnir';
+const base = import.meta.env.BASE_URL;
+const withBase = (path: string) => base + path.replace(/^\/+/, '');
 ---
 
 <!doctype html>
@@ -27,12 +29,12 @@ const pageTitle = title === 'Gungnir' ? title : title + ' · Gungnir';
   <body>
     <header class="site-header">
       <div class="shell header-inner">
-        <a class="brand" href="/" aria-label="Gungnir home">
+        <a class="brand" href={base} aria-label="Gungnir home">
           <span class="brand-mark" aria-hidden="true">G</span>
           <span>GUNGNIR</span>
         </a>
         <nav class="site-nav" aria-label="Primary navigation">
-          <a href="/docs/">Documentation</a>
+          <a href={withBase('/docs/')}>Documentation</a>
           <a href="https://github.com/justinangeloperez327/gungnir">GitHub</a>
         </nav>
       </div>
