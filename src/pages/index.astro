@@ -1,73 +1,80 @@
 ---
-const title = 'Gungnir';
-const description = 'Expressive web framework built in C++.';
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-  </head>
-  <body>
-    <main>
-      <p>GUNGNIR</p>
-      <h1>Expressive web framework built in C++.</h1>
-      <p>The Gungnir website is now running on Astro.</p>
-    </main>
-  </body>
-</html>
+<BaseLayout>
+  <main>
+    <section class="hero">
+      <div class="shell hero-grid">
+        <div>
+          <div class="eyebrow">C++ Web Framework</div>
+          <h1>Expressive web development, built in C++.</h1>
+          <p class="hero-copy">
+            Gungnir gives C++ web applications clear conventions for routing, controllers,
+            models, validation, views, authentication, queues, mail, and the rest of the
+            application lifecycle.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="/docs/getting-started/">Get Started</a>
+            <a class="button secondary" href="/docs/">Read the Documentation</a>
+          </div>
+        </div>
 
-<style>
-  :global(*) {
-    box-sizing: border-box;
-  }
+        <div class="hero-code" aria-label="Gungnir code example">
+          <div class="hero-code-header">app/controllers/user_controller.gnr</div>
+          <pre><code>controller UserController
+{
+    Response index()
+    {
+        const users = User::all();
 
-  :global(html) {
-    background: #ffffff;
-    color: #071b33;
-    font-family:
-      Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-      sans-serif;
-  }
+        return view("users/index", {
+            "users": users
+        });
+    }
+}</code></pre>
+        </div>
+      </div>
+    </section>
 
-  :global(body) {
-    margin: 0;
-  }
+    <section class="feature-section">
+      <div class="shell">
+        <div class="section-heading">
+          <div class="eyebrow">Application-first conventions</div>
+          <h2>Build the application, not the plumbing.</h2>
+          <p>
+            Gungnir organizes common web development concerns behind a consistent,
+            convention-first API while retaining native C++ interoperability.
+          </p>
+        </div>
 
-  main {
-    display: grid;
-    min-height: 100vh;
-    place-content: center;
-    width: min(100% - 2rem, 72rem);
-    margin-inline: auto;
-  }
-
-  p {
-    margin: 0 0 1rem;
-    color: #145da0;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  h1 {
-    max-width: 16ch;
-    margin: 0 0 1rem;
-    font-size: clamp(2.5rem, 8vw, 6rem);
-    line-height: 0.95;
-    letter-spacing: -0.05em;
-  }
-
-  h1 + p {
-    max-width: 36rem;
-    color: #5d6772;
-    font-weight: 400;
-    letter-spacing: normal;
-    line-height: 1.7;
-    text-transform: none;
-  }
-</style>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <h3>Routing & Controllers</h3>
+            <p>Map requests to controller actions with route parameters, middleware, and async actions.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Models & ORM</h3>
+            <p>Use expressive models, query methods, relationships, eager loading, timestamps, and soft deletes.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Database</h3>
+            <p>Work with migrations and database abstractions across PostgreSQL, MySQL, SQL Server, and MongoDB adapters.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Validation</h3>
+            <p>Validate request data directly in controller workflows using concise rule declarations.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Views</h3>
+            <p>Render server-side HTML with escaped interpolation, loops, and direct model or collection data.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Application Services</h3>
+            <p>Use authentication, authorization, sessions, cache, events, queues, mail, notifications, and scheduling.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

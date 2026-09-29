@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const sections = [
+  ['Installation & Setup', '/docs/getting-started/', 'Create a Gungnir application and run it locally.'],
+  ['Project Structure', '/docs/project-structure/', 'Understand the conventional application directories and files.'],
+  ['Routing', '/docs/routing/', 'Define routes, parameters, controller actions, and middleware.'],
+  ['Controllers', '/docs/controllers/', 'Organize HTTP actions, dependency injection, and async workflows.'],
+  ['Requests & Responses', '/docs/requests-responses/', 'Read input and return text, JSON, views, and status codes.'],
+  ['Models & ORM', '/docs/models/', 'Define models, query records, and load relationships.'],
+  ['Database & Migrations', '/docs/database/', 'Configure database access and evolve the data model.'],
+  ['Middleware', '/docs/middleware/', 'Run application logic around route dispatch.'],
+  ['Validation', '/docs/validation/', 'Validate incoming request data using concise rules.'],
+  ['Views', '/docs/views/', 'Render safe server-side HTML templates.'],
+  ['Authentication & Authorization', '/docs/auth/', 'Establish identity and enforce application abilities.'],
+  ['Events, Queues & Mail', '/docs/application-services/', 'Coordinate application events and background or delivery workflows.'],
+  ['Testing & Production', '/docs/testing-production/', 'Test application behavior and prepare production builds.']
+];
+---
+
+<BaseLayout title="Documentation" description="Documentation for building web applications with Gungnir.">
+  <main class="docs-landing">
+    <div class="shell">
+      <div class="docs-landing-head">
+        <div class="eyebrow">Documentation</div>
+        <h1>Build with Gungnir.</h1>
+        <p>
+          This documentation focuses on the conventions and APIs used to build Gungnir
+          applications: routes, controllers, models, data, views, security, application
+          services, testing, and production.
+        </p>
+      </div>
+
+      <div class="docs-card-grid">
+        {sections.map(([title, href, description]) => (
+          <a class="docs-card" href={href}>
+            <h2>{title}</h2>
+            <p>{description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </main>
+</BaseLayout>

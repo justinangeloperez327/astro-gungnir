@@ -1,0 +1,50 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Gungnir',
+  description = 'Gungnir is an expressive web framework built in C++.'
+} = Astro.props;
+
+const pageTitle = title === 'Gungnir' ? title : title + ' · Gungnir';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#071B33" />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="/" aria-label="Gungnir home">
+          <span class="brand-mark" aria-hidden="true">G</span>
+          <span>GUNGNIR</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="/docs/">Documentation</a>
+          <a href="https://github.com/justinangeloperez327/gungnir">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <slot />
+
+    <footer class="site-footer">
+      <div class="shell footer-inner">
+        <strong>GUNGNIR</strong>
+        <span>Expressive web development in C++.</span>
+      </div>
+    </footer>
+  </body>
+</html>

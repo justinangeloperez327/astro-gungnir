@@ -1,0 +1,70 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+const { frontmatter } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+const groups = [
+  {
+    label: 'Getting Started',
+    items: [
+      ['Introduction', '/docs/'],
+      ['Installation & Setup', '/docs/getting-started/'],
+      ['Project Structure', '/docs/project-structure/']
+    ]
+  },
+  {
+    label: 'Essentials',
+    items: [
+      ['Routing', '/docs/routing/'],
+      ['Controllers', '/docs/controllers/'],
+      ['Requests & Responses', '/docs/requests-responses/'],
+      ['Middleware', '/docs/middleware/'],
+      ['Validation', '/docs/validation/'],
+      ['Views', '/docs/views/']
+    ]
+  },
+  {
+    label: 'Data',
+    items: [
+      ['Models & ORM', '/docs/models/'],
+      ['Database & Migrations', '/docs/database/']
+    ]
+  },
+  {
+    label: 'Application',
+    items: [
+      ['Authentication & Authorization', '/docs/auth/'],
+      ['Events, Queues & Mail', '/docs/application-services/'],
+      ['Testing & Production', '/docs/testing-production/']
+    ]
+  }
+];
+---
+
+<BaseLayout title={frontmatter.title} description={frontmatter.description}>
+  <div class="docs-shell shell">
+    <aside class="docs-sidebar" aria-label="Documentation">
+      <a class="docs-home" href="/docs/">Documentation</a>
+      {groups.map((group) => (
+        <section class="docs-nav-group">
+          <h2>{group.label}</h2>
+          <nav>
+            {group.items.map(([label, href]) => (
+              <a class:list={[currentPath === href && 'active']} href={href}>{label}</a>
+            ))}
+          </nav>
+        </section>
+      ))}
+    </aside>
+
+    <main class="docs-main">
+      <div class="docs-eyebrow">Gungnir Documentation</div>
+      <article class="docs-content">
+        <h1>{frontmatter.title}</h1>
+        {frontmatter.description && <p class="docs-lead">{frontmatter.description}</p>}
+        <slot />
+      </article>
+    </main>
+  </div>
+</BaseLayout>
