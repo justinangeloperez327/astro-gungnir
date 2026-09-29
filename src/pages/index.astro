@@ -1,8 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-const base = import.meta.env.BASE_URL;
-const withBase = (path: string) => base + path.replace(/^\/+/, '');
 ---
 
 <BaseLayout>
@@ -18,8 +15,8 @@ const withBase = (path: string) => base + path.replace(/^\/+/, '');
             application lifecycle.
           </p>
           <div class="hero-actions">
-            <a class="button primary" href={withBase('/docs/getting-started/')}>Get Started</a>
-            <a class="button secondary" href={withBase('/docs/')}>Read the Documentation</a>
+            <a class="button primary" href="/docs/getting-started/">Get Started</a>
+            <a class="button secondary" href="/docs/">Read the Documentation</a>
           </div>
         </div>
 

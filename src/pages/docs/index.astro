@@ -1,9 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const base = import.meta.env.BASE_URL;
-const withBase = (path: string) => base + path.replace(/^\/+/, '');
-
 const sections = [
   ['Installation & Setup', '/docs/getting-started/', 'Create a Gungnir application and run it locally.'],
   ['Project Structure', '/docs/project-structure/', 'Understand the conventional application directories and files.'],
@@ -36,7 +33,7 @@ const sections = [
 
       <div class="docs-card-grid">
         {sections.map(([title, href, description]) => (
-          <a class="docs-card" href={withBase(href)}>
+          <a class="docs-card" href={href}>
             <h2>{title}</h2>
             <p>{description}</p>
           </a>

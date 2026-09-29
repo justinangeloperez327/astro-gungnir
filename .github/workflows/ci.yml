@@ -20,6 +20,7 @@ jobs:
   build:
     name: Build Astro site
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
@@ -34,5 +35,5 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      - name: Build
+      - name: Build production site
         run: npm run build
