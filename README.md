@@ -66,6 +66,12 @@ The interface uses the Gungnir colorway:
 
 Tailwind design tokens are defined in `src/styles/global.css`.
 
+### Theme
+
+The site supports light and dark modes. On the first visit, the theme follows the operating-system preference. A manual selection is persisted in `localStorage` under `gungnir-theme`, and the theme is applied in the document head before paint to avoid a light/dark flash.
+
+Dark mode uses the existing Gungnir palette with near-black navy surfaces rather than pure black, while keeping blue for interactive state and code blocks as the darkest surfaces.
+
 The visual language intentionally uses blue sparingly for active state, links, focus, and the Gungnir spear-point navigation accent. White remains the primary surface, silver provides structure, and black carries typography and code.
 
 ## Public Images

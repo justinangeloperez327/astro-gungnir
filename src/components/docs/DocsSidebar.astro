@@ -31,8 +31,8 @@ const groups = docs.reduce((acc, entry) => {
               class:list={[
                 'relative flex min-h-9 items-center rounded-md px-3 text-[13px] transition',
                 active
-                  ? 'docs-nav-active bg-gungnir-blue/[0.06] font-semibold text-gungnir-blue'
-                  : 'font-medium text-gungnir-muted hover:bg-gungnir-silver-soft hover:text-gungnir-ink',
+                  ? 'docs-nav-active bg-gungnir-blue/[0.06] font-semibold text-gungnir-blue dark:bg-gungnir-blue/10 dark:text-gungnir-blue-light'
+                  : 'font-medium text-gungnir-muted hover:bg-gungnir-silver-soft hover:text-gungnir-ink dark:text-gungnir-dark-muted dark:hover:bg-gungnir-dark-soft dark:hover:text-gungnir-dark-text',
               ]}
               href={hrefFor(entry)}
               aria-current={active ? 'page' : undefined}

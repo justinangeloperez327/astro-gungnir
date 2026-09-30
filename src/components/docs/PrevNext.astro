@@ -15,9 +15,9 @@ const hrefFor = (entry: CollectionEntry<'docs'>) =>
   <nav class="mt-16 grid gap-3 border-t border-gungnir-line pt-7 sm:grid-cols-2" aria-label="Documentation pagination">
     <div>
       {previous && (
-        <a href={hrefFor(previous)} class="group block rounded-lg border border-gungnir-line p-4 no-underline transition hover:border-gungnir-silver hover:bg-gungnir-silver-soft/70">
-          <span class="text-[11px] font-bold uppercase tracking-[0.12em] text-gungnir-muted">Previous</span>
-          <span class="mt-1 flex items-center gap-2 text-sm font-semibold text-gungnir-ink group-hover:text-gungnir-blue">
+        <a href={hrefFor(previous)} class="group block rounded-lg border border-gungnir-line p-4 no-underline transition hover:border-gungnir-silver hover:bg-gungnir-silver-soft/70 dark:border-gungnir-dark-line dark:hover:border-gungnir-silver/35 dark:hover:bg-gungnir-dark-soft">
+          <span class="text-[11px] font-bold uppercase tracking-[0.12em] text-gungnir-muted dark:text-gungnir-dark-muted">Previous</span>
+          <span class="mt-1 flex items-center gap-2 text-sm font-semibold text-gungnir-ink group-hover:text-gungnir-blue dark:text-gungnir-dark-text dark:group-hover:text-gungnir-blue-light">
             <span aria-hidden="true">←</span> {previous.data.title}
           </span>
         </a>
@@ -25,9 +25,9 @@ const hrefFor = (entry: CollectionEntry<'docs'>) =>
     </div>
     <div>
       {next && (
-        <a href={hrefFor(next)} class="group block rounded-lg border border-gungnir-line p-4 text-right no-underline transition hover:border-gungnir-silver hover:bg-gungnir-silver-soft/70">
-          <span class="text-[11px] font-bold uppercase tracking-[0.12em] text-gungnir-muted">Next</span>
-          <span class="mt-1 flex items-center justify-end gap-2 text-sm font-semibold text-gungnir-ink group-hover:text-gungnir-blue">
+        <a href={hrefFor(next)} class="group block rounded-lg border border-gungnir-line p-4 text-right no-underline transition hover:border-gungnir-silver hover:bg-gungnir-silver-soft/70 dark:border-gungnir-dark-line dark:hover:border-gungnir-silver/35 dark:hover:bg-gungnir-dark-soft">
+          <span class="text-[11px] font-bold uppercase tracking-[0.12em] text-gungnir-muted dark:text-gungnir-dark-muted">Next</span>
+          <span class="mt-1 flex items-center justify-end gap-2 text-sm font-semibold text-gungnir-ink group-hover:text-gungnir-blue dark:text-gungnir-dark-text dark:group-hover:text-gungnir-blue-light">
             {next.data.title} <span aria-hidden="true">→</span>
           </span>
         </a>
