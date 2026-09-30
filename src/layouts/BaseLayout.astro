@@ -26,40 +26,71 @@ const pageTitle = title === 'Gungnir' ? title : `${title} · Gungnir`;
     <meta name="theme-color" content="#145DA0" />
     <title>{pageTitle}</title>
   </head>
-  <body>
-    <header class:list={['site-header', docs && 'docs-header']}>
-      <div class="shell header-inner">
+  <body class="flex min-h-screen flex-col">
+    <a
+      href="#main-content"
+      class="sr-only fixed left-4 top-4 z-[100] rounded-lg bg-gungnir-blue px-4 py-2 text-sm font-semibold text-white shadow-lg focus:not-sr-only"
+    >
+      Skip to content
+    </a>
+
+    <header class="sticky top-0 z-50 border-b border-gungnir-line bg-white/95 backdrop-blur-xl">
+      <div class="mx-auto flex h-16 w-full max-w-[1440px] items-center gap-4 px-4 sm:px-6 lg:px-8">
         {docs ? (
-          <div class="docs-branding">
-            <a class="brand" href="/" aria-label="Gungnir home">
-              <img class="brand-logo docs-brand-logo" src="/images/logo-alt.png" alt="Gungnir" />
+          <div class="flex min-w-0 shrink-0 items-center gap-3">
+            <a href="/" class="inline-flex items-center" aria-label="Gungnir home">
+              <img
+                class="h-8 w-auto max-w-36 object-contain sm:max-w-40"
+                src="/images/logo-alt.png"
+                alt="Gungnir"
+              />
             </a>
-            <span class="docs-divider" aria-hidden="true"></span>
-            <a class="docs-label" href="/docs/">Documentation</a>
-            <span class="version-pill">0.1</span>
+            <span class="hidden h-5 w-px bg-gungnir-line sm:block" aria-hidden="true"></span>
+            <a href="/docs/" class="hidden text-sm font-medium text-gungnir-muted transition hover:text-gungnir-blue sm:block">
+              Docs
+            </a>
+            <span class="hidden rounded-md border border-gungnir-line bg-gungnir-silver-soft px-2 py-1 text-[11px] font-semibold text-gungnir-muted md:inline-flex">
+              0.1
+            </span>
           </div>
         ) : (
-          <a class="brand" href="/" aria-label="Gungnir home">
-            <img class="brand-logo" src="/images/logo-alt.png" alt="Gungnir" />
+          <a href="/" class="inline-flex shrink-0 items-center" aria-label="Gungnir home">
+            <img
+              class="h-9 w-auto max-w-44 object-contain sm:max-w-48"
+              src="/images/logo-alt.png"
+              alt="Gungnir"
+            />
           </a>
         )}
 
         {docs ? (
-          <div class="docs-search-wrap">
-            <input class="docs-search" type="search" placeholder="Search documentation" aria-label="Search documentation" data-doc-search />
-            <span class="search-shortcut" aria-hidden="true">/</span>
-          </div>
+          <>
+            <div class="mx-auto hidden w-full max-w-md md:block">
+              <label class="relative block">
+                <span class="sr-only">Search documentation</span>
+                <svg class="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gungnir-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                  <circle cx="11" cy="11" r="7"></circle>
+                  <path d="m20 20-3.5-3.5"></path>
+                </svg>
+                <input
+                  class="h-10 w-full rounded-lg border border-gungnir-line bg-gungnir-silver-soft pl-10 pr-10 text-sm text-gungnir-ink outline-none transition placeholder:text-gungnir-muted/70 hover:border-gungnir-silver focus:border-gungnir-blue focus:bg-white focus:ring-4 focus:ring-gungnir-blue/10"
+                  type="search"
+                  placeholder="Search documentation"
+                  aria-label="Search documentation"
+                  data-doc-search
+                />
+                <span class="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 rounded border border-gungnir-line bg-white px-1.5 py-0.5 text-[10px] font-semibold text-gungnir-muted" aria-hidden="true">/</span>
+              </label>
+            </div>
+            <nav class="ml-auto flex shrink-0 items-center gap-1 sm:gap-2" aria-label="Documentation links">
+              <a href="/" class="hidden min-h-10 items-center rounded-lg px-3 text-sm font-medium text-gungnir-muted transition hover:bg-gungnir-silver-soft hover:text-gungnir-ink lg:inline-flex">Home</a>
+              <a href="https://github.com/justinangeloperez327/gungnir" class="inline-flex min-h-10 items-center rounded-lg px-3 text-sm font-medium text-gungnir-muted transition hover:bg-gungnir-silver-soft hover:text-gungnir-ink">GitHub</a>
+            </nav>
+          </>
         ) : (
-          <nav class="site-nav" aria-label="Primary navigation">
-            <a href="/docs/">Documentation</a>
-            <a href="https://github.com/justinangeloperez327/gungnir">GitHub</a>
-          </nav>
-        )}
-
-        {docs && (
-          <nav class="docs-header-actions" aria-label="Documentation links">
-            <a href="/">Home</a>
-            <a href="https://github.com/justinangeloperez327/gungnir">GitHub</a>
+          <nav class="ml-auto flex items-center gap-1 sm:gap-2" aria-label="Primary navigation">
+            <a href="/docs/" class="inline-flex min-h-11 items-center rounded-lg px-3.5 text-sm font-semibold text-gungnir-ink transition hover:bg-gungnir-silver-soft hover:text-gungnir-blue">Documentation</a>
+            <a href="https://github.com/justinangeloperez327/gungnir" class="hidden min-h-11 items-center rounded-lg px-3.5 text-sm font-semibold text-gungnir-ink transition hover:bg-gungnir-silver-soft hover:text-gungnir-blue sm:inline-flex">GitHub</a>
           </nav>
         )}
       </div>
@@ -67,9 +98,9 @@ const pageTitle = title === 'Gungnir' ? title : `${title} · Gungnir`;
 
     <slot />
 
-    <footer class="site-footer">
-      <div class="shell footer-inner">
-        <img class="footer-logo" src="/images/logo-alt.png" alt="Gungnir" />
+    <footer class="mt-auto border-t border-gungnir-line bg-white">
+      <div class="mx-auto flex min-h-24 w-full max-w-[1440px] flex-col justify-center gap-4 px-4 py-6 text-sm text-gungnir-muted sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+        <img class="h-7 w-auto max-w-36 object-contain" src="/images/logo-alt.png" alt="Gungnir" />
         <span>Expressive web development in C++.</span>
       </div>
     </footer>

@@ -2,18 +2,18 @@
 
 Official documentation website for **Gungnir**, an expressive web framework built in C++.
 
-The site is built with Astro and presents Gungnir as a conventional application framework: installation, configuration, routing, controllers, middleware, requests and responses, validation, views, sessions, security, database access, ORM, application services, testing, and production.
+The website uses Astro and Tailwind CSS 4. Its documentation structure is optimized for framework reference material: persistent navigation, restrained reading width, visible hierarchy, accessible focus states, responsive navigation, and high-contrast code examples.
 
-## Visual System
+## Design System
 
-The documentation UI uses the Gungnir colorway:
+The interface uses the Gungnir colorway:
 
 - Blue: `#145DA0`
 - White: `#FFFFFF`
 - Silver: `#C7CBD1`
 - Black: `#0B0D10`
 
-The layout follows the information-density and navigation patterns common to mature framework documentation sites while retaining Gungnir branding.
+Design tokens are defined with Tailwind's CSS-first `@theme` configuration in `src/styles/global.css`.
 
 ## Public Images
 
@@ -23,7 +23,7 @@ Public image assets belong in:
 public/images/
 ~~~
 
-Files placed there are available from `/images/<filename>`.
+The primary brand asset is `public/images/logo-alt.png`.
 
 ## Requirements
 
@@ -47,6 +47,12 @@ The development server is available at `http://localhost:4321`.
 | `npm run build` | Build the production site |
 | `npm run preview` | Preview the production build locally |
 | `npm run astro -- --help` | Run Astro CLI commands |
+
+## Styling
+
+Tailwind CSS 4 is connected through the official `@tailwindcss/vite` plugin in `astro.config.mjs`.
+
+Most application and layout styling uses Tailwind utility classes directly in Astro components. The global stylesheet contains the Tailwind import, Gungnir design tokens, base accessibility rules, and Markdown content styles that cannot be applied directly to generated Markdown elements.
 
 ## CI
 

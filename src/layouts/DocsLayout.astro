@@ -64,40 +64,84 @@ const groups = [
     ],
   },
 ];
+
+const navLinkClass = (href: string) =>
+  currentPath === href
+    ? 'flex min-h-9 items-center rounded-lg bg-gungnir-blue/10 px-3 text-[13px] font-semibold text-gungnir-blue'
+    : 'flex min-h-9 items-center rounded-lg px-3 text-[13px] font-medium text-gungnir-muted transition hover:bg-gungnir-silver-soft hover:text-gungnir-ink';
 ---
 
 <BaseLayout title={frontmatter.title} description={frontmatter.description} docs={true}>
-  <div class="docs-page">
-    <div class="docs-grid">
-      <aside class="docs-sidebar" aria-label="Documentation navigation" data-doc-nav>
-        <p class="docs-empty-search" data-empty-search>No matching documentation page.</p>
-        {groups.map((group) => (
-          <section class="docs-nav-group" data-nav-group>
-            <h2>{group.label}</h2>
-            <nav>
-              {group.items.map(([label, href]) => (
-                <a class:list={[currentPath === href && 'active']} href={href} data-nav-link>{label}</a>
-              ))}
-            </nav>
-          </section>
-        ))}
+  <div class="bg-white">
+    <div class="mx-auto grid w-full max-w-[1536px] grid-cols-1 gap-0 px-4 sm:px-6 lg:grid-cols-[240px_minmax(0,760px)] lg:gap-12 lg:px-8 xl:grid-cols-[240px_minmax(0,780px)_200px] xl:gap-14 2xl:gap-16">
+      <aside class="sticky top-20 hidden max-h-[calc(100vh-6rem)] overflow-y-auto py-8 pr-3 lg:block" aria-label="Documentation navigation" data-doc-nav>
+        <p class="hidden rounded-lg border border-gungnir-line bg-gungnir-silver-soft px-3 py-2 text-xs text-gungnir-muted" data-empty-search>
+          No matching documentation page.
+        </p>
+
+        <div class="space-y-7">
+          {groups.map((group) => (
+            <section data-nav-group>
+              <h2 class="mb-2 px-3 text-[11px] font-bold uppercase tracking-[0.14em] text-gungnir-muted/75">{group.label}</h2>
+              <nav class="space-y-0.5">
+                {group.items.map(([label, href]) => (
+                  <a class={navLinkClass(href)} href={href} data-nav-link aria-current={currentPath === href ? 'page' : undefined}>
+                    {label}
+                  </a>
+                ))}
+              </nav>
+            </section>
+          ))}
+        </div>
       </aside>
 
-      <main class="docs-main">
-        <div class="docs-breadcrumbs">
-          <a href="/docs/">Documentation</a>
-          <span>/</span>
-          <span>{frontmatter.title}</span>
-        </div>
-        <article class="docs-content" data-doc-content>
-          <h1>{frontmatter.title}</h1>
-          {frontmatter.description && <p class="docs-lead">{frontmatter.description}</p>}
-          <slot />
+      <main id="main-content" class="min-w-0 py-8 sm:py-10 lg:py-12">
+        <details class="group mb-7 rounded-xl border border-gungnir-line bg-gungnir-silver-soft/70 lg:hidden">
+          <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 px-4 text-sm font-semibold text-gungnir-ink">
+            <span>Browse documentation</span>
+            <svg class="h-4 w-4 text-gungnir-muted transition group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </summary>
+          <div class="border-t border-gungnir-line bg-white p-3">
+            <nav class="grid gap-5 sm:grid-cols-2">
+              {groups.map((group) => (
+                <section>
+                  <h2 class="mb-1.5 px-2 text-[10px] font-bold uppercase tracking-[0.13em] text-gungnir-muted/75">{group.label}</h2>
+                  <div class="space-y-0.5">
+                    {group.items.map(([label, href]) => (
+                      <a class={navLinkClass(href)} href={href} aria-current={currentPath === href ? 'page' : undefined}>
+                        {label}
+                      </a>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </nav>
+          </div>
+        </details>
+
+        <nav class="mb-6 flex items-center gap-2 text-xs font-medium text-gungnir-muted" aria-label="Breadcrumb">
+          <a href="/docs/" class="text-gungnir-blue no-underline transition hover:text-gungnir-blue-deep">Documentation</a>
+          <span class="text-gungnir-silver" aria-hidden="true">/</span>
+          <span aria-current="page">{frontmatter.title}</span>
+        </nav>
+
+        <article class="docs-content max-w-[72ch]" data-doc-content>
+          <h1 class="text-4xl font-bold tracking-[-0.04em] text-gungnir-ink sm:text-5xl">{frontmatter.title}</h1>
+          {frontmatter.description && (
+            <p class="mt-5 max-w-[66ch] text-base leading-7 text-gungnir-muted sm:text-[1.08rem] sm:leading-8">
+              {frontmatter.description}
+            </p>
+          )}
+          <div class="mt-10">
+            <slot />
+          </div>
         </article>
       </main>
 
-      <aside class="docs-toc" aria-label="On this page">
-        <p class="docs-toc-title">On this page</p>
+      <aside class="sticky top-24 hidden max-h-[calc(100vh-7rem)] overflow-y-auto py-12 xl:block" aria-label="On this page">
+        <p class="mb-3 text-[11px] font-bold uppercase tracking-[0.13em] text-gungnir-muted/75">On this page</p>
         <nav data-doc-toc></nav>
       </aside>
     </div>
@@ -116,7 +160,7 @@ const groups = [
         let visibleCount = 0;
 
         links.forEach((link) => {
-          const match = !query || link.textContent.toLowerCase().includes(query);
+          const match = !query || (link.textContent || '').toLowerCase().includes(query);
           link.hidden = !match;
           if (match) visibleCount += 1;
         });
@@ -126,7 +170,7 @@ const groups = [
           group.hidden = !hasVisibleLink;
         });
 
-        empty?.classList.toggle('visible', visibleCount === 0);
+        if (empty) empty.hidden = visibleCount !== 0;
       };
 
       search?.addEventListener('input', filterNavigation);
@@ -154,6 +198,7 @@ const groups = [
         const link = document.createElement('a');
         link.href = `#${heading.id}`;
         link.textContent = heading.textContent;
+        link.className = 'docs-toc-link';
         if (heading.tagName === 'H3') link.classList.add('toc-h3');
         toc.appendChild(link);
       });
