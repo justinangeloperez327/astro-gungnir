@@ -1,6 +1,6 @@
 ---
 title: "Models & Relationships"
-description: "Define convention-first models, query records, persist data, and work with explicit relationships and eager loading."
+description: "Use the implemented model conventions, ORM queries, relationships, eager loading, timestamps, and soft deletes."
 slug: "models"
 group: "ORM"
 groupOrder: 7
@@ -8,10 +8,7 @@ order: 1
 status: preview
 ---
 
-
-## Defining Models
-
-A Gungnir model receives ORM behavior automatically:
+## Defining a Model
 
 ~~~gungnir
 model User
@@ -23,11 +20,11 @@ model User
 }
 ~~~
 
-By convention, `User` maps to the `users` table and uses an incrementing integer `id` primary key. Timestamp attributes are enabled by default.
+A model receives ORM behavior through the Gungnir frontend.
+
+By convention, `User` maps to the `users` table, uses an incrementing integer `id`, and has timestamps enabled.
 
 ## Model Configuration
-
-Override conventions only when the application needs to:
 
 ~~~gungnir
 model AuditUser
@@ -41,40 +38,29 @@ model AuditUser
 }
 ~~~
 
-## Querying Models
+Framework-managed timestamp and soft-delete fields are not intended to be mass-assigned from arbitrary request input.
 
-Use model query methods to retrieve application records:
+## Querying
+
+Implemented application-language aliases include forms such as:
 
 ~~~gungnir
 const user = User::findOrFail(id);
 
-const users = User::where("active", true)
+const users = User::whereIn("id", ids)
     .orderBy("name")
+    .withTrashed()
     .get();
 ~~~
 
-Common expressive aliases include operations such as `findOrFail`, `whereIn`, `orderBy`, and soft-delete scopes.
-
-## Creating Records
-
-~~~gungnir
-const user = User::create({
-    "name": "Ada",
-    "email": "ada@example.com"
-});
-~~~
-
-Validated request data can be passed into model creation when the model's assignable fields match the validated payload.
+The language lowers expressive method names to the native ORM API.
 
 ## Relationships
-
-Define relationships directly on the model:
 
 ~~~gungnir
 model User
 {
     string name;
-    string email;
 
     posts()
     {
@@ -93,22 +79,25 @@ model User
 }
 ~~~
 
-Relationship foundations include `hasOne`, `hasMany`, `belongsTo`, `belongsToMany`, and through relationships.
+Implemented relationship shapes include:
 
-Conventional foreign keys, local keys, and pivot names are inferred where the relationship allows it. Explicit values can override the convention.
+- `hasOne`
+- `hasMany`
+- `belongsTo`
+- `belongsToMany`
+- has-one-through
+- has-many-through
 
 ## Eager Loading
 
-Load relationships explicitly when they will be used with a collection of parent records.
+The ORM supports explicit eager loading and batches relationship keys to avoid one query per parent.
 
-Gungnir intentionally avoids silently issuing hidden lazy-loading queries by default. Hidden relationship queries make N+1 behavior difficult to detect and reason about.
+Gungnir intentionally does **not** silently lazy-load an unloaded relationship by default. Accessing an unloaded relationship reports that it has not been loaded.
 
-## Many-to-Many Relationships
+## Many-to-Many Mutations
 
-Many-to-many relationships keep pivot metadata explicit. Attach, detach, and sync operations should be treated as database-backed relationship mutations, not merely in-memory collection changes.
+The native ORM includes parent-aware attach, detach, and transactional sync operations for relational many-to-many pivot tables.
 
-## Timestamps and Soft Deletes
+## Not Yet Supported
 
-Timestamp-enabled models maintain `created_at` and `updated_at` during persistence.
-
-Models configured with `softDeletes = true` gain soft-delete behavior and a `deleted_at` attribute. Framework-managed timestamp and soft-delete fields are not intended to be mass-assigned from arbitrary request input.
+Polymorphic relationships are not currently declared as supported.

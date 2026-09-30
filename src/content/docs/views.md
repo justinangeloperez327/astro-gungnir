@@ -1,6 +1,6 @@
 ---
 title: "Views"
-description: "Render server-side HTML templates with escaped interpolation, loops, nested values, models, and collections."
+description: "Render the current server-side template syntax with escaped output, loops, models, and collections."
 slug: "views"
 group: "The Basics"
 groupOrder: 3
@@ -8,10 +8,7 @@ order: 5
 status: preview
 ---
 
-
-## Creating a View Response
-
-Return a view from a controller with the `view` helper:
+## Returning a View
 
 ~~~gungnir
 Response index()
@@ -25,32 +22,28 @@ Response index()
 }
 ~~~
 
-View names resolve underneath the application's configured `views` directory.
+View names resolve beneath the configured view root.
 
-## Displaying Data
-
-Use double braces for escaped output:
+## Escaped Output
 
 ~~~html
 <h1>{{ title }}</h1>
 <p>{{ user.name }}</p>
 ~~~
 
-HTML escaping is enabled by default.
+Double braces HTML-escape values by default.
 
-## Raw HTML
+## Raw Output
 
-Triple braces render raw output:
+Triple braces render trusted raw HTML:
 
 ~~~html
 {{{ trustedHtml }}}
 ~~~
 
-Only use raw output for content you trust. User-controlled content should remain escaped.
+Do not use raw output for untrusted user input.
 
 ## Loops
-
-Use `#each` to iterate arrays or collections:
 
 ~~~html
 <ul>
@@ -60,21 +53,10 @@ Use `#each` to iterate arrays or collections:
 </ul>
 ~~~
 
-Inside the loop, each item becomes the current context. Nested object paths are also supported.
+Models and ORM collections can be passed into view data through the implemented model attribute contract.
 
-## Models and Collections
+## Current Template Scope
 
-Models can be passed directly to a view using their exposed attributes, and ORM collections become iterable view values. Controllers do not need a separate conversion layer just to display normal model data.
+The current view engine intentionally remains small. It does **not yet document layouts, includes, or reusable template components as implemented features**.
 
-~~~gungnir
-return view("users/show", {
-    "user": user,
-    "posts": posts
-});
-~~~
-
-## Template Safety
-
-View paths must stay under the configured view root. Absolute paths, parent traversal, and unsafe symlink resolution are rejected.
-
-Template rendering is tied to the active application/request context, including when request execution suspends and resumes through Gungnir's async runtime.
+View path traversal outside the configured view root is rejected, and normal interpolation is escaped by default.

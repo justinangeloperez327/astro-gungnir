@@ -1,6 +1,6 @@
 ---
 title: "Controllers"
-description: "Organize HTTP request handling into focused controller actions with dependency injection and explicit async behavior."
+description: "Write current Gungnir controller actions, receive requests, inject dependencies, and use explicit async actions."
 slug: "controllers"
 group: "The Basics"
 groupOrder: 3
@@ -8,10 +8,7 @@ order: 3
 status: preview
 ---
 
-
-## Writing Controllers
-
-A controller groups related HTTP actions:
+## Defining a Controller
 
 ~~~gungnir
 controller UserController
@@ -20,33 +17,28 @@ controller UserController
     {
         const users = User::all();
 
-        return view("users/index", {
-            "users": users
-        });
+        return json(users);
     }
 }
 ~~~
 
-Controller actions are application-facing actions by convention, so normal Gungnir source does not need C++ access-specifier boilerplate.
+The language frontend provides the native controller inheritance and public action plumbing.
 
-## Receiving the Request
+## Request Parameters
 
 An action may receive the current request:
 
 ~~~gungnir
-Response store(Request request)
+Response show(Request request)
 {
-    const name = request.input("name");
-
-    return response(name, 201);
+    const id = request.parameter("id");
+    return text(id);
 }
 ~~~
 
-Use the request object for input, headers, cookies, route parameters, sessions, authentication state, and validation.
+Current controller actions may accept no request argument or a request argument. Typed ORM model parameters are not yet automatically resolved.
 
 ## Dependency Injection
-
-Declare a container-managed dependency with `inject`:
 
 ~~~gungnir
 controller AuditController
@@ -55,42 +47,33 @@ controller AuditController
 
     Response index()
     {
-        logger.info("Audit page requested");
-
+        logger.info("Audit requested");
         return text("Audit");
     }
 }
 ~~~
 
-The controller itself does not need to manually construct its dependencies.
+The frontend generates a container-aware constructor for injected dependencies.
 
 ## Async Actions
 
-Use `async` and `await` for operations that genuinely suspend:
+Use `async` and `await` only for operations that genuinely suspend:
 
 ~~~gungnir
 controller ReportController
 {
     async Response show(Request request)
     {
-        const report = await fetchReport(request.parameter("id"));
-
-        return json(report);
+        const result = await fetchReport(request.parameter("id"));
+        return json(result);
     }
 }
 ~~~
 
-Gungnir keeps suspension explicit. Synchronous ORM or database operations remain synchronous until the underlying runtime provides a true asynchronous implementation.
+The language lowers this to the native Gungnir task/coroutine runtime.
 
-## Returning Responses
+Synchronous ORM and database operations remain synchronous until the underlying API supplies a real asynchronous implementation.
 
-Controller actions can return the standard response helpers:
+## Responses
 
-~~~gungnir
-return text("Created", 201);
-return json(user);
-return view("users/show", { "user": user });
-return response("Accepted", 202);
-~~~
-
-The framework exception handler covers common application failures such as validation, authentication, authorization, missing models, and unexpected server errors.
+Controller helpers currently cover text, JSON, views, HTML, downloads, redirects, no-content responses, and general responses.

@@ -1,6 +1,6 @@
 ---
 title: "Service Container"
-description: "Use Gungnir's inversion-of-control container to resolve application services and controller dependencies."
+description: "Use Gungnir's implemented transient, singleton, instance, and scoped dependency lifetimes."
 slug: "container"
 group: "Architecture Concepts"
 groupOrder: 2
@@ -8,14 +8,22 @@ order: 2
 status: preview
 ---
 
+The Gungnir container is the runtime dependency-resolution boundary.
 
-## Introduction
+## Lifetimes
 
-The service container manages object construction and service lifetimes. Controllers and middleware can depend on services without creating concrete implementations themselves.
+The container supports:
+
+- **transient** — a new value for each resolution;
+- **singleton** — one value reused by the container;
+- **instance** — an existing value registered directly;
+- **scoped** — one value reused inside an explicit request or operation scope.
+
+Resolving a scoped service outside an active scope is rejected.
 
 ## Controller Injection
 
-Declare a dependency with `inject`:
+Gungnir controller source can declare a dependency with `inject`:
 
 ~~~gungnir
 controller AuditController
@@ -25,35 +33,21 @@ controller AuditController
     Response index()
     {
         logger.info("Audit page requested");
-
         return text("Audit");
     }
 }
 ~~~
 
-The controller is resolved through the application container and its declared dependency is provided automatically.
+The frontend generates container-aware construction for the controller.
 
-## Service Lifetimes
+## Concrete Construction
 
-Gungnir supports several service lifetimes:
-
-- **Transient** — a new value is created for each resolution.
-- **Singleton** — one instance is created and reused.
-- **Scoped** — one instance is reused inside the current request or operation scope.
-- **Instance** — an existing value is registered directly.
-
-Scoped services are intended for request-owned or operation-owned state. Resolving a scoped service outside an active scope is rejected rather than silently changing its lifetime.
-
-## Interfaces and Implementations
-
-Application service contracts can be bound to implementations or factories. This allows controllers to depend on abstractions while the application decides which implementation is used.
-
-Bindings may also be replaced for testing or environment-specific behavior.
+Unregistered concrete services can be auto-constructed when they are default constructible or accept the container according to the native container contract.
 
 ## Circular Dependencies
 
-The container detects recursive dependency resolution and reports circular dependency graphs instead of recursing indefinitely.
+Recursive service graphs are detected and reported instead of recursing indefinitely.
 
-## Request Scopes
+## Request Scope
 
-HTTP request integration owns the request scope. Controllers should not manually start or stop request scopes; use scoped services and let the request lifecycle manage their lifetime.
+HTTP integration owns request scopes. Controllers and middleware should consume scoped dependencies rather than manually opening and closing request scopes.

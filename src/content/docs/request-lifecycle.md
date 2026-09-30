@@ -1,6 +1,6 @@
 ---
 title: "Request Lifecycle"
-description: "Understand how a Gungnir application boots and how an HTTP request moves through the framework."
+description: "See how application boot, middleware, routing, controller dispatch, and exception handling fit together."
 slug: "request-lifecycle"
 group: "Architecture Concepts"
 groupOrder: 2
@@ -8,71 +8,46 @@ order: 1
 status: preview
 ---
 
+## Application Lifecycle
 
-## Application Bootstrap
+A Gungnir application moves through explicit lifecycle phases: creation, registration, boot, ready, running, stopping, and stopped.
 
-A normal application begins with:
+A normal bootstrap begins with:
 
 ~~~gungnir
 app = Application::create();
 ~~~
 
-Application creation establishes the base path, loads environment and configuration values, prepares framework services, and makes the application container available before requests are served.
+Environment and configuration are loaded before the application begins serving requests. Providers and framework services participate in registration and boot before the application reaches the ready state.
 
-The high-level lifecycle is:
+## HTTP Request Flow
 
-~~~text
-create application
-→ load environment and configuration
-→ register services and providers
-→ boot framework services
-→ mark application ready
-→ run HTTP server
-→ stop and release resources
-~~~
-
-## Incoming Requests
-
-When an HTTP request arrives, Gungnir resolves it through the application request pipeline:
+At a high level:
 
 ~~~text
-HTTP request
+incoming request
+→ HTTP request parsing and limits
 → global middleware
-→ route matching
+→ route match
 → route middleware
 → controller resolution
 → controller action
-→ response
-→ exception / response handling
+→ response or exception
+→ HTTP serialization
 ~~~
 
-Route parameters and request-owned state are populated for the current request before the controller action runs.
-
-## Middleware
-
-Global middleware runs before middleware attached to an individual route. A middleware may:
-
-- inspect or modify the request;
-- stop the request and return a response immediately;
-- continue to the next middleware or controller;
-- perform response-side work after the downstream handler completes.
+Middleware may stop the request before controller dispatch by returning a response.
 
 ## Controller Resolution
 
-Controllers are resolved through the service container. This allows controller dependencies declared with `inject` to be resolved without manually constructing the controller inside the route definition.
+Controller instances are resolved through the application container. Declared controller dependencies can therefore use container construction instead of being manually created inside route files.
 
 ## Exceptions
 
-Exceptions raised by middleware or controllers pass through the framework exception handler. Common application failures map to HTTP responses such as:
+The framework exception layer maps common application failures such as validation, authentication, authorization, missing models, and HTTP exceptions to HTTP responses.
 
-| Failure | Default status |
-| --- | ---: |
-| Validation | 422 |
-| Authentication | 401 |
-| Authorization | 403 |
-| Model not found | 404 |
-| Unexpected server error | 500 |
+Unexpected exceptions become server errors without exposing internal exception messages by default.
 
 ## Shutdown
 
-When the application is asked to stop, the runtime stops accepting new work and coordinates shutdown with active requests and registered services. Production deployments should configure an appropriate graceful-shutdown deadline.
+Production shutdown is cooperative. The HTTP runtime stops accepting new work and gives already-dispatched requests time to finish according to the configured shutdown deadline.

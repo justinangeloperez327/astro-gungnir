@@ -1,6 +1,6 @@
 ---
 title: "Routing"
-description: "Define application endpoints, route parameters, controller actions, and middleware."
+description: "Define routes with the HTTP verbs, parameters, middleware, grouping, naming, and constraints implemented by the current router."
 slug: "routing"
 group: "The Basics"
 groupOrder: 3
@@ -8,19 +8,19 @@ order: 1
 status: preview
 ---
 
+## Basic Routes
 
-## Basic Routing
-
-Web routes are normally defined in `routes/web.gnr`.
+Routes map an HTTP method and path to a handler or controller action.
 
 ~~~gungnir
-Route::get("/", HomeController::index);
 Route::get("/users", UserController::index);
 Route::post("/users", UserController::store);
+Route::put("/users/{id}", UserController::update);
+Route::patch("/users/{id}", UserController::update);
 Route::delete("/users/{id}", UserController::destroy);
 ~~~
 
-A route maps an HTTP method and path to a controller action. Controllers are resolved through the application container when the route is dispatched.
+The router also supports `OPTIONS` and `HEAD`.
 
 ## Route Parameters
 
@@ -30,38 +30,50 @@ Dynamic path segments use braces:
 Route::get("/users/{id}", UserController::show);
 ~~~
 
-Read the matched value from the request:
+Read the matched parameter from the request:
 
 ~~~gungnir
 Response show(Request request)
 {
-    const id = request.parameter("id");
-
-    return json(User::findOrFail(id));
+    return text(request.parameter("id"));
 }
 ~~~
 
-Route parameters are request-owned and repopulated for each dispatch.
+Parameters are repopulated for each dispatch.
 
-## Route Middleware
+## Middleware
 
-Attach middleware to a route when the endpoint requires additional request processing:
+A route can attach middleware:
 
 ~~~gungnir
 Route::get("/dashboard", DashboardController::index)
     .middleware(AuthMiddleware);
 ~~~
 
-Global middleware executes before route middleware. A middleware may return a response immediately or continue the request to the next middleware/controller.
+Global middleware executes before route middleware.
 
-## Route Groups
+## Groups, Names, and Constraints
 
-Use route groups when several endpoints share a common concern such as a URL prefix or middleware set. Grouping keeps repeated route configuration in one place while leaving controller actions focused on application behavior.
+The runtime router supports:
 
-## Named Routes
+- route groups with shared path prefixes and middleware;
+- named routes;
+- reverse URL generation;
+- regular-expression parameter constraints;
+- numeric parameter constraints;
+- UUID parameter constraints;
+- fallback handlers.
 
-Named routes provide stable application-level identifiers for URLs. Prefer a route name when code should refer to a destination without depending on the route's literal path.
+These capabilities are part of the router API. Not every convenience has dedicated Gungnir source-language sugar yet, so native runtime calls may still appear in advanced route configuration.
 
-## Controllers and Routes
+## Route-Model Binding
 
-Keep route declarations small. If a route begins accumulating input handling, database access, or business rules, move that logic into a controller or application service and keep the route responsible only for dispatch configuration.
+A binding registry exists as the foundation for typed route binding.
+
+Automatic ORM-backed controller parameters such as:
+
+~~~text
+show(User user)
+~~~
+
+are **not yet a completed feature**. Use the route parameter and perform the model lookup explicitly until typed model-binding semantics are finished.

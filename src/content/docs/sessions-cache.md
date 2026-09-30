@@ -1,6 +1,6 @@
 ---
 title: "Sessions & Cache"
-description: "Store request-associated session state and cache application values behind explicit storage adapters."
+description: "Use the implemented session and cache runtime while keeping optional Redis behavior explicit."
 slug: "sessions-cache"
 group: "The Basics"
 groupOrder: 3
@@ -8,12 +8,11 @@ order: 7
 status: preview
 ---
 
-
 ## Sessions
 
-Gungnir sessions are server-side values identified by an opaque session cookie. Attach session middleware before application code that needs session state.
+Gungnir sessions are server-side values identified by an opaque cookie.
 
-Application code reads and writes through the request:
+Once session middleware is attached, controller code can access the request-owned session:
 
 ~~~gungnir
 request.session().put("user_id", "42");
@@ -21,46 +20,34 @@ request.session().put("user_id", "42");
 const userId = request.session().get("user_id");
 ~~~
 
-## Session Regeneration
-
-Regenerate the session identifier after authentication or privilege changes:
+Use session ID regeneration after authentication or privilege changes:
 
 ~~~gungnir
 request.session().regenerate();
 ~~~
 
-Use invalidation for logout or a full session reset:
+Use invalidation for a full session reset:
 
 ~~~gungnir
 request.session().invalidate();
 ~~~
 
-The default session cookie is HTTP-only, secure, and uses `SameSite=Lax`. Local plain-HTTP development may disable the secure flag; production deployments should keep secure cookies enabled.
+The default session cookie is HTTP-only, secure, uses `SameSite=Lax`, and is named `gungnir_session`.
+
+For local plain HTTP development, the secure-cookie option has to be disabled explicitly.
 
 ## Session Storage
 
-The in-memory session store is useful for tests, local development, and ephemeral single-process applications.
+`MemoryStore` is implemented for tests, local development, and single-process ephemeral applications.
 
-When Redis support is enabled, a Redis-backed session store can be used for multi-process deployments and server-side expiry.
+A real Redis-backed session store is available when Gungnir is built with Redis support. Redis is optional and requires the corresponding build dependency.
 
 ## Cache
 
-The cache repository exposes common cache operations independently of the selected storage adapter.
+The cache runtime separates the repository API from storage adapters.
 
-A typical read-through operation uses `remember`:
+The built-in memory cache supports expiration and read-through `remember()` behavior. An optional hiredis-backed Redis cache store is also implemented.
 
-~~~cpp
-auto value = cache.remember(
-    "users.count",
-    std::chrono::seconds{60},
-    [] { return load_user_count(); }
-);
-~~~
+The current Redis adapter does not claim Redis Cluster routing, TLS transport, Sentinel discovery, connection pooling, or asynchronous hiredis execution.
 
-Cache entries may be stored with or without expiration.
-
-## Cache Storage
-
-The built-in memory adapter is appropriate for tests and local or single-process workloads. Optional Redis support provides a concrete distributed cache backend.
-
-Serialization of structured application values should remain explicit rather than hiding arbitrary object memory behind the cache interface.
+Memcached and database-backed cache adapters are not currently supplied.

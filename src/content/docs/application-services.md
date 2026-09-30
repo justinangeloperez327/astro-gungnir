@@ -1,6 +1,6 @@
 ---
-title: "Events, Queues & Mail"
-description: "Coordinate application events, background work, scheduled tasks, mail, and notification delivery through explicit service boundaries."
+title: "Events, Queues, Mail & Scheduling"
+description: "Understand the runtime services that exist today and which of them still lack a complete dedicated .gnr workflow."
 slug: "application-services"
 group: "Digging Deeper"
 groupOrder: 4
@@ -8,48 +8,50 @@ order: 1
 status: preview
 ---
 
+These subsystems are implemented primarily as **native runtime APIs** today. Do not assume that every runtime type has a finished first-class `.gnr` declaration, generator, or application convention.
 
 ## Events
 
-Events allow one part of the application to announce that something has happened without directly calling every interested component.
+The event dispatcher provides synchronous in-process application events.
 
-Gungnir's application event dispatcher is synchronous and in-process. Listeners run on the caller's execution path, and listener exceptions are not silently swallowed.
+Listeners execute on the caller's path, in priority order, and exceptions are not swallowed.
 
-Use events for immediate application reactions. Use a queue when work should happen later or outside the request path.
+The event subsystem does not pretend synchronous dispatch is background work. Work that must happen later belongs on a queue.
 
-## Queues and Jobs
+## Queues
 
-Queued work is represented by an explicit envelope containing a stable job name, serialized payload, identifier, and retry metadata.
+The queue runtime defines job envelopes, drivers, workers, retries, acknowledgement, release, and failure handling.
 
-A queue driver defines the lifecycle operations needed to push, reserve/pop, acknowledge, release, and fail jobs.
+`MemoryDriver` is for development and tests.
 
-The important application rule is to serialize stable job data rather than trying to persist arbitrary C++ object memory.
+An optional Redis queue driver is implemented with visibility leases, delayed jobs, expired-lease recovery, stale-reservation protection, lease renewal, retries, and failed-job retention.
+
+The current CLI still rejects:
+
+~~~text
+gungnir make:job
+~~~
+
+because queue-job source-language lowering is not complete.
 
 ## Mail
 
-Mail separates message construction from message delivery.
+The mail runtime separates message construction from delivery.
 
-~~~cpp
-mail::Message message;
-message.to("user@example.com");
-message.subject("Welcome");
-message.text("Your account is ready.");
-~~~
+`MemoryTransport` is available for tests.
 
-A configured transport owns SMTP or provider-specific behavior such as TLS, credentials, timeouts, provider errors, and retry policy.
-
-Development/test transports should not be treated as production delivery infrastructure.
+A real optional libcurl-backed SMTP transport is implemented when SMTP support is enabled. It supports STARTTLS, implicit TLS, and explicitly unsecured local/test relay mode. Attachments and DKIM are not currently implemented.
 
 ## Notifications
 
-Notifications declare a stable notification and the channels through which it should be delivered. Concrete channels implement the provider behavior for mail, SMS, push, chat, or another delivery mechanism.
+A notification manager and channel boundary exist in the runtime. Concrete SMS, push, chat, or provider behavior must be supplied by explicit adapters.
 
-Provider credentials should remain at the transport/channel boundary rather than inside notification payloads.
+## Scheduler
 
-## Deferred Delivery
+The scheduler supports interval tasks, five-field cron expressions, UTC/fixed-offset/recurring timezone behavior, long-running execution, cancellation, and explicit locking policies.
 
-When mail or a notification should be delivered later, place a stable job payload on a queue instead of making a synchronous transport pretend to be asynchronous.
+A Redis-backed distributed lock store is available when Redis support is enabled.
 
-## Scheduling
+## Application-Language Boundary
 
-The scheduler is intended for recurring application work. Keep scheduled tasks explicit and operationally observable, and coordinate scheduler shutdown with the rest of the application runtime in production.
+Until dedicated lowering is complete, this documentation does not present `event`, `listener`, `notification`, `mail`, or queued-job declarations as a complete normal `.gnr` application workflow.

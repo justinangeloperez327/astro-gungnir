@@ -1,6 +1,6 @@
 ---
 title: "Introduction"
-description: "Gungnir is an expressive web framework built in C++ for building structured web applications with clear conventions."
+description: "Build web applications with Gungnir's current C++23 runtime and .gnr application syntax."
 slug: ""
 group: "Getting Started"
 groupOrder: 1
@@ -8,106 +8,49 @@ order: 1
 status: preview
 ---
 
+Gungnir is an **experimental C++23 web framework and source-language toolchain**. Application code can use `.gnr` syntax for the framework areas that have language support, while the runtime remains native C++.
 
-## Start Building
+The current repository version is **0.1.0**. The public API is pre-stable, so applications should pin the exact Gungnir version or commit they have validated.
 
-The shortest path from a new project to an application endpoint is:
+> This documentation describes capabilities that are implemented in the current framework. Features that only have foundations, optional adapters, or incomplete application-language support are identified explicitly.
 
-~~~text
-Install Gungnir
-→ create the application
-→ define a route
-→ create a controller
-→ add a model when data is needed
-~~~
+## What You Can Use Today
 
-If you are new to Gungnir, read [Installation](/docs/getting-started/), [Configuration](/docs/configuration/), and [Directory Structure](/docs/project-structure/) in order.
+The current application-facing path includes:
 
-If you already know a convention-first web framework, start with [Routing](/docs/routing/), [Controllers](/docs/controllers/), and [Models & Relationships](/docs/models/) to learn the Gungnir vocabulary quickly.
+- project creation, build, run, and development commands;
+- routes and controller actions;
+- synchronous and asynchronous controller actions;
+- middleware and middleware short-circuiting;
+- request input, headers, cookies, route parameters, and JSON;
+- response, text, JSON, view, redirect, download, and no-content responses;
+- request validation with the implemented core rule set;
+- server-rendered views with escaped interpolation and loops;
+- models, ORM queries, timestamps, soft deletes, relationships, and eager loading;
+- migrations and migration execution commands;
+- database contracts plus optional PostgreSQL, MySQL/MariaDB, SQL Server, and MongoDB adapters;
+- sessions, authentication, authorization, cache, events, queues, mail, scheduling, testing, and production runtime APIs.
 
-## Meet Gungnir
+Some of the last group currently use the **native C++ runtime API** rather than a complete dedicated `.gnr` declaration or generator workflow.
 
-Gungnir provides the structure most web applications need without making application code revolve around low-level framework plumbing. Routes, controllers, middleware, validation, models, views, authentication, queues, mail, and other application services follow a consistent set of conventions.
-
-Application source uses the `.gnr` format. The framework keeps native C++ interoperability available while giving normal application code a more focused syntax.
-
-> Gungnir is currently under active development. Pin the framework version or commit that your application has been validated against.
-
-## Why Gungnir?
-
-Gungnir is designed around a few practical goals:
-
-- **Expressive application code** — common web concepts should read like web concepts.
-- **Convention first** — predictable defaults reduce repetitive configuration.
-- **Native performance** — applications ultimately run as native C++ programs.
-- **Explicit behavior** — asynchronous work, database queries, authorization, and external services should not be hidden behind surprising runtime behavior.
-- **Complete application structure** — the framework covers the HTTP layer, data access, views, security, background work, testing, and production concerns.
-
-## Create an Application
-
-Once the Gungnir CLI is installed, create and run an application with:
-
-~~~text
-gungnir new my-app
-cd my-app
-gungnir run
-~~~
-
-A new project follows the normal Gungnir structure:
-
-~~~text
-my-app/
-├── app/
-│   ├── controllers/
-│   ├── middleware/
-│   └── models/
-├── config/
-├── database/
-│   └── migrations/
-├── routes/
-│   └── web.gnr
-├── views/
-├── .env
-└── .gungnir-project
-~~~
-
-## A Small Example
-
-Define a route:
+## A Small Application
 
 ~~~gungnir
-Route::get("/users", UserController::index);
-~~~
-
-Create a controller:
-
-~~~gungnir
-controller UserController
+controller HomeController
 {
     Response index()
     {
-        const users = User::all();
-
-        return view("users/index", {
-            "users": users
+        return view("welcome", {
+            "title": "Gungnir"
         });
     }
 }
+
+Route::get("/", HomeController::index);
 ~~~
 
-Create a model:
+A normal project keeps routes, controllers, models, middleware, migrations, and views in their conventional directories.
 
-~~~gungnir
-model User
-{
-    string name;
-    string email;
-    bool active = true;
-}
-~~~
+## Recommended Reading
 
-This is the style the rest of the documentation uses: application conventions first, implementation details only where they affect how you build or deploy the application.
-
-## Where to Go Next
-
-Start with [Installation](/docs/getting-started/) and [Configuration](/docs/configuration/), then read [Directory Structure](/docs/project-structure/). After that, the HTTP workflow normally starts with [Routing](/docs/routing/), [Controllers](/docs/controllers/), and [Requests & Responses](/docs/requests-responses/).
+Start with [Installation](/docs/getting-started/), then read [Current Status](/docs/status/) before relying on a feature in production. Continue through [Routing](/docs/routing/), [Controllers](/docs/controllers/), and [Models & Relationships](/docs/models/).

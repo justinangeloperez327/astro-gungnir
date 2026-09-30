@@ -1,6 +1,6 @@
 ---
 title: "Installation"
-description: "Install Gungnir, create a new application, and run your first route."
+description: "Install Gungnir, create a project, and run the current framework toolchain."
 slug: "getting-started"
 group: "Getting Started"
 groupOrder: 1
@@ -8,22 +8,19 @@ order: 2
 status: preview
 ---
 
-
 ## Requirements
 
-A Gungnir development environment requires:
+Gungnir currently requires:
 
-- a C++23-capable compiler;
-- CMake 3.25 or newer;
-- the Gungnir framework and `gungnir` command-line tool.
+- a **C++23-capable compiler**;
+- **CMake 3.25 or newer**;
+- an installed Gungnir package that provides the runtime and command-line tools.
 
-Gungnir applications use `.gnr` files for normal application code while retaining interoperability with native C++ where needed.
+Optional database, Redis, SMTP, TLS, and other adapters have their own native-library requirements and are not part of the minimal core build.
 
-> Gungnir is under active development. Pin the framework version or commit your application has been validated against.
+## Create an Application
 
-## Creating an Application
-
-Create a new application from the command line:
+Use the framework CLI:
 
 ~~~text
 gungnir new my-app
@@ -31,63 +28,30 @@ cd my-app
 gungnir run
 ~~~
 
-The `new` command creates the conventional application structure and `run` builds and starts the application from the project root.
+The CLI creates the conventional application directories, a local environment file, a starter route, controller, and view.
 
-## Your First Route
+## Build
 
-Open `routes/web.gnr` and register a route:
-
-~~~gungnir
-Route::get("/", HomeController::index);
-~~~
-
-Create the controller in `app/controllers/`:
-
-~~~gungnir
-controller HomeController
-{
-    Response index()
-    {
-        return text("Hello from Gungnir");
-    }
-}
-~~~
-
-Run the application again:
-
-~~~text
-gungnir run
-~~~
-
-## Generating Application Classes
-
-The CLI can generate common application types:
-
-~~~text
-gungnir make:model User
-gungnir make:controller UserController
-gungnir make:middleware AuthMiddleware
-gungnir make:migration create_users_table
-~~~
-
-Generated files follow Gungnir's standard directories so application code stays predictable as the project grows.
-
-## Building an Application
-
-Create a development build with:
+Create a development build:
 
 ~~~text
 gungnir build
 ~~~
 
-For a release build:
+Create a release build:
 
 ~~~text
 gungnir build --release
 ~~~
 
-Framework-managed generated build files live under `.gungnir/`. Treat that directory as build output rather than application source.
+Framework-generated native files and build output live under `.gungnir/`. Treat that directory as generated output rather than application source.
 
-## Next Steps
+## Development Command
 
-Continue with [Configuration](/docs/configuration/) and [Directory Structure](/docs/project-structure/), then move into [Routing](/docs/routing/) and [Controllers](/docs/controllers/).
+The project-aware CLI also exposes:
+
+~~~text
+gungnir dev
+~~~
+
+Gungnir is still pre-stable. Before upgrading the framework, validate the application against the exact version or commit you intend to deploy.

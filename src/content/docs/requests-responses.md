@@ -1,6 +1,6 @@
 ---
 title: "Requests & Responses"
-description: "Read HTTP input through the Request API and return text, JSON, views, or custom status responses."
+description: "Read implemented request inputs and return the response types currently supported by Gungnir."
 slug: "requests-responses"
 group: "The Basics"
 groupOrder: 3
@@ -8,10 +8,9 @@ order: 4
 status: preview
 ---
 
-
 ## Request Input
 
-The request object keeps query strings, form bodies, JSON, cookies, headers, and route parameters behind a compact application-facing API.
+The request API exposes route parameters, query input, URL-encoded form input, JSON bodies, cookies, normalized headers, and common HTTP metadata.
 
 ~~~gungnir
 Response store(Request request)
@@ -28,26 +27,18 @@ Response store(Request request)
 }
 ~~~
 
-When using flat input helpers, body input takes precedence over query input.
+Body input takes precedence over query input in the flat input helpers.
 
-## Selecting Input
-
-Use selection helpers to make the controller's expected input explicit:
-
-~~~gungnir
-const all = request.all();
-const selected = request.only(["name", "email"]);
-const filtered = request.except(["password"]);
-~~~
-
-Use `request.json()` when nested JSON data needs to retain its typed structure.
+Use `request.json()` when nested JSON structure must remain typed.
 
 ## Headers and Cookies
 
 ~~~gungnir
-const token = request.header("authorization");
+const authorization = request.header("authorization");
 const theme = request.cookie("theme");
 ~~~
+
+The native request API also exposes content type, host, user agent, bearer authorization metadata, and content negotiation.
 
 ## Route Parameters
 
@@ -55,47 +46,23 @@ const theme = request.cookie("theme");
 const id = request.parameter("id");
 ~~~
 
-Route parameters come from the path matched by the router.
+## Responses
 
-## JSON Responses
-
-The JSON response helper can serialize common application values, including models and ORM collections:
-
-~~~gungnir
-return json(user);
-return json(users, 200);
-~~~
-
-## Text and Generic Responses
+Common response forms include:
 
 ~~~gungnir
 return text("Created", 201);
-return response("Accepted", 202);
+return json(user);
+return view("users/show", { "user": user });
 return response("", 204);
 ~~~
 
-## View Responses
+The native response API also supports HTML, redirects, downloads, and response cookies.
 
-For server-rendered HTML:
+## File Upload Boundary
 
-~~~gungnir
-return view("users/show", {
-    "user": user
-});
-~~~
+Multipart uploaded-file parsing is not documented as a completed high-level Request workflow yet. Upload parsing and filesystem persistence remain separate concerns.
 
-See [Views](/docs/views/) for template syntax and escaping behavior.
+## Error Responses
 
-## Exceptions and Error Responses
-
-Common framework exceptions have default HTTP mappings:
-
-| Failure | Default status |
-| --- | ---: |
-| Validation | 422 |
-| Authentication | 401 |
-| Authorization | 403 |
-| Model not found | 404 |
-| Unexpected server error | 500 |
-
-Requests that prefer JSON receive a JSON error representation from the framework exception layer.
+Framework exceptions are handled centrally. Common defaults include validation `422`, authentication `401`, authorization `403`, missing model `404`, and unexpected server error `500`.

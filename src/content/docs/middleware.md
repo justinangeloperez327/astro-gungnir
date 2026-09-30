@@ -1,6 +1,6 @@
 ---
 title: "Middleware"
-description: "Filter and transform requests before they reach a controller, or perform work around the downstream response."
+description: "Use the implemented asynchronous middleware pipeline and understand which registration conveniences currently remain runtime configuration."
 slug: "middleware"
 group: "The Basics"
 groupOrder: 3
@@ -8,17 +8,16 @@ order: 2
 status: preview
 ---
 
-
 ## Defining Middleware
 
-Middleware participates in the HTTP request pipeline before controller dispatch.
+Gungnir middleware can run before and after downstream request handling.
 
 ~~~gungnir
 middleware AuthMiddleware
 {
     async Response handle(Request request, Next next)
     {
-        if (!request.authenticated()) {
+        if (request.header("authorization").empty()) {
             return text("Unauthorized", 401);
         }
 
@@ -27,47 +26,24 @@ middleware AuthMiddleware
 }
 ~~~
 
-Middleware is resolved through the application container, so its dependencies can use the same injection model as controllers.
+Middleware that calls the downstream pipeline is asynchronous because the next middleware or controller may suspend.
 
-## Attaching Middleware
+## Short-Circuiting
 
-Attach middleware to an individual route:
+Returning a response without calling `next` stops the pipeline.
 
-~~~gungnir
-Route::get("/dashboard", DashboardController::index)
-    .middleware(AuthMiddleware);
-~~~
+This is the normal pattern for authentication checks, authorization checks, request limits, host validation, CSRF protection, and similar guards.
 
-Application-level middleware can also be registered globally when every request should pass through it.
+## Container Resolution
 
-## Short-Circuiting Requests
+Middleware instances are resolved through the application container. Dependencies should therefore be container-managed rather than manually constructed inside route files.
 
-Middleware does not have to call `next`. Returning a response immediately stops the pipeline:
+## Aliases and Groups
 
-~~~gungnir
-if (request.header("authorization").empty()) {
-    return text("Unauthorized", 401);
-}
-~~~
+The runtime owns a middleware registry that supports aliases, groups, and priority ordering.
 
-This pattern is appropriate for authentication, authorization checks, request limits, host validation, CSRF enforcement, rate limiting, and similar guards.
+Those are currently application/runtime configuration APIs. They should not be confused with dedicated source-language syntax.
 
-## Continuing the Pipeline
+## Terminable Middleware
 
-When a middleware allows the request to continue, call and await the downstream handler:
-
-~~~gungnir
-return await next(request);
-~~~
-
-The continuation is asynchronous because later middleware or the controller may suspend.
-
-## Middleware Aliases and Groups
-
-Reusable middleware may be registered under aliases and composed into groups. A browser-oriented group, for example, can combine sessions, CSRF protection, and authentication in one standard stack.
-
-A priority order may be configured where middleware ordering is important.
-
-## Request-Scoped Dependencies
-
-Request-scoped dependencies are owned by the request lifecycle. Middleware should resolve scoped services through the container rather than manually starting or ending container scopes.
+A native `TerminableMiddleware` contract exists for work that belongs after response completion. Its execution belongs to the server/request lifecycle rather than ordinary controller code.

@@ -1,6 +1,6 @@
 ---
 title: "Validation"
-description: "Validate incoming request data with concise rule declarations before passing it to application or model code."
+description: "Validate request data using the rule set implemented by the current validator."
 slug: "validation"
 group: "The Basics"
 groupOrder: 3
@@ -8,10 +8,7 @@ order: 6
 status: preview
 ---
 
-
 ## Validating a Request
-
-Validate request input directly in the controller:
 
 ~~~gungnir
 Response store(Request request)
@@ -22,17 +19,15 @@ Response store(Request request)
         "age": "nullable|integer|min:18"
     });
 
-    const user = User::create(data);
-
-    return json(user, 201);
+    return json(data);
 }
 ~~~
 
-Successful validation returns the fields declared by the validation rules.
+Successful validation returns the fields declared by the rule set.
 
-## Available Rules
+## Implemented Rules
 
-The core validation rules include:
+The current core rule set includes:
 
 - `required`
 - `present`
@@ -44,27 +39,32 @@ The core validation rules include:
 - `boolean`
 - `email`
 - `accepted`
+- `length`
 - `min`
 - `max`
-- `length`
 - `in`
 - `same`
 - `confirmed`
 
-## Validation Failures
+## Check Without Throwing
 
-`request.validate()` uses the exception-oriented flow. A failed validation raises the framework validation exception and is mapped to HTTP `422` by default.
+The native validation layer exposes both result-oriented checking and exception-oriented validation.
 
-## Checking Without Throwing
+`Request::check` returns validation results without throwing. `Request::validate` uses the exception flow.
 
-The validation subsystem also provides a result-oriented check flow for code that wants to inspect validation errors without using exceptions.
+## Validation Failure
 
-Use the exception flow for normal HTTP request validation and the result flow when the caller needs direct control over error handling.
+A request validation exception maps to HTTP `422` by default.
 
-## Dedicated Validation Requests
+## Not Yet Implemented
 
-As validation grows, move repeated rule sets into validation-oriented request classes. This keeps controllers focused on application actions instead of duplicating long rule declarations.
+Database-backed validation rules such as:
 
-## Database-Aware Validation
+~~~text
+unique
+exists
+~~~
 
-Database-backed rules should use the shared database abstraction rather than issuing ad-hoc SQL from the HTTP layer. Treat backend-dependent validation as database integration, not as a special case hidden inside the basic validator.
+are **not currently implemented**.
+
+A native `ValidatedRequest` foundation exists, but the `make:request` CLI generator is intentionally unavailable until source-language lowering for dedicated request classes is complete.

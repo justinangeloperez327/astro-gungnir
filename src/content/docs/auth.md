@@ -1,6 +1,6 @@
 ---
 title: "Authentication & Authorization"
-description: "Establish the request identity, manage session-backed authentication, protect browser requests, and enforce application abilities."
+description: "Use Gungnir's implemented request identity, session authentication, guards, and authorization decision APIs without assuming missing token or password features."
 slug: "auth"
 group: "Security"
 groupOrder: 5
@@ -8,16 +8,11 @@ order: 1
 status: preview
 ---
 
+## Authentication State
 
-## Authentication and Authorization
+Authentication establishes the identity associated with the current request.
 
-Authentication determines **who** is making the request. Authorization determines **what** that identity may do.
-
-Gungnir keeps those responsibilities separate.
-
-## Request Authentication
-
-Once authentication middleware establishes an identity, controller code can read it from the request:
+After authentication middleware has resolved an identity:
 
 ~~~gungnir
 Response profile(Request request)
@@ -32,57 +27,37 @@ Response profile(Request request)
 }
 ~~~
 
-Authentication state belongs to the request execution context rather than global state.
+Authentication state belongs to the request execution context rather than process-global state.
 
 ## Guards
 
-A guard resolves an application credential into an identity. The credential may come from a session, opaque token, signed token, or another application-specific authentication scheme.
+The native authentication manager supports named guards. A guard resolves an application credential into an identity.
 
-The core authentication API deliberately does not assume one credential format for every application.
+The core does not assume whether that credential is a session identifier, opaque API token, signed token, or another application-specific mechanism.
 
 ## Session Authentication
 
-For browser applications, register middleware in the order required by the request lifecycle:
+Cookie-authenticated browser applications can compose:
 
 ~~~text
 session middleware
 → CSRF middleware
 → session authentication
-→ application routes
+→ application route
 ~~~
 
-Session authentication stores only the stable identity identifier. The current identity can then be resolved again on each request so roles and attributes do not become permanently stale inside the session.
+Only the stable identity ID is stored in session state. The identity resolver runs again on authenticated requests so roles and attributes do not become permanently stale inside the session.
 
-## Login and Logout
+## Authorization
 
-Login and logout update the request authentication context. Session-backed authentication rotates the session identifier when authentication state changes.
+The authorization runtime uses named abilities and explicit allow/deny decisions. Undefined abilities are denied by default.
 
-Use a full session invalidation when logout should also clear unrelated session data.
-
-## CSRF Protection
-
-State-changing browser routes using session authentication should use CSRF protection. The CSRF token is tied to the session lifecycle and rotates when the session identity is regenerated or invalidated.
-
-## Authorization Abilities
-
-Authorization policies return an explicit decision:
-
-~~~cpp
-auth::Authorization authorization;
-
-authorization.define("posts.update", [](const auth::Identity& user) {
-    return user.role("editor")
-        ? auth::Decision::allow()
-        : auth::Decision::deny("Editor role required");
-});
-~~~
-
-Undefined abilities are denied by default.
-
-## Policies
-
-Keep resource-specific permission rules in policies or explicit ability registrations rather than scattering role checks throughout controllers.
+Resource-specific authorization should be implemented through explicit policies or ability registration rather than implicit runtime type-name magic.
 
 ## Passwords
 
-Use a vetted password hashing backend such as Argon2id or bcrypt. A generic cryptographic hash is not a password-storage strategy, and Gungnir does not provide a home-grown password hashing algorithm.
+Gungnir does **not** provide a home-grown password hashing algorithm. Applications should use a vetted password-hashing backend such as Argon2id or bcrypt.
+
+## Token Boundary
+
+Complete token issuance, revocation, storage, expiry, rotation, and hashing are **not supplied as a finished authentication product** by the current core.
