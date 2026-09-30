@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Database & Migrations
-description: Configure database connectivity and evolve application storage with explicit, backend-aware migrations.
+title: "Database & Migrations"
+description: "Configure database connectivity and evolve application storage with explicit, backend-aware migrations."
+slug: "database"
+group: "Database"
+groupOrder: 6
+order: 1
+status: preview
 ---
+
 
 ## Configuration
 

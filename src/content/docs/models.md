@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Models & Relationships
-description: Define convention-first models, query records, persist data, and work with explicit relationships and eager loading.
+title: "Models & Relationships"
+description: "Define convention-first models, query records, persist data, and work with explicit relationships and eager loading."
+slug: "models"
+group: "ORM"
+groupOrder: 7
+order: 1
+status: preview
 ---
+
 
 ## Defining Models
 

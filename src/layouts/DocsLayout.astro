@@ -1,207 +1,71 @@
 ---
+import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
+import DocsSidebar from '../components/docs/DocsSidebar.astro';
+import DocsToc from '../components/docs/DocsToc.astro';
+import MobileDocsNav from '../components/docs/MobileDocsNav.astro';
+import PrevNext from '../components/docs/PrevNext.astro';
+import CodeEnhancer from '../components/docs/CodeEnhancer.astro';
 
-const { frontmatter } = Astro.props;
-const currentPath = Astro.url.pathname;
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
 
-const groups = [
-  {
-    label: 'Getting Started',
-    items: [
-      ['Introduction', '/docs/'],
-      ['Installation', '/docs/getting-started/'],
-      ['Configuration', '/docs/configuration/'],
-      ['Directory Structure', '/docs/project-structure/'],
-    ],
-  },
-  {
-    label: 'Architecture Concepts',
-    items: [
-      ['Request Lifecycle', '/docs/request-lifecycle/'],
-      ['Service Container', '/docs/container/'],
-    ],
-  },
-  {
-    label: 'The Basics',
-    items: [
-      ['Routing', '/docs/routing/'],
-      ['Middleware', '/docs/middleware/'],
-      ['Controllers', '/docs/controllers/'],
-      ['Requests & Responses', '/docs/requests-responses/'],
-      ['Views', '/docs/views/'],
-      ['Validation', '/docs/validation/'],
-      ['Sessions & Cache', '/docs/sessions-cache/'],
-    ],
-  },
-  {
-    label: 'Digging Deeper',
-    items: [
-      ['Events, Queues & Mail', '/docs/application-services/'],
-    ],
-  },
-  {
-    label: 'Security',
-    items: [
-      ['Authentication & Authorization', '/docs/auth/'],
-    ],
-  },
-  {
-    label: 'Database',
-    items: [
-      ['Database & Migrations', '/docs/database/'],
-    ],
-  },
-  {
-    label: 'ORM',
-    items: [
-      ['Models & Relationships', '/docs/models/'],
-    ],
-  },
-  {
-    label: 'Testing & Deployment',
-    items: [
-      ['Testing & Production', '/docs/testing-production/'],
-    ],
-  },
-];
+interface Props {
+  entry: CollectionEntry<'docs'>;
+  docs: CollectionEntry<'docs'>[];
+  headings: Heading[];
+  previous?: CollectionEntry<'docs'> | null;
+  next?: CollectionEntry<'docs'> | null;
+}
 
-const navLinkClass = (href: string) =>
-  currentPath === href
-    ? 'flex min-h-9 items-center rounded-lg bg-gungnir-blue/10 px-3 text-[13px] font-semibold text-gungnir-blue'
-    : 'flex min-h-9 items-center rounded-lg px-3 text-[13px] font-medium text-gungnir-muted transition hover:bg-gungnir-silver-soft hover:text-gungnir-ink';
+const { entry, docs, headings, previous, next } = Astro.props;
 ---
 
-<BaseLayout title={frontmatter.title} description={frontmatter.description} docs={true}>
+<BaseLayout title={entry.data.title} description={entry.data.description} docs={true}>
   <div class="bg-white">
-    <div class="mx-auto grid w-full max-w-[1536px] grid-cols-1 gap-0 px-4 sm:px-6 lg:grid-cols-[240px_minmax(0,760px)] lg:gap-12 lg:px-8 xl:grid-cols-[240px_minmax(0,780px)_200px] xl:gap-14 2xl:gap-16">
-      <aside class="sticky top-20 hidden max-h-[calc(100vh-6rem)] overflow-y-auto py-8 pr-3 lg:block" aria-label="Documentation navigation" data-doc-nav>
-        <p class="hidden rounded-lg border border-gungnir-line bg-gungnir-silver-soft px-3 py-2 text-xs text-gungnir-muted" data-empty-search>
-          No matching documentation page.
-        </p>
-
-        <div class="space-y-7">
-          {groups.map((group) => (
-            <section data-nav-group>
-              <h2 class="mb-2 px-3 text-[11px] font-bold uppercase tracking-[0.14em] text-gungnir-muted/75">{group.label}</h2>
-              <nav class="space-y-0.5">
-                {group.items.map(([label, href]) => (
-                  <a class={navLinkClass(href)} href={href} data-nav-link aria-current={currentPath === href ? 'page' : undefined}>
-                    {label}
-                  </a>
-                ))}
-              </nav>
-            </section>
-          ))}
-        </div>
+    <div class="mx-auto grid w-full max-w-[1536px] grid-cols-1 px-4 sm:px-6 lg:grid-cols-[248px_minmax(0,760px)] lg:gap-12 lg:px-8 xl:grid-cols-[248px_minmax(0,780px)_200px] xl:gap-14 2xl:gap-16">
+      <aside class="sticky top-20 hidden max-h-[calc(100vh-6rem)] overflow-y-auto py-9 pr-3 lg:block">
+        <DocsSidebar docs={docs} currentSlug={entry.data.slug} />
       </aside>
 
       <main id="main-content" class="min-w-0 py-8 sm:py-10 lg:py-12">
-        <details class="group mb-7 rounded-xl border border-gungnir-line bg-gungnir-silver-soft/70 lg:hidden">
-          <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 px-4 text-sm font-semibold text-gungnir-ink">
-            <span>Browse documentation</span>
-            <svg class="h-4 w-4 text-gungnir-muted transition group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path d="m6 9 6 6 6-6"></path>
-            </svg>
-          </summary>
-          <div class="border-t border-gungnir-line bg-white p-3">
-            <nav class="grid gap-5 sm:grid-cols-2">
-              {groups.map((group) => (
-                <section>
-                  <h2 class="mb-1.5 px-2 text-[10px] font-bold uppercase tracking-[0.13em] text-gungnir-muted/75">{group.label}</h2>
-                  <div class="space-y-0.5">
-                    {group.items.map(([label, href]) => (
-                      <a class={navLinkClass(href)} href={href} aria-current={currentPath === href ? 'page' : undefined}>
-                        {label}
-                      </a>
-                    ))}
-                  </div>
-                </section>
-              ))}
-            </nav>
-          </div>
-        </details>
+        <MobileDocsNav docs={docs} currentSlug={entry.data.slug} />
 
         <nav class="mb-6 flex items-center gap-2 text-xs font-medium text-gungnir-muted" aria-label="Breadcrumb">
           <a href="/docs/" class="text-gungnir-blue no-underline transition hover:text-gungnir-blue-deep">Documentation</a>
           <span class="text-gungnir-silver" aria-hidden="true">/</span>
-          <span aria-current="page">{frontmatter.title}</span>
+          <span aria-current="page">{entry.data.title}</span>
         </nav>
 
-        <article class="docs-content max-w-[72ch]" data-doc-content>
-          <h1 class="text-4xl font-bold tracking-[-0.04em] text-gungnir-ink sm:text-5xl">{frontmatter.title}</h1>
-          {frontmatter.description && (
-            <p class="mt-5 max-w-[66ch] text-base leading-7 text-gungnir-muted sm:text-[1.08rem] sm:leading-8">
-              {frontmatter.description}
-            </p>
-          )}
-          <div class="mt-10">
-            <slot />
-          </div>
+        <article class="docs-content max-w-[72ch]" data-doc-content data-pagefind-body>
+          <header class="mb-10">
+            <div class="mb-3 flex items-center gap-2">
+              <span class="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.13em] text-gungnir-blue">
+                <span class="h-px w-6 bg-gungnir-blue"></span>
+                {entry.data.group}
+              </span>
+              {entry.data.status === 'preview' && (
+                <span class="rounded border border-gungnir-line bg-gungnir-silver-soft px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] text-gungnir-muted">Preview</span>
+              )}
+            </div>
+            <h1 class="text-4xl font-bold tracking-[-0.04em] text-gungnir-ink sm:text-5xl">{entry.data.title}</h1>
+            <p class="mt-5 max-w-[66ch] text-base leading-7 text-gungnir-muted sm:text-[1.08rem] sm:leading-8">{entry.data.description}</p>
+          </header>
+
+          <slot />
+
+          <PrevNext previous={previous} next={next} />
         </article>
+
+        <CodeEnhancer />
       </main>
 
-      <aside class="sticky top-24 hidden max-h-[calc(100vh-7rem)] overflow-y-auto py-12 xl:block" aria-label="On this page">
-        <p class="mb-3 text-[11px] font-bold uppercase tracking-[0.13em] text-gungnir-muted/75">On this page</p>
-        <nav data-doc-toc></nav>
+      <aside class="sticky top-24 hidden max-h-[calc(100vh-7rem)] overflow-y-auto py-12 xl:block">
+        <DocsToc headings={headings} />
       </aside>
     </div>
   </div>
-
-  <script is:inline>
-    (() => {
-      const search = document.querySelector('[data-doc-search]');
-      const links = [...document.querySelectorAll('[data-nav-link]')];
-      const groups = [...document.querySelectorAll('[data-nav-group]')];
-      const empty = document.querySelector('[data-empty-search]');
-
-      const filterNavigation = () => {
-        if (!search) return;
-        const query = search.value.trim().toLowerCase();
-        let visibleCount = 0;
-
-        links.forEach((link) => {
-          const match = !query || (link.textContent || '').toLowerCase().includes(query);
-          link.hidden = !match;
-          if (match) visibleCount += 1;
-        });
-
-        groups.forEach((group) => {
-          const hasVisibleLink = [...group.querySelectorAll('[data-nav-link]')].some((link) => !link.hidden);
-          group.hidden = !hasVisibleLink;
-        });
-
-        if (empty) empty.hidden = visibleCount !== 0;
-      };
-
-      search?.addEventListener('input', filterNavigation);
-      document.addEventListener('keydown', (event) => {
-        if (event.key === '/' && document.activeElement !== search) {
-          event.preventDefault();
-          search?.focus();
-        }
-      });
-
-      const content = document.querySelector('[data-doc-content]');
-      const toc = document.querySelector('[data-doc-toc]');
-      if (!content || !toc) return;
-
-      const headings = [...content.querySelectorAll('h2, h3')];
-      headings.forEach((heading, index) => {
-        if (!heading.id) {
-          heading.id = (heading.textContent || `section-${index}`)
-            .toLowerCase()
-            .trim()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/^-|-$/g, '');
-        }
-
-        const link = document.createElement('a');
-        link.href = `#${heading.id}`;
-        link.textContent = heading.textContent;
-        link.className = 'docs-toc-link';
-        if (heading.tagName === 'H3') link.classList.add('toc-h3');
-        toc.appendChild(link);
-      });
-    })();
-  </script>
 </BaseLayout>

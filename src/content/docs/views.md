@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Views
-description: Render server-side HTML templates with escaped interpolation, loops, nested values, models, and collections.
+title: "Views"
+description: "Render server-side HTML templates with escaped interpolation, loops, nested values, models, and collections."
+slug: "views"
+group: "The Basics"
+groupOrder: 3
+order: 5
+status: preview
 ---
+
 
 ## Creating a View Response
 

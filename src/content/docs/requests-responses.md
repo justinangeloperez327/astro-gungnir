@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Requests & Responses
-description: Read HTTP input through the Request API and return text, JSON, views, or custom status responses.
+title: "Requests & Responses"
+description: "Read HTTP input through the Request API and return text, JSON, views, or custom status responses."
+slug: "requests-responses"
+group: "The Basics"
+groupOrder: 3
+order: 4
+status: preview
 ---
+
 
 ## Request Input
 

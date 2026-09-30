@@ -1,0 +1,202 @@
+---
+---
+
+<div class="w-auto md:w-full md:max-w-md">
+  <button
+    type="button"
+    class="group inline-flex h-10 w-10 items-center justify-center gap-3 rounded-lg border border-gungnir-line bg-gungnir-silver-soft text-sm text-gungnir-muted transition hover:border-gungnir-silver hover:bg-white md:w-full md:justify-start md:px-3.5"
+    data-search-open
+    aria-haspopup="dialog"
+    aria-controls="docs-search-dialog"
+    aria-label="Search documentation"
+    aria-keyshortcuts="Control+K Meta+K /"
+  >
+    <svg class="h-4 w-4 shrink-0 transition group-hover:text-gungnir-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"></circle>
+      <path d="m20 20-3.5-3.5"></path>
+    </svg>
+    <span class="hidden min-w-0 flex-1 truncate text-left md:block">Search documentation</span>
+    <span class="hidden rounded border border-gungnir-line bg-white px-1.5 py-0.5 text-[10px] font-semibold text-gungnir-muted md:inline">⌘ K</span>
+  </button>
+
+  <dialog
+    id="docs-search-dialog"
+    class="m-auto w-[min(92vw,720px)] rounded-2xl border border-gungnir-line bg-white p-0 text-gungnir-ink shadow-2xl backdrop:bg-gungnir-ink/45 backdrop:backdrop-blur-sm"
+    data-search-dialog
+  >
+    <div class="border-b border-gungnir-line p-3 sm:p-4">
+      <label class="relative block">
+        <span class="sr-only">Search Gungnir documentation</span>
+        <svg class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gungnir-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.5-3.5"></path>
+        </svg>
+        <input
+          class="h-12 w-full rounded-xl border border-gungnir-line bg-gungnir-silver-soft pl-12 pr-12 text-base outline-none transition placeholder:text-gungnir-muted/65 focus:border-gungnir-blue focus:bg-white focus:ring-4 focus:ring-gungnir-blue/10"
+          type="search"
+          autocomplete="off"
+          placeholder="Search routing, models, validation..."
+          data-search-input
+        />
+        <button type="button" class="absolute right-2 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-gungnir-muted transition hover:bg-white hover:text-gungnir-ink" aria-label="Close search" data-search-close>
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18"></path>
+          </svg>
+        </button>
+      </label>
+    </div>
+
+    <div class="max-h-[min(64vh,580px)] overflow-y-auto p-3 sm:p-4">
+      <div class="rounded-xl border border-dashed border-gungnir-line px-5 py-10 text-center" data-search-empty>
+        <p class="text-sm font-semibold text-gungnir-ink">Search the Gungnir documentation</p>
+        <p class="mt-1 text-xs leading-5 text-gungnir-muted">Results include matching pages and sections.</p>
+      </div>
+      <div class="space-y-2" data-search-results></div>
+    </div>
+
+    <div class="flex items-center justify-between border-t border-gungnir-line bg-gungnir-silver-soft/60 px-4 py-2.5 text-[11px] text-gungnir-muted">
+      <span>↑ ↓ navigate · Enter open</span>
+      <span>Esc close</span>
+    </div>
+  </dialog>
+</div>
+
+<script is:inline>
+  (() => {
+    const dialog = document.querySelector('[data-search-dialog]');
+    const input = document.querySelector('[data-search-input]');
+    const results = document.querySelector('[data-search-results]');
+    const empty = document.querySelector('[data-search-empty]');
+    const opener = document.querySelector('[data-search-open]');
+    const closeButton = document.querySelector('[data-search-close]');
+
+    if (!dialog || !input || !results || !empty || !opener) return;
+
+    let pagefindPromise;
+    let activeIndex = -1;
+
+    const loadPagefind = async () => {
+      pagefindPromise ??= import('/pagefind/pagefind.js').then(async (pagefind) => {
+        await pagefind.init();
+        return pagefind;
+      });
+      return pagefindPromise;
+    };
+
+    const open = async () => {
+      if (!dialog.open) dialog.showModal();
+      requestAnimationFrame(() => input.focus());
+      try {
+        await loadPagefind();
+      } catch {
+        empty.innerHTML = '<p class="text-sm font-semibold text-gungnir-ink">Search index unavailable</p><p class="mt-1 text-xs leading-5 text-gungnir-muted">Run a production build to generate the Pagefind index.</p>';
+      }
+    };
+
+    const close = () => {
+      dialog.close();
+      input.value = '';
+      results.replaceChildren();
+      empty.hidden = false;
+      activeIndex = -1;
+    };
+
+    const setActive = (index) => {
+      const links = [...results.querySelectorAll('a')];
+      if (!links.length) return;
+      activeIndex = Math.max(0, Math.min(index, links.length - 1));
+      links.forEach((link, i) => link.classList.toggle('search-result-active', i === activeIndex));
+      links[activeIndex].scrollIntoView({ block: 'nearest' });
+    };
+
+    const renderResults = async (query) => {
+      if (query.trim().length < 2) {
+        results.replaceChildren();
+        empty.hidden = false;
+        empty.innerHTML = '<p class="text-sm font-semibold text-gungnir-ink">Keep typing</p><p class="mt-1 text-xs leading-5 text-gungnir-muted">Enter at least two characters to search.</p>';
+        return;
+      }
+
+      try {
+        const pagefind = await loadPagefind();
+        const search = await pagefind.debouncedSearch(query, {}, 180);
+        if (!search) return;
+
+        const pages = await Promise.all(search.results.slice(0, 8).map((result) => result.data()));
+        results.replaceChildren();
+        activeIndex = -1;
+
+        const items = pages.flatMap((page) => {
+          const sections = page.sub_results?.length ? page.sub_results.slice(0, 3) : [];
+          return sections.length ? sections.map((section) => ({
+            title: section.title || page.meta?.title || 'Documentation',
+            url: section.url || page.url,
+            excerpt: section.excerpt || page.excerpt,
+          })) : [{
+            title: page.meta?.title || 'Documentation',
+            url: page.url,
+            excerpt: page.excerpt,
+          }];
+        }).slice(0, 10);
+
+        empty.hidden = items.length > 0;
+        if (!items.length) {
+          empty.innerHTML = '<p class="text-sm font-semibold text-gungnir-ink">No results</p><p class="mt-1 text-xs leading-5 text-gungnir-muted">Try a broader term or another API name.</p>';
+          return;
+        }
+
+        items.forEach((item) => {
+          const link = document.createElement('a');
+          link.href = item.url;
+          link.className = 'search-result block rounded-xl border border-transparent px-4 py-3 no-underline transition hover:border-gungnir-line hover:bg-gungnir-silver-soft';
+          const title = document.createElement('div');
+          title.className = 'text-sm font-semibold text-gungnir-ink';
+          title.textContent = item.title;
+          const excerpt = document.createElement('div');
+          excerpt.className = 'mt-1 line-clamp-2 text-xs leading-5 text-gungnir-muted';
+          excerpt.innerHTML = item.excerpt || '';
+          link.append(title, excerpt);
+          results.append(link);
+        });
+      } catch {
+        results.replaceChildren();
+        empty.hidden = false;
+        empty.innerHTML = '<p class="text-sm font-semibold text-gungnir-ink">Search is unavailable</p><p class="mt-1 text-xs leading-5 text-gungnir-muted">The Pagefind search bundle could not be loaded.</p>';
+      }
+    };
+
+    opener.addEventListener('click', open);
+    closeButton?.addEventListener('click', close);
+    input.addEventListener('input', () => renderResults(input.value));
+
+    input.addEventListener('keydown', (event) => {
+      const links = [...results.querySelectorAll('a')];
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        setActive(activeIndex + 1);
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        setActive(activeIndex <= 0 ? links.length - 1 : activeIndex - 1);
+      } else if (event.key === 'Enter' && activeIndex >= 0 && links[activeIndex]) {
+        event.preventDefault();
+        links[activeIndex].click();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      const target = event.target;
+      const typing = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target?.isContentEditable;
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        open();
+      } else if (event.key === '/' && !typing) {
+        event.preventDefault();
+        open();
+      }
+    });
+
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) close();
+    });
+  })();
+</script>

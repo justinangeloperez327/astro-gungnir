@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Directory Structure
-description: Learn where controllers, models, middleware, routes, migrations, views, configuration, and generated files belong.
+title: "Directory Structure"
+description: "Learn where controllers, models, middleware, routes, migrations, views, configuration, and generated files belong."
+slug: "project-structure"
+group: "Getting Started"
+groupOrder: 1
+order: 4
+status: preview
 ---
+
 
 ## The Root Directory
 

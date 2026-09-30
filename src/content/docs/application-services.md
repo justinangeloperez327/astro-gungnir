@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Events, Queues & Mail
-description: Coordinate application events, background work, scheduled tasks, mail, and notification delivery through explicit service boundaries.
+title: "Events, Queues & Mail"
+description: "Coordinate application events, background work, scheduled tasks, mail, and notification delivery through explicit service boundaries."
+slug: "application-services"
+group: "Digging Deeper"
+groupOrder: 4
+order: 1
+status: preview
 ---
+
 
 ## Events
 

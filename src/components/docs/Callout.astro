@@ -1,0 +1,30 @@
+---
+interface Props {
+  type?: 'note' | 'tip' | 'warning' | 'important' | 'security';
+  title?: string;
+}
+
+const { type = 'note', title } = Astro.props;
+const defaultTitles = {
+  note: 'Note',
+  tip: 'Tip',
+  warning: 'Warning',
+  important: 'Important',
+  security: 'Security',
+};
+---
+
+<aside class="callout" data-type={type} role={type === 'warning' || type === 'security' ? 'alert' : undefined}>
+  <p class:list={[
+    'm-0 text-[10px] font-bold uppercase tracking-[0.13em]',
+    type === 'important' || type === 'security' ? 'text-gungnir-silver' : 'text-gungnir-blue',
+  ]}>
+    {title ?? defaultTitles[type]}
+  </p>
+  <div class:list={[
+    'mt-2 text-sm leading-6',
+    type === 'important' || type === 'security' ? 'text-white/80' : 'text-gungnir-muted',
+  ]}>
+    <slot />
+  </div>
+</aside>

@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  docs: CollectionEntry<'docs'>[];
+  currentSlug: string;
+}
+
+const { docs, currentSlug } = Astro.props;
+
+const hrefFor = (entry: CollectionEntry<'docs'>) =>
+  entry.data.slug ? `/docs/${entry.data.slug}/` : '/docs/';
+
+const groups = docs.reduce((acc, entry) => {
+  const group = acc.get(entry.data.group) ?? [];
+  group.push(entry);
+  acc.set(entry.data.group, group);
+  return acc;
+}, new Map<string, CollectionEntry<'docs'>[]>());
+---
+
+<nav class="space-y-7" aria-label="Documentation navigation">
+  {[...groups.entries()].map(([label, entries]) => (
+    <section>
+      <h2 class="mb-2 px-3 text-[11px] font-bold uppercase tracking-[0.14em] text-gungnir-muted/70">{label}</h2>
+      <div class="space-y-0.5">
+        {entries.map((entry) => {
+          const active = entry.data.slug === currentSlug;
+          return (
+            <a
+              class:list={[
+                'relative flex min-h-9 items-center rounded-md px-3 text-[13px] transition',
+                active
+                  ? 'docs-nav-active bg-gungnir-blue/[0.06] font-semibold text-gungnir-blue'
+                  : 'font-medium text-gungnir-muted hover:bg-gungnir-silver-soft hover:text-gungnir-ink',
+              ]}
+              href={hrefFor(entry)}
+              aria-current={active ? 'page' : undefined}
+            >
+              {entry.data.title}
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  ))}
+</nav>

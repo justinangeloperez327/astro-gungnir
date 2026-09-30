@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Middleware
-description: Filter and transform requests before they reach a controller, or perform work around the downstream response.
+title: "Middleware"
+description: "Filter and transform requests before they reach a controller, or perform work around the downstream response."
+slug: "middleware"
+group: "The Basics"
+groupOrder: 3
+order: 2
+status: preview
 ---
+
 
 ## Defining Middleware
 

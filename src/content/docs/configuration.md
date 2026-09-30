@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Configuration
-description: Configure a Gungnir application through environment values and the application configuration repository.
+title: "Configuration"
+description: "Configure a Gungnir application through environment values and the application configuration repository."
+slug: "configuration"
+group: "Getting Started"
+groupOrder: 1
+order: 3
+status: preview
 ---
+
 
 ## Environment Configuration
 

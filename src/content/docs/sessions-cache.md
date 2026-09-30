@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Sessions & Cache
-description: Store request-associated session state and cache application values behind explicit storage adapters.
+title: "Sessions & Cache"
+description: "Store request-associated session state and cache application values behind explicit storage adapters."
+slug: "sessions-cache"
+group: "The Basics"
+groupOrder: 3
+order: 7
+status: preview
 ---
+
 
 ## Sessions
 

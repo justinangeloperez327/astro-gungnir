@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Controllers
-description: Organize HTTP request handling into focused controller actions with dependency injection and explicit async behavior.
+title: "Controllers"
+description: "Organize HTTP request handling into focused controller actions with dependency injection and explicit async behavior."
+slug: "controllers"
+group: "The Basics"
+groupOrder: 3
+order: 3
+status: preview
 ---
+
 
 ## Writing Controllers
 

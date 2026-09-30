@@ -1,8 +1,29 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Introduction
-description: Gungnir is an expressive web framework built in C++ for building structured web applications with clear conventions.
+title: "Introduction"
+description: "Gungnir is an expressive web framework built in C++ for building structured web applications with clear conventions."
+slug: ""
+group: "Getting Started"
+groupOrder: 1
+order: 1
+status: preview
 ---
+
+
+## Start Building
+
+The shortest path from a new project to an application endpoint is:
+
+~~~text
+Install Gungnir
+→ create the application
+→ define a route
+→ create a controller
+→ add a model when data is needed
+~~~
+
+If you are new to Gungnir, read [Installation](/docs/getting-started/), [Configuration](/docs/configuration/), and [Directory Structure](/docs/project-structure/) in order.
+
+If you already know a convention-first web framework, start with [Routing](/docs/routing/), [Controllers](/docs/controllers/), and [Models & Relationships](/docs/models/) to learn the Gungnir vocabulary quickly.
 
 ## Meet Gungnir
 

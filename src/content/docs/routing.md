@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Routing
-description: Define application endpoints, route parameters, controller actions, and middleware.
+title: "Routing"
+description: "Define application endpoints, route parameters, controller actions, and middleware."
+slug: "routing"
+group: "The Basics"
+groupOrder: 3
+order: 1
+status: preview
 ---
+
 
 ## Basic Routing
 

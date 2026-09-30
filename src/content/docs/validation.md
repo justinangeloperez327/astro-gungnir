@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Validation
-description: Validate incoming request data with concise rule declarations before passing it to application or model code.
+title: "Validation"
+description: "Validate incoming request data with concise rule declarations before passing it to application or model code."
+slug: "validation"
+group: "The Basics"
+groupOrder: 3
+order: 6
+status: preview
 ---
+
 
 ## Validating a Request
 

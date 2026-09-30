@@ -1,0 +1,26 @@
+---
+import Search from './Search.astro';
+---
+
+<header class="sticky top-0 z-50 border-b border-gungnir-line bg-white/95 backdrop-blur-xl">
+  <div class="mx-auto flex h-16 w-full max-w-[1536px] items-center gap-3 px-4 sm:px-6 lg:px-8">
+    <div class="flex min-w-0 shrink-0 items-center gap-3">
+      <a href="/" class="inline-flex items-center" aria-label="Gungnir home">
+        <img class="h-8 w-auto max-w-36 object-contain sm:max-w-40" src="/images/logo-alt.png" alt="Gungnir" />
+      </a>
+      <span class="hidden h-5 w-px bg-gungnir-line sm:block" aria-hidden="true"></span>
+      <a href="/docs/" class="hidden text-sm font-semibold text-gungnir-muted transition hover:text-gungnir-blue sm:block">Docs</a>
+      <span class="hidden rounded-md border border-gungnir-line bg-gungnir-silver-soft px-2 py-1 text-[11px] font-bold text-gungnir-muted md:inline-flex">0.1</span>
+    </div>
+
+    <div class="ml-auto md:mx-auto">
+      <Search />
+    </div>
+
+    <nav class="hidden shrink-0 items-center md:flex" aria-label="Documentation links">
+      <a href="https://github.com/justinangeloperez327/gungnir" class="inline-flex h-10 items-center rounded-lg px-3 text-sm font-semibold text-gungnir-muted transition hover:bg-gungnir-silver-soft hover:text-gungnir-ink">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>

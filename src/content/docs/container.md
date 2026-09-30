@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Service Container
-description: Use Gungnir's inversion-of-control container to resolve application services and controller dependencies.
+title: "Service Container"
+description: "Use Gungnir's inversion-of-control container to resolve application services and controller dependencies."
+slug: "container"
+group: "Architecture Concepts"
+groupOrder: 2
+order: 2
+status: preview
 ---
+
 
 ## Introduction
 

@@ -1,0 +1,52 @@
+---
+---
+
+<script is:inline>
+  (() => {
+    const labelFor = (code) => {
+      const match = [...code.classList].find((name) => name.startsWith('language-'));
+      const language = match?.replace('language-', '') || 'text';
+      return ({
+        gungnir: 'GNR',
+        cpp: 'C++',
+        c: 'C',
+        bash: 'BASH',
+        shell: 'SHELL',
+        html: 'HTML',
+        json: 'JSON',
+        text: 'TEXT',
+      })[language] || language.toUpperCase();
+    };
+
+    document.querySelectorAll('.docs-content pre').forEach((pre) => {
+      if (pre.closest('.code-frame')) return;
+      const code = pre.querySelector('code');
+      if (!code) return;
+
+      const frame = document.createElement('div');
+      frame.className = 'code-frame';
+      const toolbar = document.createElement('div');
+      toolbar.className = 'code-toolbar';
+
+      const badge = document.createElement('span');
+      badge.className = 'code-language';
+      badge.textContent = labelFor(code);
+
+      const copy = document.createElement('button');
+      copy.type = 'button';
+      copy.className = 'code-copy';
+      copy.textContent = 'Copy';
+      copy.setAttribute('aria-label', 'Copy code');
+
+      copy.addEventListener('click', async () => {
+        await navigator.clipboard.writeText(code.textContent || '');
+        copy.textContent = 'Copied';
+        setTimeout(() => { copy.textContent = 'Copy'; }, 1400);
+      });
+
+      toolbar.append(badge, copy);
+      pre.parentNode.insertBefore(frame, pre);
+      frame.append(toolbar, pre);
+    });
+  })();
+</script>

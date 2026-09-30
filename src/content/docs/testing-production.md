@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Testing & Production
-description: Test application behavior through the real routing stack, build release artifacts, and configure production lifecycle concerns explicitly.
+title: "Testing & Production"
+description: "Test application behavior through the real routing stack, build release artifacts, and configure production lifecycle concerns explicitly."
+slug: "testing-production"
+group: "Testing & Deployment"
+groupOrder: 8
+order: 1
+status: preview
 ---
+
 
 ## HTTP Testing
 

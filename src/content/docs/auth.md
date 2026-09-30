@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Authentication & Authorization
-description: Establish the request identity, manage session-backed authentication, protect browser requests, and enforce application abilities.
+title: "Authentication & Authorization"
+description: "Establish the request identity, manage session-backed authentication, protect browser requests, and enforce application abilities."
+slug: "auth"
+group: "Security"
+groupOrder: 5
+order: 1
+status: preview
 ---
+
 
 ## Authentication and Authorization
 

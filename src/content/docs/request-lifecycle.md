@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Request Lifecycle
-description: Understand how a Gungnir application boots and how an HTTP request moves through the framework.
+title: "Request Lifecycle"
+description: "Understand how a Gungnir application boots and how an HTTP request moves through the framework."
+slug: "request-lifecycle"
+group: "Architecture Concepts"
+groupOrder: 2
+order: 1
+status: preview
 ---
+
 
 ## Application Bootstrap
 

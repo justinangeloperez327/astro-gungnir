@@ -1,8 +1,13 @@
 ---
-layout: ../../layouts/DocsLayout.astro
-title: Installation
-description: Install Gungnir, create a new application, and run your first route.
+title: "Installation"
+description: "Install Gungnir, create a new application, and run your first route."
+slug: "getting-started"
+group: "Getting Started"
+groupOrder: 1
+order: 2
+status: preview
 ---
+
 
 ## Requirements
 
