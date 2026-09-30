@@ -1,53 +1,45 @@
 ---
 title: "Testing & Production"
-description: "Test through the real router, build release artifacts, and use the production lifecycle features currently implemented by Gungnir."
+description: "Test the real framework path and deploy native Gungnir applications with explicit runtime lifecycle behavior."
 slug: "testing-production"
 group: "Testing & Deployment"
-groupOrder: 8
+groupOrder: 9
 order: 1
 status: preview
 ---
 
-## HTTP Testing
+## Testing Strategy
 
-The native testing layer provides an HTTP test client over the real router and request/response types.
+Gungnir testing is intended to exercise the real framework path.
 
-It dispatches requests without opening a network socket, so route and middleware behavior can be exercised directly.
+The project strategy includes:
 
-Current convenience methods include GET, POST, and generic request sending.
+- HTTP/router tests;
+- dependency overrides;
+- database isolation;
+- queue, mail, and storage test adapters;
+- lexer/parser tests;
+- Syntax AST tests;
+- semantic tests;
+- Validated AST tests;
+- generated C++ compile tests;
+- backend integration tests.
 
-Response helpers can assert status codes, body fragments, and headers.
+## Native Build
 
-## Test Isolation
+Gungnir requires C++23 and CMake 3.25 or newer.
 
-The testing layer does not silently reset databases, cache, sessions, queues, or other external state. Tests must isolate those resources explicitly.
+Typical native framework build:
 
-## Release Builds
-
-~~~text
-gungnir build --release
+~~~sh
+cmake -S . -B build
+cmake --build build
 ~~~
 
-The result is a native application build. Deploy the runtime libraries and optional adapters required by your application.
+Application projects use the Gungnir CLI for normal builds and runs.
 
-## Health and Readiness
+## Production Lifecycle
 
-The production runtime provides liveness plus explicit application readiness callbacks.
+The runtime provides foundations for health/readiness, cancellation, graceful shutdown, and application lifecycle.
 
-Readiness checks should represent dependencies that must be usable before the instance receives traffic.
-
-## Graceful Shutdown
-
-The HTTP runtime supports cooperative draining. New work stops first, already-dispatched requests are given time to finish, and remaining request cancellation tokens are signalled after the configured shutdown deadline.
-
-Queue workers and the scheduler also expose cooperative stop/cancellation behavior.
-
-The native production layer includes supervisor/runtime-host primitives for coordinating multiple runtimes under one shutdown source.
-
-## Optional Runtime Capabilities
-
-Some production capabilities depend on build options and native dependencies. Applications should validate the exact framework commit and build flags they deploy rather than assuming every optional protocol or adapter is in the minimal core build.
-
-## Deployment Boundary
-
-Service managers, container orchestration, hard process termination policy, log shipping, and infrastructure-level zero-downtime deployment remain deployment responsibilities. Gungnir provides lifecycle integration points rather than replacing those systems.
+Deployment orchestration, service management, secrets management, and infrastructure policy remain deployment responsibilities.

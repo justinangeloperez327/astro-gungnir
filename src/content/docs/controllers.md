@@ -1,79 +1,68 @@
 ---
 title: "Controllers"
-description: "Write current Gungnir controller actions, receive requests, inject dependencies, and use explicit async actions."
+description: "Define public request actions with dependency injection and an implicit response contract."
 slug: "controllers"
-group: "The Basics"
+group: "Framework"
 groupOrder: 3
 order: 3
 status: preview
 ---
 
-## Defining a Controller
+## Controller Declaration
 
-~~~gungnir
-controller UserController
-{
-    Response index()
-    {
-        const users = User::all();
+~~~gnr
+controller UserController {
+    inject UserService users;
 
-        return json(users);
+    public index() {
+        return view('users/index', {
+            'users': User::orderBy('name').get()
+        });
+    }
+
+    public async show(int id) {
+        const user = await users.find(id);
+
+        if (user == null) {
+            return response(null, 404);
+        }
+
+        return json(user);
     }
 }
 ~~~
 
-The language frontend provides the native controller inheritance and public action plumbing.
+Controller actions have an implicit **Response contract**.
 
-## Request Parameters
-
-An action may receive the current request:
-
-~~~gungnir
-Response show(Request request)
-{
-    const id = request.parameter("id");
-    return text(id);
-}
-~~~
-
-Current controller actions may accept no request argument or a request argument. Typed ORM model parameters are not yet automatically resolved.
+Application code does not need to expose native controller inheritance or C++ coroutine task wrappers.
 
 ## Dependency Injection
 
-~~~gungnir
-controller AuditController
-{
-    inject Logger logger;
+Declare a dependency with `inject`:
 
-    Response index()
-    {
-        logger.info("Audit requested");
-        return text("Audit");
-    }
-}
+~~~gnr
+inject UserService users;
 ~~~
 
-The frontend generates a container-aware constructor for injected dependencies.
+Dependencies are resolved through the application container.
+
+## Public Actions
+
+Controller methods intended for routing are explicit public actions:
+
+~~~gnr
+public index() {
+    return json(User::all());
+}
+~~~
 
 ## Async Actions
 
-Use `async` and `await` only for operations that genuinely suspend:
+Use `public async` when the action awaits asynchronous work:
 
-~~~gungnir
-controller ReportController
-{
-    async Response show(Request request)
-    {
-        const result = await fetchReport(request.parameter("id"));
-        return json(result);
-    }
+~~~gnr
+public async show(int id) {
+    const user = await users.find(id);
+    return json(user);
 }
 ~~~
-
-The language lowers this to the native Gungnir task/coroutine runtime.
-
-Synchronous ORM and database operations remain synchronous until the underlying API supplies a real asynchronous implementation.
-
-## Responses
-
-Controller helpers currently cover text, JSON, views, HTML, downloads, redirects, no-content responses, and general responses.

@@ -1,103 +1,74 @@
 ---
-title: "Models & Relationships"
-description: "Use the implemented model conventions, ORM queries, relationships, eager loading, timestamps, and soft deletes."
+title: "Models & ORM"
+description: "Define persistence metadata in models and use Gungnir's model-centric ORM contract."
 slug: "models"
-group: "ORM"
-groupOrder: 7
+group: "Framework"
+groupOrder: 3
 order: 1
 status: preview
 ---
 
-## Defining a Model
+## Model Declaration
 
-~~~gungnir
-model User
-{
-    string name;
-    string email;
-    string? nickname;
-    bool active = true;
+~~~gnr
+model User {
+    table = 'users';
+    primaryKey = 'id';
+
+    fillable = [
+        'name',
+        'email'
+    ];
+
+    timestamps = true;
+
+    posts() {
+        return hasMany('posts');
+    }
 }
 ~~~
 
-A model receives ORM behavior through the Gungnir frontend.
+Models describe persistence metadata and relationships.
 
-By convention, `User` maps to the `users` table, uses an incrementing integer `id`, and has timestamps enabled.
-
-## Model Configuration
-
-~~~gungnir
-model AuditUser
-{
-    table = "legacy_users";
-    connection = "reporting";
-    timestamps = false;
-    softDeletes = true;
-
-    string name;
-}
-~~~
-
-Framework-managed timestamp and soft-delete fields are not intended to be mass-assigned from arbitrary request input.
+**Database schema belongs to migrations**, not model declarations.
 
 ## Querying
 
-Implemented application-language aliases include forms such as:
-
-~~~gungnir
-const user = User::findOrFail(id);
-
-const users = User::whereIn("id", ids)
-    .orderBy("name")
-    .withTrashed()
-    .get();
+~~~gnr
+const users = User::where('active', true)
+    .with('profile')
+    .orderBy('name')
+    .paginate(25);
 ~~~
 
-The language lowers expressive method names to the native ORM API.
+The ORM contract is model-centric and distinguishes a query from a materialized collection.
+
+## ORM Contract
+
+The canonical ORM contract covers:
+
+- querying and filtering;
+- aggregates;
+- pagination;
+- CRUD;
+- soft deletes;
+- eager loading;
+- relationships;
+- many-to-many operations;
+- transactions;
+- locks;
+- serialization;
+- model hydration;
+- lifecycle behavior.
 
 ## Relationships
 
-~~~gungnir
-model User
-{
-    string name;
+Relationships are declared as model behavior:
 
-    posts()
-    {
-        return hasMany<Post>();
-    }
-
-    profile()
-    {
-        return hasOne<Profile>();
-    }
-
-    roles()
-    {
-        return belongsToMany<Role>();
-    }
+~~~gnr
+posts() {
+    return hasMany('posts');
 }
 ~~~
 
-Implemented relationship shapes include:
-
-- `hasOne`
-- `hasMany`
-- `belongsTo`
-- `belongsToMany`
-- has-one-through
-- has-many-through
-
-## Eager Loading
-
-The ORM supports explicit eager loading and batches relationship keys to avoid one query per parent.
-
-Gungnir intentionally does **not** silently lazy-load an unloaded relationship by default. Accessing an unloaded relationship reports that it has not been loaded.
-
-## Many-to-Many Mutations
-
-The native ORM includes parent-aware attach, detach, and transactional sync operations for relational many-to-many pivot tables.
-
-## Not Yet Supported
-
-Polymorphic relationships are not currently declared as supported.
+Gungnir's ORM is intended to keep relationship semantics explicit while avoiding N+1 behavior through eager loading.

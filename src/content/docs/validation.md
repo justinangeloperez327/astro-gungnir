@@ -1,70 +1,30 @@
 ---
 title: "Validation"
-description: "Validate request data using the rule set implemented by the current validator."
+description: "Validate request data with declarative rules that can be normalized by the compiler/runtime."
 slug: "validation"
-group: "The Basics"
+group: "Framework"
 groupOrder: 3
-order: 6
+order: 7
 status: preview
 ---
 
-## Validating a Request
+## Request Validation
 
-~~~gungnir
-Response store(Request request)
-{
-    const data = request.validate({
-        "name": "required|string|min:2|max:80",
-        "email": "required|email",
-        "age": "nullable|integer|min:18"
-    });
-
-    return json(data);
-}
+~~~gnr
+const data = request.validate({
+    'name': 'required|string',
+    'email': 'required|email'
+});
 ~~~
 
-Successful validation returns the fields declared by the rule set.
+Validation belongs at the request/application boundary.
 
-## Implemented Rules
+## Compiler Contract
 
-The current core rule set includes:
+Validation rules are intended to be normalized into structured compiler/runtime metadata rather than repeatedly reparsed during later lowering phases.
 
-- `required`
-- `present`
-- `sometimes`
-- `nullable`
-- `string`
-- `integer`
-- `numeric`
-- `boolean`
-- `email`
-- `accepted`
-- `length`
-- `min`
-- `max`
-- `in`
-- `same`
-- `confirmed`
+This supports a compiler that understands validation structurally before native code is emitted.
 
-## Check Without Throwing
+## Pre-1.0 Note
 
-The native validation layer exposes both result-oriented checking and exception-oriented validation.
-
-`Request::check` returns validation results without throwing. `Request::validate` uses the exception flow.
-
-## Validation Failure
-
-A request validation exception maps to HTTP `422` by default.
-
-## Not Yet Implemented
-
-Database-backed validation rules such as:
-
-~~~text
-unique
-exists
-~~~
-
-are **not currently implemented**.
-
-A native `ValidatedRequest` foundation exists, but the `make:request` CLI generator is intentionally unavailable until source-language lowering for dedicated request classes is complete.
+The canonical validation syntax is part of the target Gungnir contract. Rule availability and deeper database-aware validation behavior may continue to evolve before 1.0.

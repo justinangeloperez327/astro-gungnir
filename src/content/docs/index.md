@@ -1,6 +1,6 @@
 ---
 title: "Introduction"
-description: "Build web applications with Gungnir's current C++23 runtime and .gnr application syntax."
+description: "Gungnir is an expressive web framework built in C++23 with a focused .gnr application language."
 slug: ""
 group: "Getting Started"
 groupOrder: 1
@@ -8,49 +8,61 @@ order: 1
 status: preview
 ---
 
-Gungnir is an **experimental C++23 web framework and source-language toolchain**. Application code can use `.gnr` syntax for the framework areas that have language support, while the runtime remains native C++.
+**Gungnir is an expressive web framework built in C++23.**
 
-The current repository version is **0.1.0**. The public API is pre-stable, so applications should pin the exact Gungnir version or commit they have validated.
+Application code is written in Gungnir's focused `.gnr` language and compiles to ordinary, inspectable C++23.
 
-> This documentation describes capabilities that are implemented in the current framework. Features that only have foundations, optional adapters, or incomplete application-language support are identified explicitly.
+Gungnir is designed around expressive application syntax, convention over boilerplate, strongly typed application code, native performance, and C++ interoperability.
 
-## What You Can Use Today
+## Application Code
 
-The current application-facing path includes:
+~~~gnr
+model User {
+    table = 'users';
 
-- project creation, build, run, and development commands;
-- routes and controller actions;
-- synchronous and asynchronous controller actions;
-- middleware and middleware short-circuiting;
-- request input, headers, cookies, route parameters, and JSON;
-- response, text, JSON, view, redirect, download, and no-content responses;
-- request validation with the implemented core rule set;
-- server-rendered views with escaped interpolation and loops;
-- models, ORM queries, timestamps, soft deletes, relationships, and eager loading;
-- migrations and migration execution commands;
-- database contracts plus optional PostgreSQL, MySQL/MariaDB, SQL Server, and MongoDB adapters;
-- sessions, authentication, authorization, cache, events, queues, mail, scheduling, testing, and production runtime APIs.
+    fillable = [
+        'name',
+        'email'
+    ];
 
-Some of the last group currently use the **native C++ runtime API** rather than a complete dedicated `.gnr` declaration or generator workflow.
-
-## A Small Application
-
-~~~gungnir
-controller HomeController
-{
-    Response index()
-    {
-        return view("welcome", {
-            "title": "Gungnir"
-        });
+    posts() {
+        return hasMany('posts');
     }
 }
-
-Route::get("/", HomeController::index);
 ~~~
 
-A normal project keeps routes, controllers, models, middleware, migrations, and views in their conventional directories.
+~~~gnr
+controller UserController {
+    inject UserService users;
 
-## Recommended Reading
+    public async show(int id) {
+        const user = await users.find(id);
 
-Start with [Installation](/docs/getting-started/), then read [Current Status](/docs/status/) before relying on a feature in production. Continue through [Routing](/docs/routing/), [Controllers](/docs/controllers/), and [Models & Relationships](/docs/models/).
+        if (user == null) {
+            return response(null, 404);
+        }
+
+        return json(user);
+    }
+}
+~~~
+
+~~~gnr
+Route::get('/users/{user}', UserController::show)
+    .middleware(AuthMiddleware)
+    .name('users.show');
+~~~
+
+## Framework Direction
+
+Gungnir treats models, controllers, middleware, migrations, policies, events, listeners, notifications, and mail as first-class application concepts.
+
+The language intentionally does **not** try to reproduce all of C++. Native pointers, references, allocator syntax, template plumbing, and coroutine machinery belong to generated/runtime C++, not normal application source.
+
+## Pre-1.0 Status
+
+Gungnir is under active development and is **pre-1.0**.
+
+The canonical documentation describes the target language and framework contract. Some compiler/runtime areas are still being migrated toward that contract, so a documented target feature is not automatically proof that the current compiler implements every detail.
+
+Read [Current Status](/docs/status/) before relying on a feature in production.

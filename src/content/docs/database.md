@@ -1,76 +1,39 @@
 ---
-title: "Database & Migrations"
-description: "Configure the current database layer, optional concrete adapters, transactions, and migration commands without assuming an adapter is automatically installed."
+title: "Database Backends"
+description: "Understand Gungnir's database backend contract and how backend-specific capabilities stay outside normal application syntax."
 slug: "database"
-group: "Database"
+group: "Database & ORM"
 groupOrder: 6
 order: 1
 status: preview
 ---
 
-## Database Layer
+The database runtime is separated from ORM and application-language semantics.
 
-The database runtime provides the execution foundation used by ORM queries and migrations.
+## Backends
 
-Connections execute parameterized statements. Bindings are passed separately from SQL.
+The Gungnir backend contract includes or targets:
 
-## Concrete Adapters
+- SQLite
+- PostgreSQL
+- MySQL / MariaDB-compatible clients
+- SQL Server
+- MongoDB
 
-Gungnir currently provides optional concrete adapters for:
+Backend capability differences remain explicit.
 
-| Backend | Build dependency |
-| --- | --- |
-| PostgreSQL | libpq |
-| MySQL / MariaDB | native MySQL-compatible C client |
-| SQL Server | ODBC |
-| MongoDB | libmongoc |
+MongoDB, for example, remains document-native rather than pretending to expose relational semantics.
 
-These adapters are **optional build targets**. They must be enabled and registered. Setting `DB_CONNECTION` alone does not install or register them.
+## Application Boundary
 
-## Transactions
+Normal model and ORM code should not depend on backend-specific driver syntax.
 
-The database manager provides synchronous transaction handling with commit-on-success and rollback-on-exception behavior.
+Backend adapters, native client libraries, connection behavior, and capabilities belong to the database runtime.
 
-Current transaction closures are intentionally **synchronous and thread-affine**. Gungnir does not claim coroutine-safe asynchronous database transactions yet.
+## ORM Integration
 
-## Creating a Migration
+Models and ORM queries use the same application-facing contract while the runtime/compiler selects backend-appropriate behavior.
 
-The current CLI generator emits the compatible migration class form:
+## Migration Integration
 
-~~~gungnir
-class CreateUsersTable : Migration
-{
-    void up()
-    {
-        Table::create("users", [](Column& column) {
-            column.id();
-            column.string("name");
-            column.string("email").unique();
-            column.timestamps();
-        });
-    }
-
-    void down()
-    {
-        Table::drop_if_exists("users");
-    }
-}
-~~~
-
-## Migration Commands
-
-~~~text
-gungnir migrate
-gungnir migrate:rollback
-gungnir migrate:reset
-gungnir migrate:status
-gungnir migrate:plan
-~~~
-
-`migrate:plan` compiles backend-specific plans without opening a database connection. Execution commands require a real registered driver.
-
-## Migration Operations
-
-The current migration layer supports table create/alter/rename/drop operations, common column types, indexes, foreign keys, timestamps, soft deletes, column rename/drop, and index/foreign-key removal.
-
-MongoDB migration behavior remains document-native rather than pretending to provide relational DDL semantics.
+Migrations describe schema intent at the application level. Backend-specific SQL or document commands belong to backend compilers/adapters.

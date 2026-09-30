@@ -1,57 +1,74 @@
 ---
-title: "Events, Queues, Mail & Scheduling"
-description: "Understand the runtime services that exist today and which of them still lack a complete dedicated .gnr workflow."
+title: "Events, Notifications & Mail"
+description: "Define application events, listeners, notifications, and mail as first-class Gungnir declarations."
 slug: "application-services"
-group: "Digging Deeper"
-groupOrder: 4
+group: "Application"
+groupOrder: 5
 order: 1
 status: preview
 ---
 
-These subsystems are implemented primarily as **native runtime APIs** today. Do not assume that every runtime type has a finished first-class `.gnr` declaration, generator, or application convention.
-
 ## Events
 
-The event dispatcher provides synchronous in-process application events.
-
-Listeners execute on the caller's path, in priority order, and exceptions are not swallowed.
-
-The event subsystem does not pretend synchronous dispatch is background work. Work that must happen later belongs on a queue.
-
-## Queues
-
-The queue runtime defines job envelopes, drivers, workers, retries, acknowledgement, release, and failure handling.
-
-`MemoryDriver` is for development and tests.
-
-An optional Redis queue driver is implemented with visibility leases, delayed jobs, expired-lease recovery, stale-reservation protection, lease renewal, retries, and failed-job retention.
-
-The current CLI still rejects:
-
-~~~text
-gungnir make:job
+~~~gnr
+event UserRegistered {
+    User user;
+}
 ~~~
 
-because queue-job source-language lowering is not complete.
+Events describe application occurrences.
 
-## Mail
+## Listeners
 
-The mail runtime separates message construction from delivery.
+~~~gnr
+listener SendWelcomeNotification {
+    public handle(UserRegistered event) {
+        Notification::send(
+            event.user,
+            WelcomeNotification()
+        );
+    }
+}
+~~~
 
-`MemoryTransport` is available for tests.
-
-A real optional libcurl-backed SMTP transport is implemented when SMTP support is enabled. It supports STARTTLS, implicit TLS, and explicitly unsecured local/test relay mode. Attachments and DKIM are not currently implemented.
+Listeners react to events.
 
 ## Notifications
 
-A notification manager and channel boundary exist in the runtime. Concrete SMS, push, chat, or provider behavior must be supplied by explicit adapters.
+~~~gnr
+notification WelcomeNotification {
+    public via(User user) {
+        return ['mail'];
+    }
 
-## Scheduler
+    public mail(User user) {
+        return WelcomeMail(
+            user: user
+        );
+    }
+}
+~~~
 
-The scheduler supports interval tasks, five-field cron expressions, UTC/fixed-offset/recurring timezone behavior, long-running execution, cancellation, and explicit locking policies.
+Notifications choose one or more delivery channels.
 
-A Redis-backed distributed lock store is available when Redis support is enabled.
+## Mail
 
-## Application-Language Boundary
+~~~gnr
+mail WelcomeMail {
+    User user;
 
-Until dedicated lowering is complete, this documentation does not present `event`, `listener`, `notification`, `mail`, or queued-job declarations as a complete normal `.gnr` application workflow.
+    public subject() {
+        return 'Welcome to Gungnir';
+    }
+
+    public content() {
+        return view('mail/welcome', {
+            'user': user
+        });
+    }
+}
+~~~
+
+The canonical language treats events, listeners, notifications, and mail as first-class application declarations.
+
+Because Gungnir is pre-1.0, consult the current compiler/runtime build when depending on these newer declaration forms.
