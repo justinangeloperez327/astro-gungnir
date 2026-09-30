@@ -32,8 +32,7 @@ const pageTitle = title === 'Gungnir' ? title : `${title} · Gungnir`;
         {docs ? (
           <div class="docs-branding">
             <a class="brand" href="/" aria-label="Gungnir home">
-              <span class="brand-mark" aria-hidden="true">G</span>
-              <span>GUNGNIR</span>
+              <img class="brand-logo docs-brand-logo" src="/images/logo-alt.png" alt="Gungnir" />
             </a>
             <span class="docs-divider" aria-hidden="true"></span>
             <a class="docs-label" href="/docs/">Documentation</a>
@@ -41,8 +40,7 @@ const pageTitle = title === 'Gungnir' ? title : `${title} · Gungnir`;
           </div>
         ) : (
           <a class="brand" href="/" aria-label="Gungnir home">
-            <span class="brand-mark" aria-hidden="true">G</span>
-            <span>GUNGNIR</span>
+            <img class="brand-logo" src="/images/logo-alt.png" alt="Gungnir" />
           </a>
         )}
 
@@ -71,7 +69,7 @@ const pageTitle = title === 'Gungnir' ? title : `${title} · Gungnir`;
 
     <footer class="site-footer">
       <div class="shell footer-inner">
-        <strong>GUNGNIR</strong>
+        <img class="footer-logo" src="/images/logo-alt.png" alt="Gungnir" />
         <span>Expressive web development in C++.</span>
       </div>
     </footer>
