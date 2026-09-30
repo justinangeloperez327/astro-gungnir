@@ -79,7 +79,8 @@
   }
 
   .docs-content pre code {
-    @apply font-inherit text-inherit;
+    font: inherit;
+    color: inherit;
   }
 
   .docs-content blockquote {
