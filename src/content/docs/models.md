@@ -3,7 +3,7 @@ title: "Models & ORM"
 description: "Define persistence metadata in models and use Gungnir's model-centric ORM contract."
 slug: "models"
 group: "Framework"
-groupOrder: 3
+groupOrder: 4
 order: 1
 status: preview
 ---

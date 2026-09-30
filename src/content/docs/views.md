@@ -3,7 +3,7 @@ title: "Views"
 description: "Render server-side HTML templates with escaped output and explicit raw rendering."
 slug: "views"
 group: "Framework"
-groupOrder: 3
+groupOrder: 4
 order: 8
 status: preview
 ---

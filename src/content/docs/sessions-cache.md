@@ -3,7 +3,7 @@ title: "Sessions & Cache"
 description: "Use the session and cache runtime foundations that support Gungnir applications."
 slug: "sessions-cache"
 group: "Runtime & Infrastructure"
-groupOrder: 7
+groupOrder: 8
 order: 1
 status: preview
 ---

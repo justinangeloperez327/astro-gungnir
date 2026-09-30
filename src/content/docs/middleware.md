@@ -3,7 +3,7 @@ title: "Middleware"
 description: "Create middleware as a first-class Gungnir declaration around the request pipeline."
 slug: "middleware"
 group: "Framework"
-groupOrder: 3
+groupOrder: 4
 order: 5
 status: preview
 ---

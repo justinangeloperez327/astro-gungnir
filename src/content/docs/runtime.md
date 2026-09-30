@@ -3,7 +3,7 @@ title: "Runtime & Infrastructure"
 description: "Overview of Gungnir's HTTP, async, cancellation, queues, scheduling, storage, logging, observability, lifecycle, and production foundations."
 slug: "runtime"
 group: "Runtime & Infrastructure"
-groupOrder: 7
+groupOrder: 8
 order: 2
 status: preview
 ---

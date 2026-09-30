@@ -3,7 +3,7 @@ title: "Routing"
 description: "Define HTTP routes, controller actions, middleware, names, groups, constraints, resources, and binding contracts."
 slug: "routing"
 group: "Framework"
-groupOrder: 3
+groupOrder: 4
 order: 4
 status: preview
 ---

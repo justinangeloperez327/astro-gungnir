@@ -3,7 +3,7 @@ title: "Migrations"
 description: "Define database schema changes with Gungnir's first-class migration declaration."
 slug: "migrations"
 group: "Framework"
-groupOrder: 3
+groupOrder: 4
 order: 2
 status: preview
 ---

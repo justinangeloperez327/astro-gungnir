@@ -3,7 +3,7 @@ title: "Request & Response"
 description: "Use Gungnir's request input helpers and application-facing response helpers."
 slug: "requests-responses"
 group: "Framework"
-groupOrder: 3
+groupOrder: 4
 order: 6
 status: preview
 ---

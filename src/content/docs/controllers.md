@@ -3,7 +3,7 @@ title: "Controllers"
 description: "Define public request actions with dependency injection and an implicit response contract."
 slug: "controllers"
 group: "Framework"
-groupOrder: 3
+groupOrder: 4
 order: 3
 status: preview
 ---

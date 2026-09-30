@@ -3,7 +3,7 @@ title: "Events, Notifications & Mail"
 description: "Define application events, listeners, notifications, and mail as first-class Gungnir declarations."
 slug: "application-services"
 group: "Application"
-groupOrder: 5
+groupOrder: 6
 order: 1
 status: preview
 ---

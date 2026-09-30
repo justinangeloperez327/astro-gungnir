@@ -3,7 +3,7 @@ title: "Application Lifecycle"
 description: "Understand application boot, service registration, readiness, request handling, and shutdown."
 slug: "request-lifecycle"
 group: "Architecture Concepts"
-groupOrder: 8
+groupOrder: 3
 order: 1
 status: preview
 ---

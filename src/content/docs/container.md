@@ -3,7 +3,7 @@ title: "Dependency Injection"
 description: "Use Gungnir's dependency container and application-facing inject declarations."
 slug: "container"
 group: "Architecture Concepts"
-groupOrder: 8
+groupOrder: 3
 order: 2
 status: preview
 ---

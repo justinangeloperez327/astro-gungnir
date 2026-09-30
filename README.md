@@ -1,8 +1,12 @@
 # Gungnir Website
 
-Official documentation website for **Gungnir**, an expressive web framework built in C++.
+Official documentation website for **Gungnir**, an expressive web framework built in C++23.
 
 The site is built with Astro and Tailwind CSS 4. Documentation content is managed through Astro Content Collections and indexed after each production build with Pagefind.
+
+## Documentation Source
+
+The public documentation follows the canonical language and framework contract described by the current `justinangeloperez327/gungnir` `README.md`. Gungnir is pre-1.0, so target-language documentation may describe canonical behavior before every compiler/runtime implementation path is complete.
 
 ## Documentation Architecture
 

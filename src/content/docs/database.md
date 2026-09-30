@@ -3,7 +3,7 @@ title: "Database Backends"
 description: "Understand Gungnir's database backend contract and how backend-specific capabilities stay outside normal application syntax."
 slug: "database"
 group: "Database & ORM"
-groupOrder: 6
+groupOrder: 7
 order: 1
 status: preview
 ---

@@ -3,7 +3,7 @@ title: "Authentication & Policies"
 description: "Use Gungnir authentication helpers and policy-driven authorization."
 slug: "auth"
 group: "Security"
-groupOrder: 4
+groupOrder: 5
 order: 1
 status: preview
 ---

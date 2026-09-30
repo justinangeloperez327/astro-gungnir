@@ -3,7 +3,7 @@ title: "Validation"
 description: "Validate request data with declarative rules that can be normalized by the compiler/runtime."
 slug: "validation"
 group: "Framework"
-groupOrder: 3
+groupOrder: 4
 order: 7
 status: preview
 ---
