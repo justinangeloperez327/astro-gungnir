@@ -1,58 +1,101 @@
 ---
-title: "Language Overview"
-description: "Learn the application-oriented syntax and type model used by .gnr source files."
+title: "The Gungnir Language"
+description: "The Gungnir Language: current Gungnir APIs, usage, configuration, and documented limits."
 slug: "language"
 group: "Language"
 groupOrder: 2
-order: 1
-status: preview
+order: 10
+status: development
+sourcePath: "docs/language.md"
 ---
 
-Gungnir's `.gnr` language is deliberately smaller than C++ and focused on web/application development.
+Gungnir applications are written with an expressive framework-oriented language stored in `.gnr` files. The language is designed around web application concepts rather than C++ boilerplate while retaining static types, deterministic compilation, async functions, modules, and native interoperability.
 
-Normal application code should not need native pointer, reference, allocator, template, or coroutine syntax.
+## Framework declarations
 
-## Scalar Types
+Gungnir provides first-class declarations for the major application building blocks:
 
-~~~gnr
-const string name = 'Gungnir';
-const int limit = 25;
-const bool active = true;
-~~~
+```gnr
+model User {
+}
 
-Both single-quoted and double-quoted literals are strings.
+controller UserController {
+}
 
-## Optional Types
+middleware Authenticate {
+}
 
-Optional values use `T?`:
+migration CreateUsers {
+}
 
-~~~gnr
-const User? user = User::find(id);
-const string? nickname = null;
-~~~
+policy UserPolicy {
+}
 
-## Collections
+event UserRegistered {
+}
 
-Typed collections use application-oriented generic types:
+listener SendWelcomeEmail {
+}
 
-~~~gnr
-const List<string> roles = ['admin', 'editor'];
-~~~
+notification WelcomeNotification {
+}
 
-A query object and a materialized collection are different concepts:
+mail WelcomeMail {
+}
 
-~~~text
-Query<User>
-    ↓ get()
-Collection<User>
-~~~
+job ProcessImport {
+}
+```
 
-## Control Flow
+Each declaration has a framework contract. For example, controllers expose actions, middleware exposes `handle`, migrations expose `up` and `down`, and listeners handle a typed event.
 
-Gungnir provides ordinary application control flow including conditionals, loops, return values, expressions, calls, lists, maps/objects, and async/await.
+## Static types
 
-## Native Boundary
+Gungnir supports framework and application types including strings, booleans, integers, unsigned integers, floating-point values, decimals, JSON values, optional values, lists, maps, collections, requests, responses, models, and user-defined declarations.
 
-Generated C++ may use RAII, templates, optional/native containers, namespaces, coroutines, and runtime task types.
+See [Language Types](/docs/language-types/).
 
-Those are implementation details and do not define the normal `.gnr` syntax.
+## Functions and methods
+
+Functions and framework methods use typed parameters and results:
+
+```gnr
+function int add(int left, int right) {
+    return left + right;
+}
+```
+
+Framework declarations may provide an implicit logical result where the declaration contract makes the result unambiguous.
+
+## Async and await
+
+Asynchronous work uses `async` and `await`:
+
+```gnr
+controller ReportController {
+    async index() {
+        const report = await reports.generate();
+        return json(report);
+    }
+}
+```
+
+Gungnir lowers asynchronous application code onto its coroutine-based C++ runtime.
+
+## Modules
+
+Applications can divide declarations into modules and import them explicitly. Modules provide namespacing and deterministic dependency resolution.
+
+See [Modules](/docs/modules/).
+
+## Expressions and statements
+
+The language provides ordinary application constructs including bindings, calls, member access, arithmetic and comparison operators, conditionals, loops, lists, objects, lambdas, optional handling, returns, throws, and async calls.
+
+See [Expressions](/docs/expressions/) and [Statements](/docs/statements/).
+
+## Framework integration
+
+The language is integrated with Gungnir's routing, ORM, validation, dependency injection, authorization, queues, notifications, mail, views, and other framework services. Framework misuse is diagnosed before native C++ compilation whenever it can be determined statically.
+
+For the compiler architecture itself, see the contributor reference in the [documentation index](/docs/).

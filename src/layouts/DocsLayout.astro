@@ -6,6 +6,7 @@ import DocsToc from '../components/docs/DocsToc.astro';
 import MobileDocsNav from '../components/docs/MobileDocsNav.astro';
 import PrevNext from '../components/docs/PrevNext.astro';
 import CodeEnhancer from '../components/docs/CodeEnhancer.astro';
+import source from '../data/gungnir-source.json';
 
 interface Heading {
   depth: number;
@@ -47,15 +48,18 @@ const { entry, docs, headings, previous, next } = Astro.props;
                 <span class="h-px w-6 bg-gungnir-blue"></span>
                 {entry.data.group}
               </span>
-              {entry.data.status === 'preview' && (
-                <span class="rounded border border-gungnir-line bg-gungnir-silver-soft px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] text-gungnir-muted dark:border-gungnir-dark-line dark:bg-gungnir-dark-soft dark:text-gungnir-dark-muted">Preview</span>
-              )}
+              <span class="rounded border border-gungnir-line bg-gungnir-silver-soft px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-[0.08em] text-gungnir-muted dark:border-gungnir-dark-line dark:bg-gungnir-dark-soft dark:text-gungnir-dark-muted">Development</span>
             </div>
             <h1 class="text-4xl font-bold tracking-[-0.04em] text-gungnir-ink dark:text-gungnir-dark-text sm:text-5xl">{entry.data.title}</h1>
             <p class="mt-5 max-w-[66ch] text-base leading-7 text-gungnir-muted dark:text-gungnir-dark-muted sm:text-[1.08rem] sm:leading-8">{entry.data.description}</p>
           </header>
 
           <slot />
+
+          <p class="mt-10 border-t border-gungnir-line pt-4 text-xs text-gungnir-muted dark:border-gungnir-dark-line dark:text-gungnir-dark-muted" data-pagefind-ignore>
+            Based on Gungnir <a href={`https://github.com/${source.repository}/commit/${source.commit}`}>commit {source.commit.slice(0, 7)}</a>.
+            {entry.data.sourcePath && <a class="ml-2" href={`https://github.com/${source.repository}/blob/${source.commit}/${entry.data.sourcePath}`}>View framework guide</a>}
+          </p>
 
           <PrevNext previous={previous} next={next} />
         </article>

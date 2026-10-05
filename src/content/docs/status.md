@@ -1,54 +1,140 @@
 ---
-title: "Current Status"
-description: "Understand the difference between Gungnir's canonical target contract and the implementation state of the pre-1.0 compiler and runtime."
+title: "Development Status"
+description: "Development Status: current Gungnir APIs, usage, configuration, and documented limits."
 slug: "status"
 group: "Getting Started"
 groupOrder: 1
 order: 3
-status: preview
+status: development
+sourcePath: "docs/development-status.md"
 ---
 
-Gungnir is **pre-1.0** and under active development.
+> **Project status: Development.** Gungnir does not have a 1.0 release candidate. Version 1.0 will be assigned only after the framework completeness gate is fully satisfied.
 
-The source language, compiler architecture, runtime APIs, and generated-code ABI may still change while the framework moves toward a coherent stable contract.
+## Release rule
 
-## Canonical Documentation
+Gungnir reaches 1.0 because the framework is complete, not because a phase number or calendar date was reached.
 
-The Gungnir documentation defines the **target language and framework behavior**.
+The development sequence is:
 
-That means documentation can describe the intended canonical syntax before every compiler or runtime path has completed migration to it.
+```text
+development
+    -> feature completeness
+    -> framework consistency
+    -> correctness
+    -> production readiness
+    -> ecosystem readiness
+    -> final release audit
+    -> Gungnir 1.0.0
+```
 
-> Do not assume every documented target-language feature is already fully implemented by the current compiler.
+No intermediate development milestone is treated as a public compatibility promise.
 
-## Current Migration
+## Machine-readable development contract
 
-Gungnir is moving away from earlier compatibility and source-rewrite behavior toward a compiler with explicit frontend and semantic phases.
+Current builds report:
 
-The target pipeline is:
+```text
+package_version=development
+language_version=development
+compiler_contract=development
+diagnostic_contract=development
+structured_feature_freeze=false
+compatibility=experimental
+```
 
-~~~text
-.gnr source
-→ Lexer
-→ Tokens
-→ Parser
-→ Syntax AST
-→ Module / Symbol Resolution
-→ Semantic + Type Analysis
-→ Control-Flow / Framework Validation
-→ Validated AST
-→ Framework Lowering
-→ C++23 IR
-→ C++23 Emitter
-→ Native C++ Compiler
-→ Application
-~~~
+The numeric CMake project version is `0.0.0` only because CMake requires a numeric value for package/build machinery. It is not a public Gungnir release number.
 
-The guiding rule is:
+Native package metadata uses:
 
-> Parse once, resolve once, validate once, then lower deterministic compiler structures.
+```text
+native API contract = development
+native ABI epoch    = 0
+release channel     = development
+```
 
-## Stability
+## What remains protected
 
-Until Gungnir reaches a stable compatibility policy, pin the exact version or commit used by an application.
+Removing premature version promises does **not** remove engineering discipline.
 
-The website documents the canonical Gungnir contract; repository tests and release notes remain the authority for whether a particular compiler build implements every documented construct.
+Development builds still preserve:
+
+- compiler correctness and deterministic output tests;
+- GCC, Clang, and MSVC conformance;
+- diagnostics/source mapping tests;
+- fuzz/sanitizer gates;
+- runtime lifecycle guarantees;
+- database/ORM correctness tests;
+- security hardening tests;
+- production resilience tests;
+- performance baselines;
+- native package/install consumer tests;
+- documentation integrity checks.
+
+These are implementation guarantees under active development, not 1.0 compatibility commitments.
+
+## Completeness before 1.0
+
+The final release requires end-to-end completion and consistency across:
+
+- compiler/language pipeline;
+- models and ORM;
+- relationships;
+- migrations;
+- routing/controllers/model binding;
+- middleware/request/response;
+- validation;
+- authentication/authorization;
+- sessions/CSRF;
+- events/listeners;
+- jobs/queues/scheduler;
+- notifications/mail;
+- views/storage/cache;
+- all supported database backends;
+- async/runtime/network behavior;
+- security and production operation;
+- CLI/generators/project DX;
+- testing;
+- packaging/installers;
+- documentation;
+- performance/stress/fuzz coverage;
+- public API consistency.
+
+A feature is not complete merely because a class, interface, parser node, or stub exists. It must work end-to-end with tests and current documentation.
+
+## Consistency rule
+
+All structured language features should follow the same compiler architecture:
+
+```text
+source
+-> lexer
+-> parser
+-> syntax AST
+-> semantics
+-> validated AST
+-> typed C++ IR
+-> C++23 emitter
+```
+
+Compatibility/source-edit lowering must remain isolated from the canonical structured path.
+
+Framework APIs should follow one consistent naming and behavior model wherever C++ permits it.
+
+## When 1.0 is assigned
+
+Only the final release audit changes the project from `development` to `1.0.0`.
+
+At that point, in one coordinated change:
+
+- package version becomes `1.0.0`;
+- language contract becomes `1.0`;
+- compiler contract becomes `1.0`;
+- diagnostic contract becomes `1.0`;
+- native API contract becomes `1.0`;
+- ABI epoch becomes `1`;
+- feature freeze becomes true;
+- compatibility becomes stable;
+- release documentation is published.
+
+Until then, Gungnir remains **Development**.

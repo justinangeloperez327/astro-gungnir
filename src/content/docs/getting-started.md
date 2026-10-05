@@ -1,57 +1,122 @@
 ---
-title: "Installation"
-description: "Install Gungnir, create a project, and run the current framework toolchain."
+title: "Getting Started"
+description: "Getting Started: current Gungnir APIs, usage, configuration, and documented limits."
 slug: "getting-started"
 group: "Getting Started"
 groupOrder: 1
 order: 2
-status: preview
+status: development
+sourcePath: "docs/getting-started.md"
 ---
+
+Gungnir is an expressive C++23 web framework with a dedicated `.gnr` application language and a native runtime.
 
 ## Requirements
 
-Gungnir currently requires:
+A Gungnir development environment requires a supported C++23 compiler, CMake, and the Gungnir CLI. Optional database, Redis, SMTP, TLS, HTTP/2, and storage adapters may require their native dependencies.
 
-- a **C++23-capable compiler**;
-- **CMake 3.25 or newer**;
-- an installed Gungnir package that provides the runtime and command-line tools.
+## Install
 
-Optional database, Redis, SMTP, TLS, and other adapters have their own native-library requirements and are not part of the minimal core build.
+Install a packaged Gungnir distribution for your platform or build and install the framework from source.
 
-## Create an Application
+After installation, verify the tools:
 
-Use the framework CLI:
+```sh
+gungnir --version
+gungnirc --version
+```
 
-~~~text
-gungnir new my-app
-cd my-app
-gungnir run
-~~~
+## Build from source
 
-The CLI creates the conventional application directories, a local environment file, a starter route, controller, and view.
+CMake 3.25 or newer and a C++23-compatible compiler are required. Run these commands inside a checkout of the Gungnir repository. Source builds represent the current development contract; historical preview packages may differ.
 
-## Build
+```sh
+cmake -S . -B build \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DGUNGNIR_BUILD_TOOLS=ON \
+  -DGUNGNIR_BUILD_TESTS=OFF
 
-Create a development build:
+cmake --build build --parallel 2
+cmake --install build
+```
 
-~~~text
+Verify:
+
+```sh
+gungnir --version
+gungnirc --version
+gungnirc --print-contract
+```
+
+Development builds report `Gungnir development`.
+
+## Create an application
+
+```sh
+gungnir new hello
+cd hello
+```
+
+A project contains application declarations, routes, views, configuration, bootstrap code, tests, and build metadata.
+
+## Create a controller
+
+```gnr
+controller HomeController {
+    index() {
+        return text("Hello from Gungnir");
+    }
+}
+```
+
+## Register a route
+
+```gnr
+Route::get("/", HomeController::index);
+```
+
+## Build and run
+
+```sh
 gungnir build
-~~~
+gungnir run
+```
 
-Create a release build:
+The development server can rebuild and restart the application while source files change:
 
-~~~text
-gungnir build --release
-~~~
-
-Framework-generated native files and build output live under `.gungnir/`. Treat that directory as generated output rather than application source.
-
-## Development Command
-
-The project-aware CLI also exposes:
-
-~~~text
+```sh
 gungnir dev
-~~~
+```
 
-Gungnir is still pre-stable. Before upgrading the framework, validate the application against the exact version or commit you intend to deploy.
+The generated environment listens on `http://127.0.0.1:8000`. Change `APP_HOST` and `APP_PORT` in `.env` to choose another address. See [Configuration](/docs/configuration/).
+
+## Validate source
+
+```sh
+gungnirc app/controllers/HomeController.gnr --check
+```
+
+The check command performs Gungnir parsing and semantic/framework validation without producing a native executable.
+
+## Generate application files
+
+Use the CLI to generate framework declarations:
+
+```sh
+gungnir make:model User
+gungnir make:controller UserController
+gungnir make:migration CreateUsers
+gungnir make:middleware Authenticate
+gungnir make:policy UserPolicy app.models.User::User
+gungnir make:event UserRegistered
+gungnir make:listener SendWelcomeEmail app.events.UserRegistered::UserRegistered
+gungnir make:notification WelcomeNotification app.models.User::User
+gungnir make:mail WelcomeMail
+gungnir make:job ProcessImport
+```
+
+Generated declarations follow Gungnir naming and project-layout conventions.
+
+## Next steps
+
+Continue with [The Gungnir Language](/docs/language/), [Routing](/docs/routing/), [Controllers](/docs/controllers/), [Models](/docs/models/), [ORM](/docs/orm/), [Migrations](/docs/migrations/), and [Testing](/docs/testing/).

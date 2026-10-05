@@ -1,50 +1,39 @@
 ---
 title: "Runtime & Infrastructure"
-description: "Overview of Gungnir's HTTP, async, cancellation, queues, scheduling, storage, logging, observability, lifecycle, and production foundations."
+description: "HTTP serving, cancellation, service lifetimes, health, and observability."
 slug: "runtime"
 group: "Runtime & Infrastructure"
 groupOrder: 8
 order: 2
-status: preview
+status: development
 ---
 
-Gungnir includes runtime foundations for:
+## HTTP and async execution
 
-- HTTP serving;
-- async execution;
-- request cancellation;
-- dependency injection;
-- sessions;
-- cache;
-- queues;
-- scheduling;
-- storage;
-- logging;
-- tracing and metrics;
-- application lifecycle;
-- graceful shutdown;
-- health and readiness.
+HTTP/1.1 is the core protocol. TLS and HTTP/2 are optional builds with native dependencies; HTTP/2 requires TLS. Request lifetimes carry cancellation into cooperative async work, streams, and WebSocket handlers.
 
-## Runtime Boundary
+Read [HTTP Runtime](/docs/http-runtime/) and [Async Runtime](/docs/async-runtime/).
 
-These systems support application code but should not leak backend or transport details into normal `.gnr` syntax.
+## Application lifecycle
 
-## Queues
+Applications move through created, registering, booting, ready, running, stopping, and stopped stages. Applications own routing, container, database, and view contexts. Background workers and schedules require explicit startup.
 
-Background work belongs to the queue runtime rather than pretending synchronous work is asynchronous.
+Read [Application Lifecycle](/docs/request-lifecycle/), [Queues](/docs/queues/), and [Scheduler](/docs/scheduler/).
 
-## Scheduling
+## Services and storage
 
-Scheduled application work belongs to the scheduler runtime.
+Register dependency factories and adapters before resolving generated artifacts. Request-scoped dependencies belong to request service scopes. Configure local or S3-compatible disks for storage.
 
-## Storage
-
-Storage is represented through framework abstractions rather than filesystem/cloud-specific syntax in normal application code.
+Read [Dependency Injection](/docs/container/), [Cache](/docs/cache/), and [Storage](/docs/storage/).
 
 ## Observability
 
-Logging, tracing, and metrics are runtime infrastructure and should remain usable without coupling application declarations to a specific telemetry backend.
+Logging, tracing, and metrics have native APIs and memory sinks. The optional OTLP HTTP exporter requires explicit configuration; a build flag does not install an exporter or establish complete distributed tracing.
 
-## Production Lifecycle
+Read [Logging and Observability](/docs/logging-observability/).
 
-The runtime owns graceful shutdown, cancellation, health, readiness, and application lifecycle integration.
+## Production behavior
+
+Health checks, overload admission, supervision, and graceful HTTP drain support production operation. Applications configure their probes, limits, dependencies, and process supervision. Cancellation remains cooperative.
+
+Read [Production](/docs/production/) and [Production Resilience](/docs/production-resilience/).

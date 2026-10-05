@@ -1,45 +1,31 @@
 ---
 title: "Testing & Production"
-description: "Test the real framework path and deploy native Gungnir applications with explicit runtime lifecycle behavior."
+description: "Compiler checks, generated application tests, and deployment contracts."
 slug: "testing-production"
 group: "Testing & Deployment"
 groupOrder: 9
 order: 1
-status: preview
+status: development
 ---
 
-## Testing Strategy
+## Validate and build an application
 
-Gungnir testing is intended to exercise the real framework path.
+```sh
+gungnirc app/controllers/HomeController.gnr --check
+gungnir build
+gungnir build --release
+```
 
-The project strategy includes:
+`--check` performs parsing and semantic/framework validation. Native compilation and adapter integration tests provide additional coverage. Read [Testing](/docs/testing/) and [Compiler Correctness](/docs/compiler-correctness/).
 
-- HTTP/router tests;
-- dependency overrides;
-- database isolation;
-- queue, mail, and storage test adapters;
-- lexer/parser tests;
-- Syntax AST tests;
-- semantic tests;
-- Validated AST tests;
-- generated C++ compile tests;
-- backend integration tests.
+## Deploy a native application
 
-## Native Build
+Use the release application build with its required native dependencies and explicitly configured production adapters. Register readiness checks, configure HTTP limits and timeouts, and choose TLS or a reverse proxy.
 
-Gungnir requires C++23 and CMake 3.25 or newer.
+Read [Production](/docs/production/), [Production Resilience](/docs/production-resilience/), and [Security Hardening](/docs/security-hardening/).
 
-Typical native framework build:
+## Development contract
 
-~~~sh
-cmake -S . -B build
-cmake --build build
-~~~
+Gungnir remains Development with experimental compatibility. Pin the framework commit used by the application. Version 1.0 requires a fully satisfied completeness audit.
 
-Application projects use the Gungnir CLI for normal builds and runs.
-
-## Production Lifecycle
-
-The runtime provides foundations for health/readiness, cancellation, graceful shutdown, and application lifecycle.
-
-Deployment orchestration, service management, secrets management, and infrastructure policy remain deployment responsibilities.
+Read [Development Status](/docs/status/), [Stability](/docs/stability/), and [Upgrading](/docs/upgrading/).

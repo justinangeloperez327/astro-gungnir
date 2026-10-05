@@ -1,38 +1,28 @@
 ---
 title: "Application Lifecycle"
-description: "Understand application boot, service registration, readiness, request handling, and shutdown."
+description: "Application Lifecycle: current Gungnir APIs, usage, configuration, and documented limits."
 slug: "request-lifecycle"
 group: "Architecture Concepts"
 groupOrder: 3
-order: 1
-status: preview
+order: 10
+status: development
+sourcePath: "docs/application-lifecycle.md"
 ---
 
-Gungnir applications have an explicit lifecycle from creation through shutdown.
+## Overview
+The implemented stages are `created`, `registering`, `booting`, `ready`, `running`, `stopping` and `stopped`. There is no `configuring` enum stage.
 
-## Lifecycle
+Application exposes `create`, `provider`, `boot`, `shutdown`, `run`, `listen`, `stop`, and lifecycle inspection. Hooks are registered through `on_boot`, `on_ready` and `on_shutdown`. Providers expose `register_services`, `boot`, `ready` and `shutdown` hooks. Startup reaches `ready` only after every ready hook succeeds. A startup failure shuts down registered providers in reverse order, including a partially registered provider, then rethrows the original error. Shutdown attempts every cleanup hook and exposes collected exceptions through `shutdown_errors()`. A stopped or failed application is not reusable; construct a new instance.
 
-At a high level:
+Applications own their routing, container, database and view contexts. Use `app.activate()` around native work; request dispatch and framework task/executor paths carry their owning context. HTTP resources are initialized when listening starts, so constructing an application for a CLI task does not start an HTTP runtime.
 
-~~~text
-Application creation
-→ environment / configuration
-→ provider and service registration
-→ framework boot
-→ ready
-→ HTTP/runtime execution
-→ stopping
-→ stopped
-~~~
+## Scope
+Dependency-graph ordering, automatic ownership of every background service and full deadline-bounded draining are design requirements rather than universal guarantees. Configure readiness checks and runtime supervision explicitly.
 
-## Requests
 
-The HTTP runtime receives a request, applies middleware, resolves routing/controller behavior, and serializes the resulting response.
 
-## Async and Cancellation
+- [include/gungnir/core/application.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/core/application.hpp)
+- [include/gungnir/core/lifecycle.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/core/lifecycle.hpp)
+- [include/gungnir/core/provider.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/core/provider.hpp)
 
-Asynchronous application work is backed by the native runtime. Request cancellation and graceful shutdown belong to runtime infrastructure, not to application-level socket management.
-
-## Production
-
-Health/readiness and graceful shutdown are part of the runtime contract so applications can integrate with deployment infrastructure without reimplementing process lifecycle behavior.
+See the [documentation index](/docs/), [getting started](/docs/getting-started/), and [target design](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/docs/design/application-lifecycle.md).

@@ -1,18 +1,18 @@
 ---
 title: "Configuration"
-description: "Configure a Gungnir application using .env values loaded by Application::create()."
+description: "Environment values, native bootstrap hooks, and optional database adapters."
 slug: "configuration"
 group: "Getting Started"
 groupOrder: 1
 order: 4
-status: preview
+status: development
 ---
 
-## Environment File
+## Environment values
 
-A new project creates `.env` and `.env.example`. The current scaffold includes:
+A generated project includes `.env` and `.env.example`:
 
-~~~text
+```text
 APP_NAME="My App"
 APP_ENV=development
 APP_DEBUG=true
@@ -28,40 +28,32 @@ DB_PORT=
 DB_DATABASE=
 DB_USERNAME=
 DB_PASSWORD=
-~~~
+```
 
-Process environment variables take precedence over values loaded from `.env`.
+Process environment variables take precedence over `.env`. `APP_HOST` and `APP_PORT` select the HTTP address; the default is `http://127.0.0.1:8000`. Set `APP_DEBUG=false` for production.
 
-## Application Bootstrap
+## Native bootstrap
 
-`Application::create()` is the convention-first bootstrap entry point:
+`bootstrap/app.hpp` is editable application code. Builds preserve it. Register adapters, service providers, dependency bindings, and middleware in `bootstrap::configure(Application&)`. Use `bootstrap::boot(Application&)` for registrations that require a booted application.
 
-~~~gungnir
-app = Application::create();
+These hooks use the native C++ API. For example, within `bootstrap::configure`:
 
-Route::get("/", HomeController::index);
+```cpp
+const auto name = app.config().string("app.name");
+const auto port = app.config().integer("server.port");
+const auto debug = app.config().boolean("app.debug");
+```
 
-app.run();
-~~~
+See [Dependency Injection](/docs/container/) and [Application Lifecycle](/docs/request-lifecycle/).
 
-Application creation establishes the base path, loads environment values, prepares configuration, and resolves the configured view root.
+## Database adapters
 
-## Reading Configuration
+Generated projects link and register native database adapters exported by the installed Gungnir package. The selected backend must have been built with its native dependencies. Setting an environment value alone does not install a driver.
 
-~~~gungnir
-const name = app.config().string("app.name");
-const port = app.config().integer("server.port");
-const debug = app.config().boolean("app.debug");
-~~~
+`DB_CONNECTION` selects a backend and `DB_NAME` names the application's connection. With no configured database, the generated welcome page can still run; database operations require a configured connection. See [Database](/docs/database/) for backend capabilities.
 
-`app.run()` uses the configured server host and port. Explicit listening remains available:
+## Application services
 
-~~~gungnir
-app.listen(8000, "127.0.0.1");
-~~~
+The generated bootstrap provides memory cache, queue, and mail plus local storage. Memory services are process-local. A separate queue worker needs a shared backend such as Redis, configured consistently with the HTTP application. Configure authentication, persistent sessions and remember-token storage explicitly.
 
-## Database Configuration
-
-Database environment values configure settings. A concrete database adapter still has to be built and registered for the selected backend.
-
-Setting `DB_CONNECTION=postgresql`, for example, does not by itself install libpq or register the PostgreSQL adapter.
+See [Queues](/docs/queues/), [Scheduler](/docs/scheduler/), [Authentication](/docs/auth/), and [Production](/docs/production/).

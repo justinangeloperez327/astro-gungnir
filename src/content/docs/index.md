@@ -1,68 +1,214 @@
 ---
 title: "Introduction"
-description: "Gungnir is an expressive web framework built in C++23 with a focused .gnr application language."
+description: "An expressive C++23 web framework with a structured application language and native runtime."
 slug: ""
 group: "Getting Started"
 groupOrder: 1
 order: 1
-status: preview
+status: development
+sourcePath: "README.md"
 ---
 
-**Gungnir is an expressive web framework built in C++23.**
+**Gungnir is an expressive C++23 web framework with a structured application language.**
 
-Application code is written in Gungnir's focused `.gnr` language and compiles to ordinary, inspectable C++23.
+Gungnir targets a Laravel/Adonis-style development experience while retaining native C++ deployment, interoperability, and inspectable generated code.
 
-Gungnir is designed around expressive application syntax, convention over boilerplate, strongly typed application code, native performance, and C++ interoperability.
+> Project status: **Development**. Gungnir has no 1.0 release candidate. 1.0 will be assigned only after the completeness gate is satisfied.
 
-## Application Code
+## What Gungnir looks like
 
-~~~gnr
+```gnr
 model User {
     table = 'users';
-
-    fillable = [
-        'name',
-        'email'
-    ];
-
-    posts() {
-        return hasMany('posts');
-    }
+    fillable = ['name', 'email'];
+    timestamps = true;
 }
-~~~
+```
 
-~~~gnr
+```gnr
 controller UserController {
-    inject UserService users;
-
-    public async show(int id) {
-        const user = await users.find(id);
-
-        if (user == null) {
-            return response(null, 404);
-        }
-
-        return json(user);
+    public index() {
+        return json(User::orderBy('name').get());
     }
 }
-~~~
+```
 
-~~~gnr
-Route::get('/users/{user}', UserController::show)
-    .middleware(AuthMiddleware)
-    .name('users.show');
-~~~
+```gnr
+Route::get('/users', UserController::index)
+    .name('users.index');
+```
 
-## Framework Direction
+Structured `.gnr` source is parsed, semantically validated, lowered through typed structural C++ IR, and emitted as C++23.
 
-Gungnir treats models, controllers, middleware, migrations, policies, events, listeners, notifications, and mail as first-class application concepts.
+## Development identity
 
-The language intentionally does **not** try to reproduce all of C++. Native pointers, references, allocator syntax, template plumbing, and coroutine machinery belong to generated/runtime C++, not normal application source.
+Development builds intentionally do not claim a public release version.
 
-## Pre-1.0 Status
+```text
+package_version=development
+language_version=development
+compiler_contract=development
+diagnostic_contract=development
+structured_feature_freeze=false
+compatibility=experimental
+```
 
-Gungnir is under active development and is **pre-1.0**.
+CMake uses internal numeric version `0.0.0` only because its package machinery requires a numeric value. It is not a public Gungnir version.
 
-The canonical documentation describes the target language and framework contract. Some compiler/runtime areas are still being migrated toward that contract, so a documented target feature is not automatically proof that the current compiler implements every detail.
+Native development metadata uses:
 
-Read [Current Status](/docs/status/) before relying on a feature in production.
+```text
+native API contract = development
+native ABI epoch    = 0
+release channel     = development
+```
+
+See [Development Status](/docs/status/).
+
+## Installation
+
+Requirements:
+
+- C++23-compatible compiler;
+- CMake 3.25 or newer.
+
+The latest source is the authoritative development build. Historical preview packages remain available from [GitHub Releases](https://github.com/justinangeloperez327/gungnir/releases), but they do not represent the current development contract.
+
+### Build from source
+
+```sh
+cmake -S . -B build \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DGUNGNIR_BUILD_TOOLS=ON \
+  -DGUNGNIR_BUILD_TESTS=OFF
+
+cmake --build build --parallel 2
+cmake --install build
+```
+
+Verify:
+
+```sh
+gungnir --version
+gungnirc --version
+gungnirc --print-contract
+```
+
+Development builds report `Gungnir development`.
+
+## Quick start
+
+```sh
+gungnir new hello
+cd hello
+gungnir build
+gungnir run
+```
+
+Development mode:
+
+```sh
+gungnir dev
+```
+
+The generated project defaults to:
+
+```text
+http://127.0.0.1:8000
+```
+
+See [Getting Started](/docs/getting-started/) and the canonical [Hello Gungnir example](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/examples/hello/README.md).
+
+## Canonical compiler architecture
+
+```text
+.gnr source
+    ↓
+Lexer
+    ↓
+Parser
+    ↓
+Syntax AST
+    ↓
+Semantic + type analysis
+    ↓
+Validated AST
+    ↓
+Typed structural C++ IR
+    ↓
+C++23 emitter
+    ↓
+Native compiler
+    ↓
+Application
+```
+
+`gungnirc --check` is the authoritative structured semantic gate. `gungnir build` additionally performs C++ generation and native compilation.
+
+## Framework surface
+
+The framework already contains substantial implementation across:
+
+- models and ORM;
+- migrations;
+- controllers and routing;
+- middleware;
+- validation;
+- authentication and authorization;
+- sessions and CSRF;
+- events and listeners;
+- jobs/queues and scheduler;
+- notifications and mail;
+- views, storage and cache;
+- SQLite, PostgreSQL, MySQL/MariaDB, SQL Server and MongoDB adapters;
+- async runtime and cancellation;
+- HTTP serving and WebSockets;
+- health/readiness and graceful shutdown;
+- logging/observability;
+- production resilience and overload admission.
+
+A subsystem is not considered **complete** merely because its type, parser node, interface, or basic implementation exists. Gungnir 1.0 requires end-to-end behavior, tests, consistent DX, backend coverage where applicable, and current documentation.
+
+## 1.0 release rule
+
+Gungnir will become `1.0.0` only after:
+
+1. all intended framework features are complete;
+2. compiler architecture is consistent;
+3. framework APIs are consistent;
+4. database/backend behavior is verified;
+5. security and production readiness are verified;
+6. integration/stress/fuzz/performance tests are satisfactory;
+7. installers/packages are verified;
+8. documentation matches implementation;
+9. the final completeness audit is fully green.
+
+There is no phase-number-based version promotion.
+
+## Documentation
+
+Start with:
+
+- [Documentation Index](/docs/)
+- [Development Status](/docs/status/)
+- [Getting Started](/docs/getting-started/)
+- [CLI and Code Generation](/docs/cli/)
+- [Language Frontend](/docs/language/)
+- [ORM](/docs/orm/)
+- [HTTP Runtime](/docs/http-runtime/)
+- [Production](/docs/production/)
+- [Security](/docs/security-hardening/)
+- [Stability](/docs/stability/)
+
+The `docs/design/` directory contains intended architecture and future-facing design. Current implementation guides and executable tests remain authoritative.
+
+## Project ecosystem
+
+- [Changelog](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/CHANGELOG.md)
+- [Contributing](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/CONTRIBUTING.md)
+- [Engineering Contract Audits](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/engineering/README.md)
+- [Support](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/SUPPORT.md)
+- [Security Policy](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/SECURITY.md)
+- [License](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/LICENSE)
+
+Documentation integrity, development metadata, package consumers, compiler conformance, runtime correctness and the canonical example are continuously validated in CI.

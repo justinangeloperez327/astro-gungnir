@@ -1,39 +1,72 @@
 ---
-title: "Database Backends"
-description: "Understand Gungnir's database backend contract and how backend-specific capabilities stay outside normal application syntax."
+title: "Database"
+description: "Database: current Gungnir APIs, usage, configuration, and documented limits."
 slug: "database"
 group: "Database & ORM"
 groupOrder: 7
-order: 1
-status: preview
+order: 10
+status: development
+sourcePath: "docs/database.md"
 ---
 
-The database runtime is separated from ORM and application-language semantics.
+Gungnir provides a unified database layer for application connections, queries, transactions, migrations, ORM persistence, and supported SQL and document databases.
 
-## Backends
+## Connections
 
-The Gungnir backend contract includes or targets:
+Applications configure named database connections through environment and configuration values. A default connection is used unless a model or operation selects another connection.
+
+## Supported databases
+
+Gungnir provides adapters for:
 
 - SQLite
 - PostgreSQL
-- MySQL / MariaDB-compatible clients
-- SQL Server
+- MySQL and MariaDB
+- Microsoft SQL Server
 - MongoDB
 
-Backend capability differences remain explicit.
+Database-specific documentation explains configuration and capabilities for each adapter.
 
-MongoDB, for example, remains document-native rather than pretending to expose relational semantics.
+## Connection pools
 
-## Application Boundary
+Database connections are managed through pools so requests and background work can lease connections without opening a new network connection for every operation.
 
-Normal model and ORM code should not depend on backend-specific driver syntax.
+## Transactions
 
-Backend adapters, native client libraries, connection behavior, and capabilities belong to the database runtime.
+Use transactions when a group of operations must commit atomically:
 
-## ORM Integration
+```gnr
+database.transaction(() => {
+    const project = Project::create(data);
+    AuditEntry::create({
+        "project_id": project.id,
+        "action": "created"
+    });
+});
+```
 
-Models and ORM queries use the same application-facing contract while the runtime/compiler selects backend-appropriate behavior.
+Nested transaction behavior follows the selected database driver's transaction/savepoint capabilities.
 
-## Migration Integration
+## Queries
 
-Migrations describe schema intent at the application level. Backend-specific SQL or document commands belong to backend compilers/adapters.
+The query layer uses bound parameters for application values. Identifiers that must be dynamic are validated separately rather than being treated as bound values.
+
+## ORM
+
+Models use the database layer for hydration, persistence, eager loading, pagination, and relationships.
+
+See [ORM](/docs/orm/).
+
+## Migrations
+
+Database structure is managed through migrations.
+
+See [Migrations](/docs/migrations/).
+
+## Multiple connections
+
+Models can select a named connection through model metadata, allowing an application to separate operational, reporting, or service-specific data stores.
+
+## MongoDB
+
+MongoDB uses the same application database manager but retains document-database semantics where SQL concepts do not apply.

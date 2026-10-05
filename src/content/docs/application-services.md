@@ -1,74 +1,43 @@
 ---
-title: "Events, Notifications & Mail"
-description: "Define application events, listeners, notifications, and mail as first-class Gungnir declarations."
+title: "Application Services"
+description: "Events, listeners, jobs, scheduling, notifications, and mail in current Gungnir applications."
 slug: "application-services"
 group: "Application"
 groupOrder: 6
 order: 1
-status: preview
+status: development
 ---
 
-## Events
+## Events and listeners
 
-~~~gnr
-event UserRegistered {
-    User user;
-}
-~~~
+Declare typed events and inject `Events` into producers. Generated applications register listeners during boot. Synchronous dispatch invokes listeners in priority order; async listeners require awaited `dispatchAsync`. Events run in the current process and have no persistence or retry policy.
 
-Events describe application occurrences.
+Read [Events](/docs/events/) and [Listeners](/docs/listeners/).
 
-## Listeners
+## Jobs and queues
 
-~~~gnr
-listener SendWelcomeNotification {
-    public handle(UserRegistered event) {
-        Notification::send(
-            event.user,
-            WelcomeNotification()
-        );
-    }
-}
-~~~
+A `job` contains serializable data and a `handle()` method. Inject `Queue` to dispatch it. Injected services are resolved in the worker, rather than serialized into the payload.
 
-Listeners react to events.
+```sh
+gungnir queue:work
+gungnir queue:work --once
+```
 
-## Notifications
+Use a shared queue such as Redis when producer and worker run in separate processes. Jobs may execute more than once; handlers must tolerate retries. Read [Queues and Jobs](/docs/queues/).
 
-~~~gnr
-notification WelcomeNotification {
-    public via(User user) {
-        return ['mail'];
-    }
+## Scheduling
 
-    public mail(User user) {
-        return WelcomeMail(
-            user: user
-        );
-    }
-}
-~~~
+Define `function void schedule(Scheduler schedule)` in `routes/console.gnr`. The application registers it during boot; workers and schedulers start explicitly:
 
-Notifications choose one or more delivery channels.
+```sh
+gungnir schedule:run
+gungnir schedule:work
+```
 
-## Mail
+Scheduled jobs publish to the configured queue. Multi-process locks require a shared lock store. Read [Scheduler](/docs/scheduler/).
 
-~~~gnr
-mail WelcomeMail {
-    User user;
+## Notifications and mail
 
-    public subject() {
-        return 'Welcome to Gungnir';
-    }
+Notifications select channels with `via` and compose messages with `toMail` and `toDatabase`. Mail declarations compose subject, text, and HTML. Configure the application's transport and delivery adapters in bootstrap.
 
-    public content() {
-        return view('mail/welcome', {
-            'user': user
-        });
-    }
-}
-~~~
-
-The canonical language treats events, listeners, notifications, and mail as first-class application declarations.
-
-Because Gungnir is pre-1.0, consult the current compiler/runtime build when depending on these newer declaration forms.
+Read [Notifications](/docs/notifications/) and [Mail](/docs/mail/).
