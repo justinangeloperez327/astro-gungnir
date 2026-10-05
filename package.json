@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build && pagefind --site dist",
+    "build": "astro build && pagefind --site dist && npm run docs:check -- --built",
     "build:site": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "docs:sync": "node scripts/sync-gungnir-docs.mjs",
+    "docs:check": "node scripts/check-docs.mjs"
   },
   "dependencies": {
     "astro": "7.3.5"

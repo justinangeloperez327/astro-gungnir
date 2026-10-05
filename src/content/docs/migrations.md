@@ -1,40 +1,63 @@
 ---
 title: "Migrations"
-description: "Define database schema changes with Gungnir's first-class migration declaration."
+description: "Migrations: current Gungnir APIs, usage, configuration, and documented limits."
 slug: "migrations"
-group: "Framework"
-groupOrder: 4
-order: 2
-status: preview
+group: "Database & ORM"
+groupOrder: 7
+order: 15
+status: development
+sourcePath: "docs/migration.md"
 ---
 
-Database schema belongs in migrations.
+Migrations version an application's database structure.
 
-## Migration Declaration
+## Creating a migration
 
-~~~gnr
-migration CreateUsersTable {
+```sh
+gungnir make:migration CreateUsers
+```
+
+## Migration declaration
+
+```gnr
+migration CreateUsers {
     up() {
-        Table::create('users', (table) => {
+        Table::create("users", (table) => {
             table.id();
-            table.string('name');
-            table.string('email').unique();
+            table.string("name");
+            table.string("email").unique();
             table.timestamps();
         });
     }
 
     down() {
-        Table::dropIfExists('users');
+        Table::dropIfExists("users");
     }
 }
-~~~
+```
 
-A migration defines a forward `up()` operation and a reverse `down()` operation.
+`up` applies the migration and `down` reverses it.
 
-## Schema Intent
+## Columns
 
-Migration source should express application schema intent. Backend-specific SQL or document commands belong to database compilers/adapters rather than application migration code.
+The migration API provides common column types including strings, text, integer families, booleans, decimals, floating-point values, JSON, UUIDs, dates/times, timestamps, binary data, foreign IDs, and soft-delete timestamps.
 
-## Backend Differences
+## Modifiers
 
-Relational databases and MongoDB do not share identical schema semantics. Gungnir keeps those capability differences explicit rather than pretending all backends behave like SQL.
+Columns can be configured with modifiers such as nullable values, defaults, uniqueness, indexes, primary keys, unsigned numeric behavior, and foreign-key references.
+
+## Indexes and foreign keys
+
+Migrations can create, remove, and rename indexes and define foreign-key constraints with delete/update behavior.
+
+## Altering tables
+
+Use `Table::alter` to change an existing table.
+
+## Running migrations
+
+The Gungnir CLI applies pending migrations in order and records completed migrations. Rollback operations execute the corresponding `down` methods.
+
+## Portability
+
+The migration layer translates supported operations to the selected database backend. Database-specific features should be isolated when an application must remain portable across engines.

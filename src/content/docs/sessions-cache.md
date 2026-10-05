@@ -1,27 +1,25 @@
 ---
 title: "Sessions & Cache"
-description: "Use the session and cache runtime foundations that support Gungnir applications."
+description: "Request session state and JSON-compatible caching with explicitly configured stores."
 slug: "sessions-cache"
 group: "Runtime & Infrastructure"
 groupOrder: 8
 order: 1
-status: preview
+status: development
 ---
-
-Gungnir includes runtime foundations for both sessions and cache.
 
 ## Sessions
 
-Sessions provide request/application state across browser requests and support authentication workflows.
+Session middleware attaches session state to requests. Gungnir provides memory and Redis stores, flash state, and session lifecycle APIs. Session authentication requires a configured guard and identity restoration.
 
-Session storage is a runtime concern rather than part of the Gungnir language syntax itself.
+Read [Sessions](/docs/sessions/) and [Authentication](/docs/auth/).
 
 ## Cache
 
-The cache layer provides a storage abstraction for application values and reusable cached work.
+Inject `Cache` to read and write JSON-compatible values using the configured store. `get` returns `Json?`; expiration values use whole seconds. A `remember` factory is synchronous and concurrent misses may invoke it more than once.
 
-Concrete cache backends and operational guarantees depend on the selected runtime adapters.
+Read [Cache](/docs/cache/) for examples, expiration behavior, and backend configuration.
 
-## Application Contract
+## Store selection
 
-Controllers and services should depend on framework/session/cache abstractions rather than backend-specific client plumbing.
+Memory stores serve development and tests. Shared deployments require appropriate shared or persistent adapters configured through the native bootstrap. Session state and cached values have different lifetimes and consistency requirements.

@@ -1,27 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const controllerExample = `controller UserController {
-    inject UserService users;
-
-    public async show(int id) {
-        const user = await users.find(id);
-
-        if (user == null) {
-            return response(null, 404);
-        }
-
-        return json(user);
+const controllerExample = `controller HomeController {
+    Response index() {
+        return text("Hello from Gungnir");
     }
-}`;
+}
+
+Route::get("/", HomeController::index);`;
 
 const features = [
   ['01', 'Focused .gnr Language', 'Write application-oriented types, functions, modules, collections, optional values, and async code without C++ plumbing.'],
-  ['02', 'First-class Declarations', 'Model controllers, middleware, migrations, policies, events, listeners, notifications, and mail directly in the language.'],
+  ['02', 'First-class Declarations', 'Declare models, controllers, middleware, migrations, policies, events, listeners, jobs, notifications, and mail.'],
   ['03', 'Model-centric ORM', 'Query, paginate, eager load relationships, use soft deletes, and keep persistence behavior attached to models.'],
-  ['04', 'Routing & HTTP', 'Define routes, controller actions, middleware, request validation, responses, and server-rendered views.'],
+  ['04', 'Routing & HTTP', 'Use named routes, nested groups, constraints, model binding, structured validation, multipart uploads, and server-rendered views.'],
   ['05', 'Native C++23 Output', 'Compile application source to ordinary, inspectable C++23 while keeping backend details outside normal app syntax.'],
-  ['06', 'Runtime Foundations', 'Use dependency injection, sessions, cache, queues, scheduling, storage, observability, health, and graceful shutdown.'],
+  ['06', 'Application Services', 'Inject cache, storage, and queues; run job workers and scheduled tasks through the CLI. Configure production adapters in the application bootstrap.'],
 ];
 ---
 
@@ -51,6 +45,10 @@ const features = [
             Write focused .gnr application code with first-class framework concepts, then compile it to ordinary, inspectable native C++23.
           </p>
 
+          <p class="mt-4 text-sm text-gungnir-muted dark:text-gungnir-dark-muted">
+            In development. <a href="/docs/status/" class="text-gungnir-blue underline dark:text-gungnir-blue-light">1.0 follows framework completeness.</a>
+          </p>
+
           <div class="mt-9 flex flex-wrap gap-3">
             <a href="/docs/getting-started/" class="inline-flex min-h-12 items-center justify-center rounded-lg bg-gungnir-blue px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-gungnir-blue-deep focus-visible:ring-4 focus-visible:ring-gungnir-blue/15">
               Get started
@@ -75,7 +73,7 @@ const features = [
           <div class="overflow-hidden rounded-lg border border-black/80 bg-gungnir-ink shadow-2xl shadow-black/10">
             <div class="flex min-h-11 items-center justify-between border-b border-white/10 px-4">
               <span class="font-mono text-[10px] font-bold tracking-[0.1em] text-gungnir-silver">GNR</span>
-              <span class="font-mono text-[11px] text-gungnir-silver">app/controllers/user_controller.gnr</span>
+              <span class="font-mono text-[11px] text-gungnir-silver">HomeController.gnr + routes/web.gnr</span>
             </div>
             <pre class="overflow-x-auto p-5 text-[13px] leading-7 text-white sm:p-7 sm:text-sm"><code>{controllerExample}</code></pre>
           </div>

@@ -1,58 +1,26 @@
 ---
-title: "Functions & Async"
-description: "Define typed functions and asynchronous functions without exposing C++ coroutine wrapper types."
+title: "Functions"
+description: "Functions: current Gungnir APIs, usage, configuration, and documented limits."
 slug: "functions-async"
 group: "Language"
 groupOrder: 2
-order: 2
-status: preview
+order: 12
+status: development
+sourcePath: "docs/functions.md"
 ---
 
-## Functions
+## Overview
+Use `function int add(int left, int right = 2) { return left + right; }` with `gungnirc --strict`. Functions require declared return types. Calls support literal defaults and named arguments; supplied arguments are evaluated in source order. Framework methods infer their documented response/decision/void contracts. Public, protected and private members are checked.
 
-Functions declare application-facing parameter and return types:
+## Scope
+Defaults currently require literal constants. Native overload resolution, variadic functions and general class inheritance are outside this profile. Async calls require explicit `await` inside an async callable.
 
-~~~gnr
-function string fullName(
-    string first,
-    string last
-) {
-    return first + ' ' + last;
-}
-~~~
 
-## Async Functions
 
-Async functions expose their **logical return type**:
+- [Structured compiler API](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/language/compiler.hpp)
+- [Structured compiler tests](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/tests/structured_language.cpp)
 
-~~~gnr
-async function User loadUser(int id) {
-    return await users.find(id);
-}
-~~~
+- [include/gungnir/language/ast.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/language/ast.hpp)
+- [src/language/parser.cpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/src/language/parser.cpp)
 
-Application code does not spell native coroutine wrappers such as `Task<User>`.
-
-The compiler may generate coroutine-backed C++ internally, but the application contract remains `User`.
-
-## Controller Async
-
-The same rule applies inside controllers:
-
-~~~gnr
-controller UserController {
-    inject UserService users;
-
-    public async show(int id) {
-        const user = await users.find(id);
-
-        if (user == null) {
-            return response(null, 404);
-        }
-
-        return json(user);
-    }
-}
-~~~
-
-Async is semantic rather than decorative: `await` represents an operation that may suspend.
+See the [documentation index](/docs/), [getting started](/docs/getting-started/), and [target design](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/docs/design/functions.md).

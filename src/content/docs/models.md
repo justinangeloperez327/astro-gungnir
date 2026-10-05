@@ -1,74 +1,132 @@
 ---
-title: "Models & ORM"
-description: "Define persistence metadata in models and use Gungnir's model-centric ORM contract."
+title: "Models"
+description: "Models: current Gungnir APIs, usage, configuration, and documented limits."
 slug: "models"
-group: "Framework"
-groupOrder: 4
-order: 1
-status: preview
+group: "Database & ORM"
+groupOrder: 7
+order: 11
+status: development
+sourcePath: "docs/model.md"
 ---
 
-## Model Declaration
+Models represent application data and provide the entry point to Gungnir's ORM.
 
-~~~gnr
+A model automatically participates in querying, hydration, persistence, dirty tracking, serialization, relationships, eager loading, and model collections.
+
+## Defining a model
+
+```gnr
 model User {
-    table = 'users';
-    primaryKey = 'id';
+    table = "users";
 
     fillable = [
-        'name',
-        'email'
+        "name",
+        "email"
     ];
 
+    hidden = [
+        "password"
+    ];
+
+    casts = {
+        "active": "bool",
+        "settings": "json"
+    };
+
     timestamps = true;
-
-    posts() {
-        return hasMany('posts');
-    }
 }
-~~~
+```
 
-Models describe persistence metadata and relationships.
+Gungnir uses model metadata to define persistence and serialization behavior. Database tables and columns are created with [migrations](/docs/migrations/), not by model declarations.
 
-**Database schema belongs to migrations**, not model declarations.
+## Table and connection
 
-## Querying
+By convention, Gungnir derives a plural snake-case table name from the model name. Override it when necessary:
 
-~~~gnr
-const users = User::where('active', true)
-    .with('profile')
-    .orderBy('name')
-    .paginate(25);
-~~~
+```gnr
+model AuditEntry {
+    table = "audit_log";
+    connection = "reporting";
+}
+```
 
-The ORM contract is model-centric and distinguishes a query from a materialized collection.
+## Primary keys
 
-## ORM Contract
+Models use `id` as their conventional primary key. A different key can be declared explicitly:
 
-The canonical ORM contract covers:
+```gnr
+model User {
+    primaryKey = "uuid";
+    incrementing = false;
 
-- querying and filtering;
-- aggregates;
-- pagination;
-- CRUD;
-- soft deletes;
-- eager loading;
-- relationships;
-- many-to-many operations;
-- transactions;
-- locks;
-- serialization;
-- model hydration;
-- lifecycle behavior.
+    casts = {
+        "uuid": "string"
+    };
+}
+```
+
+Incrementing keys use integer-compatible primary-key types.
+
+## Mass assignment
+
+`fillable` defines attributes that may be assigned through mass-assignment operations:
+
+```gnr
+model Project {
+    fillable = [
+        "name",
+        "status"
+    ];
+}
+```
+
+## Serialization
+
+Use `hidden` to exclude sensitive attributes and `visible` when a model should expose an explicit allow-list. Hidden attributes take precedence.
+
+```gnr
+model User {
+    hidden = [
+        "password",
+        "remember_token"
+    ];
+}
+```
+
+## Casts
+
+Casts define the application type of persisted attributes:
+
+```gnr
+model Project {
+    casts = {
+        "active": "bool",
+        "budget": "decimal",
+        "settings": "json",
+        "starts_at": "datetime"
+    };
+}
+```
+
+## Timestamps and soft deletes
+
+```gnr
+model Project {
+    timestamps = true;
+    softDeletes = true;
+}
+```
+
+Timestamp-enabled models expose `created_at` and `updated_at`. Soft-delete models expose `deleted_at` and use soft-delete-aware ORM operations.
+
+## Persistence and dirty tracking
+
+Hydrated models retain their original persisted values. Attribute changes make the model dirty until a successful persistence operation synchronizes its original state.
 
 ## Relationships
 
-Relationships are declared as model behavior:
+Models declare relationships to other models and can eager-load them to avoid N+1 query patterns. See [Relationships](/docs/relationships/).
 
-~~~gnr
-posts() {
-    return hasMany('posts');
-}
-~~~
+## Querying
 
-Gungnir's ORM is intended to keep relationship semantics explicit while avoiding N+1 behavior through eager loading.
+Models provide the ORM query entry point for retrieval, filtering, ordering, pagination, creation, updates, deletion, and eager loading. See [ORM](/docs/orm/).

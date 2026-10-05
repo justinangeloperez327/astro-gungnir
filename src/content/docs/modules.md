@@ -1,44 +1,30 @@
 ---
 title: "Modules"
-description: "Organize .gnr source through static modules and explicit imports."
+description: "Modules: current Gungnir APIs, usage, configuration, and documented limits."
 slug: "modules"
 group: "Language"
 groupOrder: 2
-order: 3
-status: preview
+order: 16
+status: development
+sourcePath: "docs/modules.md"
 ---
 
-Gungnir modules are **static source-language modules**.
+## Overview
+`gungnirc ROOT --project` compiles `.gnr` modules together. A dotted module name maps to its path relative to ROOT; an explicit `module` declaration must match. Imports may use aliases, for example `import billing as Billing;` followed by `Billing::invoice()`. Top-level declarations are exported by default; `export` is accepted explicitly. Missing imports, cycles, duplicate aliases/declarations and ambiguous imported names are diagnosed. Dependency order and file order are deterministic.
 
-They are not C++ headers, C++20 modules, or runtime package loaders.
+## Application builds and incremental output
 
-## File Mapping
+New `gungnir` projects use the same validated module graph for application builds. All imports are checked on every assembly, including transitive dependencies and deleted modules. `CppEmitter::emit_units` emits a shared declaration header and one implementation file per module. Files are rewritten only when their content changes. CMake tracks the shared interface, native bootstrap headers, and implementation dependencies across CLI invocations: body-only edits usually rebuild one module; interface changes conservatively rebuild dependents through the shared header. Removed modules are removed from the build's source list. Failed validation leaves previously generated output intact.
 
-A file such as:
+This is incremental native compilation, not a persisted parser/semantic cache. Changes that alter generated symbol identities may also regenerate other implementation files. Standalone `gungnirc ROOT --project` still expects only structured modules. Application route/bootstrap handling belongs to `gungnir build`; see [CLI and code generation](/docs/cli/).
 
-~~~text
-app/models/user.gnr
-~~~
 
-maps conventionally to:
 
-~~~text
-app.models.user
-~~~
+- [Structured compiler API](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/language/compiler.hpp)
+- [Structured compiler tests](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/tests/structured_language.cpp)
 
-## Imports
+- [include/gungnir/language/module.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/language/module.hpp)
+- [include/gungnir/language/dependency_graph.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/language/dependency_graph.hpp)
+- [src/cli/project.cpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/src/cli/project.cpp)
 
-Imports are explicit:
-
-~~~gnr
-import app.models.user;
-import app.services.billing as Billing;
-~~~
-
-Aliases are part of the source-language import contract.
-
-## Compilation Role
-
-Module resolution belongs to the compiler. Dependencies are resolved before semantic validation and structural lowering.
-
-Application code should not use native include mechanics to represent ordinary Gungnir module relationships.
+See the [documentation index](/docs/), [getting started](/docs/getting-started/), and [target design](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/docs/design/modules.md).
