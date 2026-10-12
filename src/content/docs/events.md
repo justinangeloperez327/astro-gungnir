@@ -1,11 +1,10 @@
 ---
 title: "Events"
-description: "Events: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use events in your Gungnir application."
 slug: "events"
-group: "Application"
+group: "Application Services"
 groupOrder: 6
-order: 10
-status: development
+order: 3
 sourcePath: "docs/event.md"
 ---
 

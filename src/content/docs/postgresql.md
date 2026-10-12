@@ -1,15 +1,12 @@
 ---
 title: "PostgreSQL Adapter"
-description: "PostgreSQL Adapter: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use postgresql adapter in your Gungnir application."
 slug: "postgresql"
 group: "Database & ORM"
-groupOrder: 7
-order: 16
-status: development
+groupOrder: 4
+order: 8
 sourcePath: "docs/postgresql.md"
 ---
-
-> **Status: Development.** This guide describes the current implementation and documented limits. The 1.0 compatibility contract is not frozen yet.
 
 ## Current behavior
 
@@ -35,14 +32,26 @@ Select `DB_CONNECTION=postgresql` and configure the server/database/credentials 
 
 Live integration tests use `GUNGNIR_POSTGRESQL_INTEGRATION_TESTS=ON` and need a reachable correctly configured server. Enabling a build flag does not connect to a database.
 
-## Limits and planned work
+## Generated applications
 
+A custom SDK built with this adapter automatically links and registers it for
+generated `.gnr` applications. Select that SDK with `GUNGNIR_CMAKE_PREFIX` and
+configure the application's `.env`:
+
+```dotenv
+DB_CONNECTION=postgresql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=gungnir
+DB_USERNAME=postgres
+DB_PASSWORD=your-password
+```
+
+Live CI uses PostgreSQL 16 and verifies installed application migrations, model
+persistence, bound queries, pagination, relationships and nested transactions.
+Incrementing model inserts use `RETURNING` to hydrate the generated primary key
+before the model is returned to the application.
+The standard core/application packages do not bundle this adapter.
+
+## Limitations
 Check NUMERIC/DECIMAL conversions and backend capability reporting before depending on exact decimal semantics.
-
-## Implementation references
-
-- [include/gungnir/database/postgresql.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/database/postgresql.hpp)
-- [CMakeLists.txt](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/CMakeLists.txt)
-- [include/gungnir/database/settings.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/database/settings.hpp)
-
-See the [documentation index](/docs/), [getting started](/docs/getting-started/), and [target design](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/docs/design/postgresql.md).

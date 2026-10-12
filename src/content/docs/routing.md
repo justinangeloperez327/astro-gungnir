@@ -1,11 +1,10 @@
 ---
 title: "Routing"
-description: "Routing: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use routing in your Gungnir application."
 slug: "routing"
-group: "Framework"
-groupOrder: 4
-order: 11
-status: development
+group: "HTTP"
+groupOrder: 3
+order: 2
 sourcePath: "docs/routing.md"
 ---
 

@@ -1,11 +1,10 @@
 ---
 title: "ORM Relationships"
-description: "ORM Relationships: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use orm relationships in your Gungnir application."
 slug: "relationships"
 group: "Database & ORM"
-groupOrder: 7
-order: 13
-status: development
+groupOrder: 4
+order: 5
 sourcePath: "docs/relationships.md"
 ---
 

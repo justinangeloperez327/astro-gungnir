@@ -1,11 +1,10 @@
 ---
 title: "Models"
-description: "Models: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use models in your Gungnir application."
 slug: "models"
 group: "Database & ORM"
-groupOrder: 7
-order: 11
-status: development
+groupOrder: 4
+order: 3
 sourcePath: "docs/model.md"
 ---
 

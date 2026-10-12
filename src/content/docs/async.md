@@ -1,23 +1,36 @@
 ---
 title: "Async and Await"
-description: "Async and Await: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use async and await in your Gungnir application."
 slug: "async"
 group: "Language"
 groupOrder: 2
-order: 13
-status: development
+order: 5
 sourcePath: "docs/async.md"
 ---
 
-## Overview
-The async lowerer handles supported explicitly typed methods and rewrites async/await into native coroutine forms. Native runtime uses Task<T>.
+Gungnir supports asynchronous application methods with `async` and
+`await`. Async methods compile to C++23 coroutine-based tasks.
 
-## Scope
-Async is not evidence of non-blocking I/O. The target implicit framework return contracts, typed arrow async closures, structured concurrency and fully validated awaitability remain compiler/runtime work.
+## Write an asynchronous handler
 
+```gnr
+controller ReportController {
+    async index() {
+        const report = await reports.generate();
+        return json(report);
+    }
+}
+```
 
+`await` suspends the current coroutine while an awaitable operation runs.
+The awaited operation must have a supported task/result type. Route handlers
+still return ordinary framework responses.
 
-- [src/language/async_lowering.cpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/src/language/async_lowering.cpp)
-- [include/gungnir/core/task.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/core/task.hpp)
+## What to consider
 
-See the [documentation index](/docs/), [getting started](/docs/getting-started/), and [target design](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/docs/design/async.md).
+Async does not automatically make blocking database drivers or arbitrary
+native calls non-blocking. Use the async services supported by your selected
+adapters, propagate cancellation, and avoid holding references to
+request-lifetime objects beyond their scope.
+
+See [Language](/docs/language/), [Functions](/docs/functions-async/) and [Controllers](/docs/controllers/).

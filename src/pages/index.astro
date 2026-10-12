@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import source from '../data/gungnir-source.json';
 
 const controllerExample = `controller HomeController {
     Response index() {
@@ -10,12 +11,12 @@ const controllerExample = `controller HomeController {
 Route::get("/", HomeController::index);`;
 
 const features = [
-  ['01', 'Focused .gnr Language', 'Write application-oriented types, functions, modules, collections, optional values, and async code without C++ plumbing.'],
-  ['02', 'First-class Declarations', 'Declare models, controllers, middleware, migrations, policies, events, listeners, jobs, notifications, and mail.'],
+  ['01', 'Application Code', 'Write typed functions, modules, collections and async actions in .gnr files.'],
+  ['02', 'Models & Controllers', 'Organize your application with models, controllers, middleware, migrations and policies.'],
   ['03', 'Model-centric ORM', 'Query, paginate, eager load relationships, use soft deletes, and keep persistence behavior attached to models.'],
   ['04', 'Routing & HTTP', 'Use named routes, nested groups, constraints, model binding, structured validation, multipart uploads, and server-rendered views.'],
-  ['05', 'Native C++23 Output', 'Compile application source to ordinary, inspectable C++23 while keeping backend details outside normal app syntax.'],
-  ['06', 'Application Services', 'Inject cache, storage, and queues; run job workers and scheduled tasks through the CLI. Configure production adapters in the application bootstrap.'],
+  ['05', 'Views & Delivery', 'Render HTML with Spear templates and send email and notifications from your application.'],
+  ['06', 'Application Services', 'Use cache and storage, run queued jobs and scheduled tasks, and collect application logs and telemetry.'],
 ];
 ---
 
@@ -42,11 +43,11 @@ const features = [
           </h1>
 
           <p class="mt-7 max-w-2xl text-lg leading-8 text-gungnir-muted dark:text-gungnir-dark-muted sm:text-xl">
-            Write focused .gnr application code with first-class framework concepts, then compile it to ordinary, inspectable native C++23.
+            Build native web applications with familiar models, controllers, routes, validation, authentication and database access.
           </p>
 
           <p class="mt-4 text-sm text-gungnir-muted dark:text-gungnir-dark-muted">
-            In development. <a href="/docs/status/" class="text-gungnir-blue underline dark:text-gungnir-blue-light">1.0 follows framework completeness.</a>
+            Stable {source.version}. <a href="/docs/sdk-packages/" class="text-gungnir-blue underline dark:text-gungnir-blue-light">Choose an SDK for the features you need.</a>
           </p>
 
           <div class="mt-9 flex flex-wrap gap-3">
@@ -87,13 +88,13 @@ const features = [
           <div class="max-w-md">
             <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.14em] text-gungnir-blue">
               <span class="h-px w-7 bg-gungnir-blue"></span>
-              Application language
+              Build with Gungnir
             </p>
             <h2 class="mt-4 text-3xl font-bold tracking-[-0.035em] text-gungnir-ink dark:text-gungnir-dark-text sm:text-4xl">
-              Framework concepts belong in the language.
+              The tools your application needs.
             </h2>
             <p class="mt-5 text-base leading-7 text-gungnir-muted dark:text-gungnir-dark-muted">
-              Gungnir keeps normal application code centered on models, controllers, middleware, migrations, policies, events, views, and services rather than native C++ framework plumbing.
+              Handle requests, work with data, render pages and run background jobs. Configure the services your application uses as it grows.
             </p>
           </div>
 
@@ -120,7 +121,7 @@ const features = [
           <p class="text-xs font-bold uppercase tracking-[0.14em] text-gungnir-blue">Documentation</p>
           <h2 class="mt-3 text-3xl font-bold tracking-[-0.035em] text-gungnir-ink dark:text-gungnir-dark-text">Start with one route.</h2>
           <p class="mt-3 text-base leading-7 text-gungnir-muted dark:text-gungnir-dark-muted">
-            Start with the language contract, then move into models, controllers, routing, validation, and the runtime foundations behind them.
+            Install Gungnir, create an application and add your first controller. Follow the guides for routing, data, security and deployment.
           </p>
         </div>
         <a href="/docs/getting-started/" class="inline-flex min-h-12 shrink-0 items-center justify-center rounded-lg border border-gungnir-ink bg-gungnir-ink px-5 text-sm font-semibold text-white transition hover:border-gungnir-blue hover:bg-gungnir-blue">

@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build && pagefind --site dist && npm run docs:check -- --built",
-    "build:site": "astro build",
+    "build": "node scripts/clean-build.mjs && astro build && pagefind --site dist && npm run docs:check -- --built",
+    "build:site": "node scripts/clean-build.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "docs:sync": "node scripts/sync-gungnir-docs.mjs",

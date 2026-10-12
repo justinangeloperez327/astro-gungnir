@@ -1,102 +1,21 @@
 ---
 title: "Introduction"
-description: "An expressive C++23 web framework with a structured application language and native runtime."
+description: "Build native web applications with models, controllers, routes, views and application services."
 slug: ""
 group: "Getting Started"
 groupOrder: 1
 order: 1
-status: development
 sourcePath: "README.md"
 ---
 
-**Gungnir is an expressive C++23 web framework with a structured application language.**
+**Gungnir is an expressive web framework built in C++23.**
 
-Gungnir targets a Laravel/Adonis-style development experience while retaining native C++ deployment, interoperability, and inspectable generated code.
+Build backend applications using `.gnr` files for models, controllers, routes,
+middleware and application services. Your application runs as a native executable.
 
-> Project status: **Development**. Gungnir has no 1.0 release candidate. 1.0 will be assigned only after the completeness gate is satisfied.
+## Create your first application
 
-## What Gungnir looks like
-
-```gnr
-model User {
-    table = 'users';
-    fillable = ['name', 'email'];
-    timestamps = true;
-}
-```
-
-```gnr
-controller UserController {
-    public index() {
-        return json(User::orderBy('name').get());
-    }
-}
-```
-
-```gnr
-Route::get('/users', UserController::index)
-    .name('users.index');
-```
-
-Structured `.gnr` source is parsed, semantically validated, lowered through typed structural C++ IR, and emitted as C++23.
-
-## Development identity
-
-Development builds intentionally do not claim a public release version.
-
-```text
-package_version=development
-language_version=development
-compiler_contract=development
-diagnostic_contract=development
-structured_feature_freeze=false
-compatibility=experimental
-```
-
-CMake uses internal numeric version `0.0.0` only because its package machinery requires a numeric value. It is not a public Gungnir version.
-
-Native development metadata uses:
-
-```text
-native API contract = development
-native ABI epoch    = 0
-release channel     = development
-```
-
-See [Development Status](/docs/status/).
-
-## Installation
-
-Requirements:
-
-- C++23-compatible compiler;
-- CMake 3.25 or newer.
-
-The latest source is the authoritative development build. Historical preview packages remain available from [GitHub Releases](https://github.com/justinangeloperez327/gungnir/releases), but they do not represent the current development contract.
-
-### Build from source
-
-```sh
-cmake -S . -B build \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DGUNGNIR_BUILD_TOOLS=ON \
-  -DGUNGNIR_BUILD_TESTS=OFF
-
-cmake --build build --parallel 2
-cmake --install build
-```
-
-Verify:
-
-```sh
-gungnir --version
-gungnirc --version
-gungnirc --print-contract
-```
-
-Development builds report `Gungnir development`.
-
-## Quick start
+Install the CLI and SDK using [Getting Started](/docs/getting-started/), then run:
 
 ```sh
 gungnir new hello
@@ -105,110 +24,46 @@ gungnir build
 gungnir run
 ```
 
-Development mode:
+Open `http://127.0.0.1:8000`. Use `gungnir dev` for automatic rebuilds while editing.
 
-```sh
-gungnir dev
+## Handle a request
+
+Define `app/controllers/HomeController.gnr`:
+
+```gnr
+controller HomeController {
+    Response index() {
+        return text("Hello from Gungnir");
+    }
+}
 ```
 
-The generated project defaults to:
+Register it in `routes/web.gnr`:
 
-```text
-http://127.0.0.1:8000
+```gnr
+Route::get("/", HomeController::index);
 ```
 
-See [Getting Started](/docs/getting-started/) and the canonical [Hello Gungnir example](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/examples/hello/README.md).
+## Build your application
 
-## Canonical compiler architecture
+| Task | Guide |
+| --- | --- |
+| Define endpoints and request handlers | [Routing](/docs/routing/), [Controllers](/docs/controllers/) |
+| Validate input and handle uploads | [Requests](/docs/requests-responses/), [Validation](/docs/validation/) |
+| Store and query application data | [Models](/docs/models/), [ORM](/docs/orm/), [Migrations](/docs/migrations/) |
+| Render HTML with Spear templates | [Views](/docs/views/) |
+| Authenticate users and authorize operations | [Authentication](/docs/auth/), [Policies](/docs/policies/) |
+| Process background work and recurring tasks | [Queues](/docs/queues/), [Scheduler](/docs/scheduler/) |
+| Send email and notifications | [Mail](/docs/mail/), [Notifications](/docs/notifications/) |
+| Configure services and persistent storage | [Configuration](/docs/configuration/), [Storage](/docs/storage/) |
+| Test and deploy | [Testing](/docs/testing/), [Production](/docs/production/) |
 
-```text
-.gnr source
-    ↓
-Lexer
-    ↓
-Parser
-    ↓
-Syntax AST
-    ↓
-Semantic + type analysis
-    ↓
-Validated AST
-    ↓
-Typed structural C++ IR
-    ↓
-C++23 emitter
-    ↓
-Native compiler
-    ↓
-Application
-```
+## Choose the right SDK
 
-`gungnirc --check` is the authoritative structured semantic gate. `gungnir build` additionally performs C++ generation and native compilation.
+Gungnir reports **Stable 1.0.0**. Published 1.0.0 downloads provide the core SDK.
+The current-source application SDK adds SQLite and password support;
+Spear templates and typed delivery also require current source.
+Optional adapters have their own dependencies.
 
-## Framework surface
-
-The framework already contains substantial implementation across:
-
-- models and ORM;
-- migrations;
-- controllers and routing;
-- middleware;
-- validation;
-- authentication and authorization;
-- sessions and CSRF;
-- events and listeners;
-- jobs/queues and scheduler;
-- notifications and mail;
-- views, storage and cache;
-- SQLite, PostgreSQL, MySQL/MariaDB, SQL Server and MongoDB adapters;
-- async runtime and cancellation;
-- HTTP serving and WebSockets;
-- health/readiness and graceful shutdown;
-- logging/observability;
-- production resilience and overload admission.
-
-A subsystem is not considered **complete** merely because its type, parser node, interface, or basic implementation exists. Gungnir 1.0 requires end-to-end behavior, tests, consistent DX, backend coverage where applicable, and current documentation.
-
-## 1.0 release rule
-
-Gungnir will become `1.0.0` only after:
-
-1. all intended framework features are complete;
-2. compiler architecture is consistent;
-3. framework APIs are consistent;
-4. database/backend behavior is verified;
-5. security and production readiness are verified;
-6. integration/stress/fuzz/performance tests are satisfactory;
-7. installers/packages are verified;
-8. documentation matches implementation;
-9. the final completeness audit is fully green.
-
-There is no phase-number-based version promotion.
-
-## Documentation
-
-Start with:
-
-- [Documentation Index](/docs/)
-- [Development Status](/docs/status/)
-- [Getting Started](/docs/getting-started/)
-- [CLI and Code Generation](/docs/cli/)
-- [Language Frontend](/docs/language/)
-- [ORM](/docs/orm/)
-- [HTTP Runtime](/docs/http-runtime/)
-- [Production](/docs/production/)
-- [Security](/docs/security-hardening/)
-- [Stability](/docs/stability/)
-
-The `docs/design/` directory contains intended architecture and future-facing design. Current implementation guides and executable tests remain authoritative.
-
-## Project ecosystem
-
-- [Changelog](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/CHANGELOG.md)
-- [Contributing](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/CONTRIBUTING.md)
-- [Engineering Contract Audits](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/engineering/README.md)
-- [Support](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/SUPPORT.md)
-- [Security Policy](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/SECURITY.md)
-- [License](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/LICENSE)
-
-Documentation integrity, development metadata, package consumers, compiler conformance, runtime correctness and the canonical example are continuously validated in CI.
+Follow [SDK Packages](/docs/sdk-packages/) before configuring those features.
+The installation and service guides identify the capabilities each SDK needs.

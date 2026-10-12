@@ -1,11 +1,10 @@
 ---
 title: "ORM"
-description: "ORM: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use orm in your Gungnir application."
 slug: "orm"
 group: "Database & ORM"
-groupOrder: 7
-order: 12
-status: development
+groupOrder: 4
+order: 4
 sourcePath: "docs/orm.md"
 ---
 

@@ -1,11 +1,10 @@
 ---
 title: "Validation"
-description: "Validation: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use validation in your Gungnir application."
 slug: "validation"
-group: "Framework"
-groupOrder: 4
-order: 15
-status: development
+group: "HTTP"
+groupOrder: 3
+order: 7
 sourcePath: "docs/validation.md"
 ---
 

@@ -1,15 +1,12 @@
 ---
 title: "MongoDB Adapter"
-description: "MongoDB Adapter: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use mongodb adapter in your Gungnir application."
 slug: "mongodb"
 group: "Database & ORM"
-groupOrder: 7
-order: 19
-status: development
+groupOrder: 4
+order: 11
 sourcePath: "docs/mongodb.md"
 ---
-
-> **Status: Development.** This guide describes the current implementation and documented limits. The 1.0 compatibility contract is not frozen yet.
 
 ## Current behavior
 
@@ -35,14 +32,35 @@ Select `DB_CONNECTION=mongodb` and configure the server/database/credentials thr
 
 Live integration tests use `GUNGNIR_MONGODB_INTEGRATION_TESTS=ON` and need a reachable correctly configured server. Enabling a build flag does not connect to a database.
 
-## Limits and planned work
+## Generated applications
 
-MongoDB is a document backend. SQL joins, DDL, foreign keys and migration semantics are not portable to it; transaction support depends on server topology.
+A custom SDK built with this adapter automatically links and registers it for
+generated `.gnr` applications. The build requires MongoDB C driver 2.5.4 or newer.
+Select the SDK with `GUNGNIR_CMAKE_PREFIX`, then configure `.env`:
 
-## Implementation references
+```dotenv
+DB_CONNECTION=mongodb
+DB_HOST=127.0.0.1
+DB_PORT=27017
+DB_DATABASE=your-database
+DB_USERNAME=application-user
+DB_PASSWORD=your-password
+```
 
-- [include/gungnir/database/mongodb.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/database/mongodb.hpp)
-- [CMakeLists.txt](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/CMakeLists.txt)
-- [include/gungnir/database/settings.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/database/settings.hpp)
+Optional URI settings can be supplied through `DB_OPTIONS`. Live CI uses MongoDB
+8.0 and a pinned C driver 2.5.4 source build. It verifies native collection
+migrations and an installed `.gnr` application's model persistence, bound
+queries, nullable/hidden values, pagination, eager/inverse relationships,
+restart persistence and migration rollback.
 
-See the [documentation index](/docs/), [getting started](/docs/getting-started/), and [target design](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/docs/design/mongodb.md).
+Models use integer sequence keys by default. Relationships and `with()` use
+document queries; SQL `join()` and row-lock clauses are rejected. Collection
+migrations apply validators and indexes, but declared foreign keys are not
+enforced by MongoDB. Migration records and multi-command schema changes are not
+atomic.
+
+## Limitations
+The current adapter does not implement transaction sessions or savepoints on
+any server topology. `database.transaction(...)` rejects work before the callback
+runs. A replica set alone does not enable Gungnir transactions. The standard
+core/application packages do not bundle this adapter.

@@ -1,17 +1,16 @@
 ---
 title: "Security Hardening"
-description: "Security Hardening: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use security hardening in your Gungnir application."
 slug: "security-hardening"
 group: "Security"
 groupOrder: 5
-order: 13
-status: development
+order: 6
 sourcePath: "docs/security-hardening.md"
 ---
 
-> **Status: Development.** This guide describes the current implementation and documented limits. The 1.0 compatibility contract is not frozen yet.
+Configure security middleware for your application and reverse-proxy environment. See [Security](/docs/security/) for the general security model.
 
-## Phase 14 guarantees
+## Request and response protections
 
 ### HTTP request framing
 
@@ -52,7 +51,7 @@ For `X-Forwarded-For`, Gungnir walks the chain from the direct peer toward the c
 
 ### CORS
 
-CORS preflight is now handled by the middleware rather than depending on an application OPTIONS route.
+CORS preflight is handled by middleware without requiring an application OPTIONS route.
 
 The middleware:
 
@@ -71,7 +70,7 @@ The process-local limiter validates its configuration, emits limit/remaining met
 
 Expired buckets are pruned before capacity rejection. If the bucket table is still full, a new client is rejected instead of growing process memory without bound.
 
-A process-local limiter is not a distributed rate limiter. Multi-instance deployments still require a shared atomic backend when a global quota is needed.
+For global quotas across instances, pass an explicit `RedisRateLimitStore` and shared policy namespace to `http::rate_limit(options, store, namespace)`. Redis admission and first-hit expiration are atomic; backend failures stop the request rather than opening a process-local quota. See [Distributed coordination](/docs/cache-coordination/) for configuration and limits.
 
 ### Cookies and sessions
 
@@ -85,7 +84,7 @@ Session identifiers and CSRF tokens continue to use the operating system cryptog
 
 ### Security response headers
 
-The default security-header middleware continues to emit CSP, frame, MIME-sniffing and referrer controls. Requests considered secure also receive:
+The default security-header middleware emits CSP, frame, MIME-sniffing and referrer controls. Requests considered secure also receive:
 
 ```text
 Strict-Transport-Security: max-age=31536000
@@ -93,33 +92,8 @@ Strict-Transport-Security: max-age=31536000
 
 Only mark a proxied request secure through a configured trusted proxy.
 
-## CI security gate
-
-Phase 14 promotes the following suites into primary pull-request CI:
-
-- `gungnir.security`
-- `gungnir.security_hardening`
-- `gungnir.csrf`
-- `gungnir.auth_session`
-- `gungnir.session_lifecycle`
-- `gungnir.view_security`
-
-The hardening suite includes adversarial cases for HTTP framing, header injection, CORS preflight, proxy spoofing, Host handling, cookie prefixes, request IDs and rate-limit state growth.
-
 ## Remaining boundaries
 
-Phase 14 does not claim a blanket security certification. Applications still need to define authorization rules, allowed hosts/origins/proxies, upload policy, secrets management, TLS termination, distributed rate limiting, database privileges, logging redaction and production error policy.
-
-Optional protocol/adaptor implementations remain subject to their own conformance and integration tests.
-
-## Implementation references
-
-- [include/gungnir/http/security.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/http/security.hpp)
-- [src/http/security.cpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/src/http/security.cpp)
-- [src/http/message.cpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/src/http/message.cpp)
-- [src/http/server.cpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/src/http/server.cpp)
-- [src/http/cookie.cpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/src/http/cookie.cpp)
-- [src/security/security.cpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/src/security/security.cpp)
-- [tests/security_hardening.cpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/tests/security_hardening.cpp)
+These controls do not replace an application security review. Applications still need to define authorization rules, allowed hosts/origins/proxies, upload policy, secrets management, TLS termination, distributed rate limiting, database privileges, logging redaction and production error policy.
 
 See [Security](/docs/security/), [Authentication](/docs/auth/), [Sessions](/docs/sessions/), and [Production](/docs/production/).

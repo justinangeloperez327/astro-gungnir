@@ -1,11 +1,10 @@
 ---
 title: "Scheduler"
-description: "Scheduler: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use scheduler in your Gungnir application."
 slug: "scheduler"
-group: "Application"
+group: "Application Services"
 groupOrder: 6
-order: 13
-status: development
+order: 6
 sourcePath: "docs/scheduler.md"
 ---
 

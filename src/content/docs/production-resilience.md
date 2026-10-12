@@ -1,15 +1,12 @@
 ---
 title: "Production Resilience"
-description: "Production Resilience: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use production resilience in your Gungnir application."
 slug: "production-resilience"
 group: "Testing & Deployment"
-groupOrder: 9
-order: 12
-status: development
+groupOrder: 7
+order: 5
 sourcePath: "docs/production-resilience.md"
 ---
-
-> **Status: Development.** This guide describes the current implementation and documented limits. The 1.0 compatibility contract is not frozen yet.
 
 ## Health
 
@@ -69,27 +66,13 @@ Gungnir intentionally does not retry arbitrary operations automatically. Retryin
 
 ## Shutdown and failure behavior
 
-Phase 11 shutdown guarantees remain authoritative:
+During shutdown:
 
 - admission stops first;
 - in-flight work drains within the configured deadline;
 - cancellation propagates when the deadline expires;
 - supervised services share the process cancellation boundary;
 - fatal supervised runtime failures are retained and surfaced by `RuntimeHost`.
-
-Phase 15 adds health visibility and overload admission on top of those lifecycle guarantees.
-
-## CI resilience gate
-
-Primary pull-request CI runs:
-
-- `gungnir.production_resilience`
-- `gungnir.http_overload`
-- `gungnir.runtime_supervisor`
-- `gungnir.runtime_host`
-- `gungnir.runtime_lifecycle`
-
-The overload test proves that one retained in-flight request can consume the configured dispatch budget while the next request is rejected with 503, then confirms the retained request drains cleanly.
 
 ## Deployment boundaries
 
@@ -106,4 +89,4 @@ Framework resilience is only one layer. Production deployments still need approp
 - telemetry retention/export policy;
 - capacity testing and alerting.
 
-See [Production and Deployment](/docs/production/), [Runtime Correctness](/docs/runtime-correctness/), and [Security Hardening](/docs/security-hardening/).
+See [Production and Deployment](/docs/production/), [Security Hardening](/docs/security-hardening/).

@@ -1,11 +1,10 @@
 ---
 title: "Migrations"
-description: "Migrations: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use migrations in your Gungnir application."
 slug: "migrations"
 group: "Database & ORM"
-groupOrder: 7
-order: 15
-status: development
+groupOrder: 4
+order: 7
 sourcePath: "docs/migration.md"
 ---
 

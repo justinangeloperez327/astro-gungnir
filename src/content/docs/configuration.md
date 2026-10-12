@@ -1,59 +1,66 @@
 ---
 title: "Configuration"
-description: "Environment values, native bootstrap hooks, and optional database adapters."
+description: "Learn how to use configuration in your Gungnir application."
 slug: "configuration"
 group: "Getting Started"
 groupOrder: 1
-order: 4
-status: development
+order: 7
+sourcePath: "docs/configuration.md"
 ---
 
-## Environment values
+`Application::create()` loads the application's environment and `.env` file.
+Standard application, server, and database settings map to the existing
+configuration repository. Deployment environment values take precedence over
+the file. Keep deployment secrets outside committed source files.
 
-A generated project includes `.env` and `.env.example`:
-
-```text
-APP_NAME="My App"
-APP_ENV=development
-APP_DEBUG=true
-APP_HOST=127.0.0.1
-APP_PORT=8000
-VIEW_PATH=views
-
-DB_CONNECTION=
-DB_NAME=default
-DB_POOL_SIZE=1
-DB_HOST=127.0.0.1
-DB_PORT=
-DB_DATABASE=
-DB_USERNAME=
-DB_PASSWORD=
-```
-
-Process environment variables take precedence over `.env`. `APP_HOST` and `APP_PORT` select the HTTP address; the default is `http://127.0.0.1:8000`. Set `APP_DEBUG=false` for production.
-
-## Native bootstrap
-
-`bootstrap/app.hpp` is editable application code. Builds preserve it. Register adapters, service providers, dependency bindings, and middleware in `bootstrap::configure(Application&)`. Use `bootstrap::boot(Application&)` for registrations that require a booted application.
-
-These hooks use the native C++ API. For example, within `bootstrap::configure`:
+Set typed application values in `bootstrap::configure` before requests or workers:
 
 ```cpp
-const auto name = app.config().string("app.name");
-const auto port = app.config().integer("server.port");
-const auto debug = app.config().boolean("app.debug");
+app.config().set("app.name", "Project portal")
+    .set("projects.page_size", gungnir::Int64{25})
+    .set("projects.enabled", true)
+    .set("projects.ratio", 0.5);
 ```
 
-See [Dependency Injection](/docs/container/) and [Application Lifecycle](/docs/request-lifecycle/).
+Read settings through injected Config:
 
-## Database adapters
+```gnr
+controller ConfigurationController {
+    inject Config config;
+    index() {
+        return json({"name": config.string("app.name", "Application"),
+            "pageSize": config.integer("projects.page_size", 25),
+            "enabled": config.boolean("projects.enabled", false),
+            "ratio": config.number("projects.ratio", 1.0)});
+    }
+}
+```
 
-Generated projects link and register native database adapters exported by the installed Gungnir package. The selected backend must have been built with its native dependencies. Setting an environment value alone does not install a driver.
+| Method | Result | Missing-key default |
+| --- | --- | --- |
+| `has(key)` | `bool` | `false` |
+| `get(key)` | `Json?` | Absent optional |
+| `string(key, fallback)` | `string` | Empty string |
+| `integer(key, fallback)` | `int` | `0` |
+| `boolean(key, fallback)` | `bool` | `false` |
+| `number(key, fallback)` | `double` | `0` |
 
-`DB_CONNECTION` selects a backend and `DB_NAME` names the application's connection. With no configured database, the generated welcome page can still run; database operations require a configured connection. See [Database](/docs/database/) for backend capabilities.
+Keys are strings; defaults match the result type. Typed reads use native
+repository conversions and reject incompatible stored values. Integer conversion
+rejects nonfinite and out-of-range numbers; numeric reads require finite values.
+Defaults apply to absent keys; `string` also uses its default for stored null.
+`get` preserves the stored scalar type.
 
-## Application services
+Use `has` to distinguish stored null from an absent setting:
 
-The generated bootstrap provides memory cache, queue, and mail plus local storage. Memory services are process-local. A separate queue worker needs a shared backend such as Redis, configured consistently with the HTTP application. Configure authentication, persistent sessions and remember-token storage explicitly.
+```gnr
+function bool hasOptionalSetting(Config config) {
+    return config.has("optional.setting");
+}
+```
 
-See [Queues](/docs/queues/), [Scheduler](/docs/scheduler/), [Authentication](/docs/auth/), and [Production](/docs/production/).
+Config retains its repository owner and provides read-only application access.
+Configure shared repositories before concurrent work; use a scoped repository
+for request-specific values. Serialize only selected public settings.
+
+See [Dependency Injection](/docs/container/) and [Production](/docs/production/).

@@ -1,11 +1,10 @@
 ---
 title: "Collections"
-description: "Collections: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use collections in your Gungnir application."
 slug: "collections"
 group: "Database & ORM"
-groupOrder: 7
-order: 14
-status: development
+groupOrder: 4
+order: 6
 sourcePath: "docs/collection.md"
 ---
 
@@ -41,29 +40,4 @@ const total = active.reduce(0, (sum, user) => sum + user.id);
 Indexes and slice sizes must be nonnegative. `sortBy` defaults to ascending order.
 Collection callbacks and traversal perform no additional database queries.
 
-## Native C++ operations
-
-`gungnir::orm::Collection<Model>` owns a `std::vector<Model>` and also exposes
-the following native APIs:
-
-| Operation | Behavior |
-| --- | --- |
-| `empty`, `size`, `count` | Inspect the sequence |
-| `first`, `last` | Return a model reference; throw `std::out_of_range` when empty |
-| `at` | Bounds-checked access |
-| `operator[]` | Unchecked indexed access |
-| `find` | Search primary key; return `std::optional<Model>` |
-| `pluck` | Return a vector of attribute values |
-| `filter` | Return another model collection |
-| `each` | Invoke a callback; return void |
-| `map` | Return `std::vector<Result>`, not `Collection<Result>` |
-| `push`, `clear`, `values` | Mutate or access backing storage |
-| `begin`, `end` | Iterate models |
-| `contains`, `every`, `reject` | Evaluate predicates or exclude matching items |
-| `take`, `skip`, `chunk` | Slice or group items; zero chunk size is rejected |
-| `reduce`, `sum` | Fold values; integral sums reject overflow |
-| `sort_by`, `unique` | Stable projection sorting or first-occurrence deduplication |
-| `group_by`, `key_by` | Build maps from projected keys |
-
-See [ORM](/docs/orm/) for database queries and
-[the native collection API](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/orm/collection.hpp) for C++ signatures.
+See [ORM](/docs/orm/) for database queries.

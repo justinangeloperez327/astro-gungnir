@@ -1,420 +1,337 @@
 {
   "repository": "justinangeloperez327/gungnir",
-  "commit": "d21b71cb6ce62edc0f706ca4296716b9d2dd4d70",
+  "commit": "f0d60363fc199cb2650379298242f202628bdc5e",
+  "version": "1.0.0",
   "imported": [
     {
       "path": "README.md",
       "file": "src/content/docs/index.md",
-      "sourceHash": "792f1bd8107cee5e11399d696f87acfaa5d63f2eb10ada337d55b96982efce67",
-      "contentHash": "b2a511826f371b9f2e29f5bb9fe3a1108ac5e8ac63e7fa82bf1345926874e498"
+      "sourceHash": "ad221a26c7e6791a57e53cf6367a16a42a096060995ffc733025eff47b5c8ed8",
+      "contentHash": "d3283d027d231b5050346bf9f08db1e3e013033a3ffbd5554f9376da10939f7e"
     },
     {
       "path": "docs/getting-started.md",
       "file": "src/content/docs/getting-started.md",
-      "sourceHash": "5e5f2d78f0e8089cfafcf3634bb4bbb37d02dcaa840b42e78217e73efcfe7ef9",
-      "contentHash": "aa93658a732c65dd263603e062e11128662e2b81c43473b47ea169b354a5781f"
+      "sourceHash": "bbad31ebef3cebe9e1f9cbbf43414a8621d7de1884ba7e443cebd47c06bd6a3b",
+      "contentHash": "a26f9db5d4b48fe2334e342766c2334727e514c071dfc2b39d5afb75c8e42a7c"
     },
     {
-      "path": "docs/development-status.md",
-      "file": "src/content/docs/status.md",
-      "sourceHash": "2994e225140b36860c44c3015116a263b1cf9ed8e34758b4b532a0187c8438b5",
-      "contentHash": "8fbd3cc3e91da9c6b775ef3f4c60fd5feaf3356bfb423ba95c8f1cd649421644"
+      "path": "docs/sdk-packages.md",
+      "file": "src/content/docs/sdk-packages.md",
+      "sourceHash": "6825e0ab9ee6f2f8b965102930567c50eb8c3e54c2d50ab0c9b388536d873992",
+      "contentHash": "8f788ba3980076abc6e75b3dfc0fe1f6fc1d1234d66c5c4ece355a7d96bff94e"
+    },
+    {
+      "path": "docs/release-v1.md",
+      "file": "src/content/docs/installation.md",
+      "sourceHash": "8ac5b91d761393af5310a535fe6dcbfa26849c23694bf1d17fedc85c34d0611c",
+      "contentHash": "63e0ebb02ea46d02dd3340f149f81ef5d69a537b7d23160296c01e2e3ff89019"
     },
     {
       "path": "docs/cli-codegen.md",
       "file": "src/content/docs/cli.md",
-      "sourceHash": "2cb569d3efbdd7296ea2148275c77696d4b6e71f755e0529a1613ce4217c0281",
-      "contentHash": "92a074fcae467051b35435a6b8b3269559a6bd96e3a312265d12d2402047dfe8"
+      "sourceHash": "a64bd8d970861511736b6d73048444e1ad8925dacb6a1201fce4fbbc0886d4cc",
+      "contentHash": "f11d67ffff8e7de93489e2131be0d0921cf120379064a291614b8cf169bc707f"
     },
     {
       "path": "docs/editor-tooling.md",
       "file": "src/content/docs/editor-tooling.md",
       "sourceHash": "c880a97efdcf6cba8d62d4a2c792ac36fc6d7f76d3e7bf724498d392d9407cf4",
-      "contentHash": "1b8dc6186bb78f8f3b1123264508c6ae4e4d52a47dcc5c140a71e31b27c0a892"
+      "contentHash": "d0290c02e8964646e42833298a663fbbc3bc0c907e39e1be8f534845f0c51f13"
+    },
+    {
+      "path": "docs/configuration.md",
+      "file": "src/content/docs/configuration.md",
+      "sourceHash": "38a4a492e611139a6797f35a4364915238ab6b65a5e1707c3770eaf46e7e5cc0",
+      "contentHash": "94346ffbdcf4298ef0a3e4352e5dc49226368cc62787821f983c83613b56cd5e"
     },
     {
       "path": "docs/language.md",
       "file": "src/content/docs/language.md",
       "sourceHash": "74d6a0ab05b21fe47532572600585f243aae81d8e3d65c1b8c06ff52fbcfb3e0",
-      "contentHash": "56e18fd322ab8fab0e9343345d6eb6ea82333703597ff5ec0420df46add3c259"
+      "contentHash": "10d21a7b94cb3c3dbe4049079a9cbeddb657bff61e897fc67e2c0b0ea037d978"
     },
     {
       "path": "docs/language-types.md",
       "file": "src/content/docs/language-types.md",
-      "sourceHash": "047d8a2f051d5cd28bc9fa24ff9511b6213ddd651ce62ef624492c27f9ecc544",
-      "contentHash": "87b60adf5dff7ddc08037ba3ef600fe628b1c4ba594285d252eb3715854fb2d7"
+      "sourceHash": "5fa55b1dd943d9c859068f0576ea2bc67b5a0bc22ea9909275b9a268861b5312",
+      "contentHash": "dc791f8a1cf43aef42abe9f29792d57d12f255953123d7453ad60c92b9c6898d"
     },
     {
       "path": "docs/functions.md",
       "file": "src/content/docs/functions-async.md",
-      "sourceHash": "3bfff329edcf3a07bc7ac90fed7e1c36023029fe3ec32f018cea17bd7cbbbbe3",
-      "contentHash": "0b25e75a5935b5c17b59257d38aa1d3b19b401cc4818a396eb6141a03bb11040"
+      "sourceHash": "90049a09eb9b72692c0502e8f9086c07603027b8a34d1762747a832bdb9dc691",
+      "contentHash": "e07f09526e41a79506146df772937c5e428c21ecbb6125ceb8dee86d4cea338b"
     },
     {
       "path": "docs/async.md",
       "file": "src/content/docs/async.md",
-      "sourceHash": "aa4f120fb106623738d19999adeb5f34b6686483c5a4047fb2015e2217252661",
-      "contentHash": "4db764a1a9509984c3a4e1facb4a7ec4f04281941b1b0b3a1ddcaa0ddfd0e6f8"
+      "sourceHash": "defb57249a63e01f18067d0af3c9235b3b619a94295478c5b232b67925de1940",
+      "contentHash": "09a536f889d7a567b3831794874831b64163cd782dcdd4a7c7f98efe3589a6f1"
     },
     {
       "path": "docs/expressions.md",
       "file": "src/content/docs/expressions.md",
-      "sourceHash": "9aa8333b4dad0070957bf69f5316e8866b548849d791b4ee59bee6a821cae031",
-      "contentHash": "f336008fdec7a9ecda4847fe1493a4684bc96482ae38b53c05cb5515151872ae"
+      "sourceHash": "b1ae9c7dde88db695eb44fb46c7f9e13dbd18a5b2cb9b923363be9632de981a7",
+      "contentHash": "b2948655bc484a6a56301cd093a0acb759ac5dea03f3aae2885f92e32383a0cf"
     },
     {
       "path": "docs/statements.md",
       "file": "src/content/docs/statements.md",
-      "sourceHash": "cb9f3b75cbd2b052ec9460e293bf04d5b46a81c9b754ee79b5284c8d50a2137f",
-      "contentHash": "f193c3ec4625bdb8934530f2baf8a596a334fc4894d15d48bb6ada3687b16627"
+      "sourceHash": "fdfb478aca98afbeac64a8eb4c10feda340cc8b8b79cba189d913b6270baf2d1",
+      "contentHash": "9ccb0f2764a4607adc9d709e81835eb12abd5cd089444c2c6b007f78be3d6371"
     },
     {
       "path": "docs/modules.md",
       "file": "src/content/docs/modules.md",
-      "sourceHash": "01f4a80b0f1f90d7ee09c376efbd6e5eed4158672da7d525e9555a8eab8b88d3",
-      "contentHash": "38ca57836bd40a8c59c777058d4510d63eb91365a68cd1bc35ee762bb46984de"
-    },
-    {
-      "path": "docs/grammar.md",
-      "file": "src/content/docs/grammar.md",
-      "sourceHash": "621593fbd8d14dfb0c1a3ca6fb185713e27f5cbbf23fc47c681f9e0e7e026943",
-      "contentHash": "7e715f9737557a354bd71fc2f07b21300288a4f11e03e1ffbc2c4e022664de53"
+      "sourceHash": "2088443df3ab96b069630ae872e8921ba928e9215406828fd195d4aa41eb57fc",
+      "contentHash": "f82a70d0804d4ca176cb67448ca87f239778a2724b5aa18b8aa24b3084b2fcef"
     },
     {
       "path": "docs/errors.md",
       "file": "src/content/docs/errors.md",
-      "sourceHash": "fb73e5023a465371fc719e0e1439656dd1b0182ab55864371c00a9a06760b7a1",
-      "contentHash": "f9a508027a337b96b8753cefee25186cb30b558859aef5318f97bf6527d6691d"
-    },
-    {
-      "path": "docs/application-lifecycle.md",
-      "file": "src/content/docs/request-lifecycle.md",
-      "sourceHash": "c1b8ced430873bb6accd8c279cbb2b026edab07f372eed8dc486455bd2126574",
-      "contentHash": "295d4a5faabe6c6c2ba668d5bbb684f02da39361f432c34f67d2ca39d39b5f8e"
-    },
-    {
-      "path": "docs/dependency-injection.md",
-      "file": "src/content/docs/container.md",
-      "sourceHash": "83715e7ffd3302192f8bfba6d2f5f5073c460aec218ef72cad3aa05c5bcf5a1a",
-      "contentHash": "76c43b892d858eb46fa42c4cfb2faef4aacfc23bf1e9322d4632c1994d1db155"
-    },
-    {
-      "path": "docs/extensions.md",
-      "file": "src/content/docs/extensions.md",
-      "sourceHash": "ef263ac7461f130755341de46ff5fa41703a5f9b8688b0b626949d2548a57426",
-      "contentHash": "5d1c5683d98e243ba6bdb29bbd9eb04d1bf0b641e1ba5b3caec3deac70464ba0"
-    },
-    {
-      "path": "docs/controller.md",
-      "file": "src/content/docs/controllers.md",
-      "sourceHash": "2b67a115bda8d809384462530a2a69e70799df2256631743a87781a73d6d542a",
-      "contentHash": "409f5548fe6b49544d6c212e36d8a50e7c96025bcf49d63846f3b69ea65728b4"
+      "sourceHash": "d7d1a5ce28029469cfff62b90bf53c0e7cced0e12e21989a131fae9c9585d61c",
+      "contentHash": "6aad8542d37d3d0ecd0152aab991e92ea5ec93a7e31dc832cc5ad1d9a9ea0a92"
     },
     {
       "path": "docs/routing.md",
       "file": "src/content/docs/routing.md",
       "sourceHash": "b72c5a9be11e86811c424bfb6bf991ffb1e0509e649e4405d5de71e03b865197",
-      "contentHash": "673aca5cb2c3679f9729d032e5c18f0370d9b2097abc5202efd90ec5e14823c3"
+      "contentHash": "4fe4002be43f7e8d72a7ba3562abed12d496b1475b74546ab51358226be1a07d"
+    },
+    {
+      "path": "docs/controller.md",
+      "file": "src/content/docs/controllers.md",
+      "sourceHash": "2b67a115bda8d809384462530a2a69e70799df2256631743a87781a73d6d542a",
+      "contentHash": "2734882f6f7aede0f72408dc1084f097de9d014f0732a8301e834947d3d548e4"
     },
     {
       "path": "docs/middleware.md",
       "file": "src/content/docs/middleware.md",
       "sourceHash": "374df0fd15964f0535ef3c5dcbab45f80e009e25956c97911040b09a16c86d8f",
-      "contentHash": "9442a76c9603740de627bcbc407eccb25537763bef3747a4ab46e6cca6606f94"
+      "contentHash": "157fef47d722f04fbb7052d1eee73fe28276d6d48a9d8b8d09c8a22bf3b26623"
     },
     {
       "path": "docs/request.md",
       "file": "src/content/docs/requests-responses.md",
       "sourceHash": "fb560bb3995f2f891e844d81d154dfe4ae7e7aa98a792d1ac2b529ff4ccd433d",
-      "contentHash": "d852c0ec50404e7e6bc0138decd3bf0ddab1446a91e084b466f273627c159973"
+      "contentHash": "6090133a204a12a2ebc4abe1103082ed93080e829db6366d88891d38444edc33"
     },
     {
       "path": "docs/response.md",
       "file": "src/content/docs/responses.md",
       "sourceHash": "79bef52fb6bd8038e54044fc613c675c15e82708ec6c09f7649b14ac43daaf1d",
-      "contentHash": "aeb429b227f52cc1ca500dfde95fa386d46a13baecfc2ae0e5f600340f2511d0"
+      "contentHash": "421815f8a140bb8e3a1a157cd7f5765feb7c6f71ca05855aa0305fa2469766cc"
     },
     {
       "path": "docs/validation.md",
       "file": "src/content/docs/validation.md",
       "sourceHash": "4f22b2b442b3b07f5affc424187058c96f598eaa4b33dd447fee9db14b256d6a",
-      "contentHash": "85c934bdc8f612a52aba45815aec64beee28b04214ad5288d935378b6c10d049"
+      "contentHash": "9ed2b7227de79e76a8ee56ccc15b08190dd8877774ab14e9b11adf9b43d78d8d"
     },
     {
       "path": "docs/view.md",
       "file": "src/content/docs/views.md",
-      "sourceHash": "707120ad0098e3809ca8d9f20df4a1cd7fbb9712f03e2d358785169137dac07d",
-      "contentHash": "13dc72e92983ab0e08922836f56f767b3cb23391023c33d291389bb5d397b900"
-    },
-    {
-      "path": "docs/authentication.md",
-      "file": "src/content/docs/auth.md",
-      "sourceHash": "b32a0b98ed2a2b337353d7746b2420ed3a232fc979ecf295c096e0da2c20b64e",
-      "contentHash": "fff91d614240c6fa187adc0ec863ea6db63a3d4681520a0f4328e24102d37a72"
-    },
-    {
-      "path": "docs/policy.md",
-      "file": "src/content/docs/policies.md",
-      "sourceHash": "b51077f7457968a85ab2d23e64ac15ecbb610a4e72cea0b800a8742e905e8414",
-      "contentHash": "c8eac0320aac74eaac265fc4c8def5f0ca1ae956048765fe2642a7c67a1036ec"
-    },
-    {
-      "path": "docs/security.md",
-      "file": "src/content/docs/security.md",
-      "sourceHash": "286836f067b4c89ec3ad9f1875a5fc7753250dd517f77eea181f09c4ac66cf84",
-      "contentHash": "99a70ad5cf16baf753663f9bd1c33818380b7332915c866b78029cf88f84f339"
-    },
-    {
-      "path": "docs/security-hardening.md",
-      "file": "src/content/docs/security-hardening.md",
-      "sourceHash": "2b75fa4b78275bfb704aac6a49125f88fbf9843254728049efcbd6e23a4d9d10",
-      "contentHash": "7047c8183f41d2ba428b1b5645b5b4b308777884b99d0cf665585105eeff3ad7"
-    },
-    {
-      "path": "docs/event.md",
-      "file": "src/content/docs/events.md",
-      "sourceHash": "db9cb245c075f558857347515da6ac79d1fe04d4697c3744558f1421c00bd748",
-      "contentHash": "2fdcaafee50af0f32a8334fead93128c283019887a7387e6e10c5f7d26d4b27d"
-    },
-    {
-      "path": "docs/listener.md",
-      "file": "src/content/docs/listeners.md",
-      "sourceHash": "312ad3e259110b9d15aaa433683029290c781ecf5ca3925460f361e19cc1f4de",
-      "contentHash": "59b5aaf6ea54af1f7e8c57b7b885bd8314934e7e08c30818cbb802eed2e84e0e"
-    },
-    {
-      "path": "docs/queues.md",
-      "file": "src/content/docs/queues.md",
-      "sourceHash": "48e85e6addd83736adfcee65faf0bf1be11cc4ad01241952a860b5d93dbf788a",
-      "contentHash": "e168983e5fafff0721ee8174cdd35378f70b0b25abd8fcdf729f98803286f4d9"
-    },
-    {
-      "path": "docs/scheduler.md",
-      "file": "src/content/docs/scheduler.md",
-      "sourceHash": "c1fc0443b8979b255a2e0f5927b9d585dd182848380954364f18bfe74b903cf7",
-      "contentHash": "ba2eafffdffe9e7e7a68cfa08f3b2a0b194750d410163fd8164039edf3e6a4de"
-    },
-    {
-      "path": "docs/notification.md",
-      "file": "src/content/docs/notifications.md",
-      "sourceHash": "1505b2a4154af6210298f7a3c7588dec1b644242cd126594f59c164d6e48d4f9",
-      "contentHash": "78d5184c101a139c3ae6343e1e827aa9b02c2c915d98270f0e0a9e364166baa4"
-    },
-    {
-      "path": "docs/mail.md",
-      "file": "src/content/docs/mail.md",
-      "sourceHash": "d1e19315e35f4e450b4313e8aaf62e1995db0273ad875c2458bd50ea895fd2e1",
-      "contentHash": "cedb999b506b41a684ddb754439324706bd2ef22305dee92ce2c055e2d23d588"
+      "sourceHash": "72b4bf2c3bbf668a730a607e14622375c973472ec1cd00db907d768e42ff6a86",
+      "contentHash": "c134bf25234c34b57dc759f304f3512600c801ace85c6737116d8fc2a20ac34d"
     },
     {
       "path": "docs/database.md",
       "file": "src/content/docs/database.md",
-      "sourceHash": "d2fd36f25c8d65dee0d2f7e60b62864cb3db16e12991a71df0720c79a8eece00",
-      "contentHash": "372b3f418454240bcd9a9fbb4efbc175d61ce62a79d15ba45ea352292f508c08"
+      "sourceHash": "c7d73d4befff9aa2717ab3a62b4fb3b49cc002a11042bcf3170ffc20256bcd95",
+      "contentHash": "1dcf78253b4ee4c3cc5b9e2185721f0087823c7fc5b725325281afb48b51afd1"
     },
     {
       "path": "docs/model.md",
       "file": "src/content/docs/models.md",
       "sourceHash": "5e3a2939b8d5b28987fed1b320b9715ecfa00d48d15cca92c296b319559c65fe",
-      "contentHash": "ab2e477b83dc90bcad520cf89ac507da98c7458bcc23b61b8004c8b2ba75179f"
+      "contentHash": "c86d20b0a626deef973423a5c2751bc1c3afac4c469063e5886d2f5b6aba4ff8"
     },
     {
       "path": "docs/orm.md",
       "file": "src/content/docs/orm.md",
       "sourceHash": "f5b045701d23d7e225993455e4310df6886655dbf739fba5f8d077f7835f67fd",
-      "contentHash": "d6d1c5dfca65043e1d62455986bc748ea96f2ab78d8c684f38aaba298b4a4035"
+      "contentHash": "6234c7ab667b69af8eb61a0f3dd1795c5fab92e05f1b9d5c2b79737a80c4eaa1"
     },
     {
       "path": "docs/relationships.md",
       "file": "src/content/docs/relationships.md",
       "sourceHash": "928d976fb7df6b8146cd7f4671b832744312fc524b0ba265d001438d2c990f04",
-      "contentHash": "d77d4dd72bb67046ca03da847601a0ff6c621046c297c7d098a4ed2cef54ae75"
+      "contentHash": "cc778ffc257b6c6a1e8bfba04eca86eb6a494309a591da6808b749ba1d29b0b8"
     },
     {
       "path": "docs/collection.md",
       "file": "src/content/docs/collections.md",
       "sourceHash": "d7203969d6b61a1d3b73df12b6e1548e7e782e566795e063722d06c5af12e820",
-      "contentHash": "94b4ff022dc2b7658d4503b9120dce6e48cdca0950b7700838e60649d09371bb"
+      "contentHash": "87c38475985b91579b3e2c813a775dd70a2568f2a6c070bbb5fdc3eed47bcf85"
     },
     {
       "path": "docs/migration.md",
       "file": "src/content/docs/migrations.md",
       "sourceHash": "8740834c4f9ad585f4df0645725de6174f7cd2a92277c45daa14bb8ba627a198",
-      "contentHash": "295e1fb3418558fad512d119c908d5534d36774b27225e0b671a252cdf594852"
+      "contentHash": "d62f06bc5b0dfbc7a4ac00dc6922865b20d210711cb7d55a6c8b8aaaa9c0a2a6"
     },
     {
       "path": "docs/postgresql.md",
       "file": "src/content/docs/postgresql.md",
-      "sourceHash": "6102ff4c011714b26064c5d370f28a7696b333d28df20ff304589a19250c4046",
-      "contentHash": "dc5cc2534a225a6a7b7a74b146b4377ce4d1a4e377cf0a276f8e212df9be31be"
+      "sourceHash": "3cd4e1b39566eec00b744ef2bbe62fd3c2cc11c1a2a28becb5ee9803c1b8e588",
+      "contentHash": "dae71487562594e4b2b11fe6c870b3526c46bdf49d1b90632a85bef0fc812940"
     },
     {
       "path": "docs/mysql.md",
       "file": "src/content/docs/mysql.md",
-      "sourceHash": "55a2e7d18d812073c1f43d1aa0c3a4d37b29c7693f67535fff9cd51c103a950f",
-      "contentHash": "f9620f09fb31c9cdff21e3f15151050ded780ba5b66e51b66663802acf3a94f6"
+      "sourceHash": "eef4e186679037389641ac1fd65f7d5ad7d9b26af01c320d1d58e4cd3bd9208f",
+      "contentHash": "5ee6ad4751dfbc152472e57c9e7994c6081a9b01f110dd56aa37afd281e69fba"
     },
     {
       "path": "docs/sqlserver.md",
       "file": "src/content/docs/sqlserver.md",
-      "sourceHash": "834ac5e2c16c4fd4893bc5e17d744a96ac1b97381469c60a4bd433575b16b4c7",
-      "contentHash": "668dd8deea2c5e60f0763accdfbdbd70df01839efc537052da6ff8ab9abaaafa"
+      "sourceHash": "d15af2a4c612bb58ed196bf2416320de85da6e3ae2ea14f927fa0aa90109324e",
+      "contentHash": "fda79b933b6edbeb838fa52c2b8a3c1025b785ee3ea74bc0ba75b45b626eaff4"
     },
     {
       "path": "docs/mongodb.md",
       "file": "src/content/docs/mongodb.md",
-      "sourceHash": "87644c94446a2180b855edfce9e3c2d8fb05b25e2fcd00af2a2c18d9b4105b37",
-      "contentHash": "feafb10d18a23ca9bd500311e03d4a6165d1f626209e2a8df82fd835669cfe5f"
+      "sourceHash": "384b04cad3f7ddbe4d24c5f8d2b8bc8448c2e7b96afdbb05405404c25c244d0e",
+      "contentHash": "e605e5e1dbd7812c1bdd1f6699b5f2dee86578758a8b2098d7d2773902ac6896"
+    },
+    {
+      "path": "docs/authentication.md",
+      "file": "src/content/docs/auth.md",
+      "sourceHash": "262622261e100dc8fce0dbfe5918a1e887a7b9a839195ab9eeb3103b5223f38d",
+      "contentHash": "462a50ab1bcafb75f735961ec9004c76e0af947a72c87995b725a335486d4ba0"
+    },
+    {
+      "path": "docs/policy.md",
+      "file": "src/content/docs/policies.md",
+      "sourceHash": "bd764519a3faf72d943cea9c8ab8f11cc550a3a0d33f3ca0cc9384d72bae7665",
+      "contentHash": "99e8a4251b272980aaa8fe2c4815e9f84d38014da388089a7e90afb7a5b922ac"
     },
     {
       "path": "docs/session.md",
       "file": "src/content/docs/sessions.md",
-      "sourceHash": "24fee6beae3cbf6884497c263d54e2581a6a74b79621047a5c53c17033923fda",
-      "contentHash": "b9ef44cc69df57bab3e9f19b03f77f459876b072a1a6ac9fc831f2c191127cf6"
+      "sourceHash": "95bb51b8eec61690646c33d24d9de949cfcefbd1140f3f280cc17c4c1ef45045",
+      "contentHash": "75bb4f521c249c3c9b3a47b1cd4026ef93b55038b17528abce8ed616d89151c2"
+    },
+    {
+      "path": "docs/security.md",
+      "file": "src/content/docs/security.md",
+      "sourceHash": "9898871e509c979b2220d99ce84281dabfb6e550ffc6268cef49ff4f297e59e8",
+      "contentHash": "b6773dd095e2cc9d16e9380c04c61ce107b523b729d24c597ca1ac0ae5f24623"
+    },
+    {
+      "path": "docs/security-hardening.md",
+      "file": "src/content/docs/security-hardening.md",
+      "sourceHash": "355bdf8fcb47f9e698bde6202f001e0c5d7b6c312d40cabdb5a3584f706e1367",
+      "contentHash": "dcad0e4282b49c61de05394eba8e8c76c107283a0963c703af43cce56754c191"
+    },
+    {
+      "path": "docs/dependency-injection.md",
+      "file": "src/content/docs/container.md",
+      "sourceHash": "d064b3f526f25c191450dac2858eb009fb4a67d1229a9851769179fb19bb7b69",
+      "contentHash": "a6956b9a150178b9d279d2bd2ca279edd20a9228e1eb2fa75b8df0d06ca35b03"
+    },
+    {
+      "path": "docs/event.md",
+      "file": "src/content/docs/events.md",
+      "sourceHash": "db9cb245c075f558857347515da6ac79d1fe04d4697c3744558f1421c00bd748",
+      "contentHash": "db6c0c3b9fb64e0fc0150a4564e33d0a2334db2be0dfa90661717121cb7842e0"
+    },
+    {
+      "path": "docs/listener.md",
+      "file": "src/content/docs/listeners.md",
+      "sourceHash": "312ad3e259110b9d15aaa433683029290c781ecf5ca3925460f361e19cc1f4de",
+      "contentHash": "a01fe8780f3e82e0e46b9267b775e534c930faae265f6d2af9262bed603737e4"
+    },
+    {
+      "path": "docs/queues.md",
+      "file": "src/content/docs/queues.md",
+      "sourceHash": "48e85e6addd83736adfcee65faf0bf1be11cc4ad01241952a860b5d93dbf788a",
+      "contentHash": "7f0496e0162a4c104ddd8eb408c1829224cd1604350e0ff054eb08b02a1d20e7"
+    },
+    {
+      "path": "docs/scheduler.md",
+      "file": "src/content/docs/scheduler.md",
+      "sourceHash": "c1fc0443b8979b255a2e0f5927b9d585dd182848380954364f18bfe74b903cf7",
+      "contentHash": "bc5153279dc97ddf26a847b9b3b5d7e019ea48896b69d6e3e4d7698ce0c000b5"
+    },
+    {
+      "path": "docs/notification.md",
+      "file": "src/content/docs/notifications.md",
+      "sourceHash": "a73bba0b8064c8a58b29ae9adcbfbdad209a9dcaabe6d054561c45d1f18b9bd9",
+      "contentHash": "3de1e64294003751cf510f2bf6ce989b459ae994b9964fbf1f340c10fd91abce"
+    },
+    {
+      "path": "docs/mail.md",
+      "file": "src/content/docs/mail.md",
+      "sourceHash": "d5dd09f6c30494cf0a3e75c428fe2f5489de01f4c973799e33e523247ee5d17e",
+      "contentHash": "3abadb40b13a9f0b1d0f59d74c5882155d324a377b6ae91ac8e2e154c618da5f"
     },
     {
       "path": "docs/cache.md",
       "file": "src/content/docs/cache.md",
-      "sourceHash": "b6c5a4ca9b3dbbc5917e2f094aa1bf4381310e99bb4b688c9737b065a6a59447",
-      "contentHash": "8d76e1814922b220bcbc21ea64a26c3cd92ae0cd0f330aed73174a9c51dc5d91"
+      "sourceHash": "939dc365981b2373c5fac68b731cb48dd54eb96c6f2d0ef2731d7604307688c1",
+      "contentHash": "26bd168bd9727b60926561d4f2b3c7cc463cc12b93a23b145de8feaf954587b6"
+    },
+    {
+      "path": "docs/cache-coordination.md",
+      "file": "src/content/docs/cache-coordination.md",
+      "sourceHash": "a49d537acb4612376bd608ff633bd0c8b7d199beb348a981460edfb7261e9c6c",
+      "contentHash": "93da7c7eaef131559a3509f7909ef62bf1cdcc2f489431e6d264e27f25e73c42"
     },
     {
       "path": "docs/storage.md",
       "file": "src/content/docs/storage.md",
       "sourceHash": "53545492e628de67eb8e79ee71c6148968656a4bd11f631680ad3ed5744b1e80",
-      "contentHash": "4a4ab6b6c7c8cd715801789031cb2f08825efe3f1d2b81cb39f28a3b17d92ef0"
-    },
-    {
-      "path": "docs/async-runtime.md",
-      "file": "src/content/docs/async-runtime.md",
-      "sourceHash": "52d0bf920c8c0d17a1007b3945a7efc691740ebbea57cc49794618e5fa7bf998",
-      "contentHash": "7e5418b00cfe05f6b684620cd1d0538bcdae088ae09cd7553ae5b591d0408e3c"
-    },
-    {
-      "path": "docs/http-runtime.md",
-      "file": "src/content/docs/http-runtime.md",
-      "sourceHash": "6d245fa16dbeb7f6812bdabdae98ed96ba6ace29d8ad2583f79df484420fc84b",
-      "contentHash": "3a4a392b43d4e8bfa3f789d8844c74ca761588a9ed7467d7c00faf088d65fda0"
+      "contentHash": "4ac65ae1a7bc5b389bfde04716a1f40068b5f40be39ffef768730a85aaeb7afb"
     },
     {
       "path": "docs/logging-observability.md",
       "file": "src/content/docs/logging-observability.md",
-      "sourceHash": "c23c0f8ce003a81e5153cbf045818a284f64ef7d04bf12f24c6115968782ddca",
-      "contentHash": "571abc1177fdca31906da5610627896b281fa69a1ba77f712081f42bfe0cfcf3"
+      "sourceHash": "b0b385097dadd859dba2f30a9a5a95765e237579387598d1f2fe46a078d20f8b",
+      "contentHash": "7ff5317e55fbebe208fdf888d2a7c874b449e45cff6e8679f838c08c030d625b"
+    },
+    {
+      "path": "docs/external-observability.md",
+      "file": "src/content/docs/external-observability.md",
+      "sourceHash": "af42d39d37eb8554ed2876fe7a331f2aab0ab097acc33c1bd4d3f5430012d9a8",
+      "contentHash": "51177e7b54cbce3f64376bad5e0bf075428e1ae1faf59dad6c7bf86b7dac2a77"
     },
     {
       "path": "docs/testing.md",
       "file": "src/content/docs/testing.md",
-      "sourceHash": "114aba0b518d897d584bb1b0b4808f56724e92e719ca6584386ac9feeb638228",
-      "contentHash": "222aa4778344b62a964fbd0149333a8a3767e792608306adc4d25d754b608c8b"
+      "sourceHash": "a9e7b3792630f02320e35d584ad327ce40ba2bc3d63ac17470350ae79791e7e7",
+      "contentHash": "c23ecd75979e973af21741c075aea6f5dfc1db6870bcb2132682ad972f1bea58"
     },
     {
       "path": "docs/production.md",
       "file": "src/content/docs/production.md",
-      "sourceHash": "8a9d6d3dcb64df0d84febca5abefaa79a01399cf0296181c55dd691844d5d61e",
-      "contentHash": "b4d5eac6fb6aa549c56fbd7e24594eac7943e0dc73896a9dde8742f14463c4bb"
+      "sourceHash": "411ed853255b240083339d67e93cc6e6ed7440b665bede3a24f6e367f7d12c2e",
+      "contentHash": "daa42506de37a7ad2da4e7a41cdbf161f99748ab6a11396dd35a58c7a6e56319"
+    },
+    {
+      "path": "docs/production-deployment.md",
+      "file": "src/content/docs/production-deployment.md",
+      "sourceHash": "28a8c1e5bd28f8b945081bd1e90e1220b10c5e2d99de807362209fb4490bb32d",
+      "contentHash": "eeedd80374ab77d160cb7588cc2bf0bad4c06864919e700a683dcf3143c1aa24"
     },
     {
       "path": "docs/production-resilience.md",
       "file": "src/content/docs/production-resilience.md",
-      "sourceHash": "1cbc840cd376ead91366e92b752f74c714a0c287eeebc8c747464e6bdf8ec8c3",
-      "contentHash": "bff0f0b729e47255f66a1ec6fb14e9fc66e98b33fac641e2b7bd3128c40b19d4"
+      "sourceHash": "3f89d2f9cc4fdd991efb00b62896c265bf583ea8ea177b245302204678276842",
+      "contentHash": "68b97340cb456cf8c9d8e3df31779bea550c78832f40871e2b27d74169292337"
     },
     {
-      "path": "docs/performance.md",
+      "path": "docs/application-performance.md",
       "file": "src/content/docs/performance.md",
-      "sourceHash": "470a58975e0631e37cf4a88ea5a3400f2df5bd0609b9b3d9c7ea71534e7c25c6",
-      "contentHash": "c1ba3acf84ce144991649ba5a01cd7b6395a88d78974294a00cdd75540af20a9"
-    },
-    {
-      "path": "docs/stability.md",
-      "file": "src/content/docs/stability.md",
-      "sourceHash": "a69bbe69912b4ce7405c2c647b917c01e35cb4e2839201fdbcda8c1da177c007",
-      "contentHash": "585f6edc8ac574e19020ecf45893b2841ef54b28925ba4c9ad4740d7ad0659b9"
+      "sourceHash": "7cd62a2de316bab44db901c6639013494e7300f416c8a476668a522a8d695e6c",
+      "contentHash": "7d0185fb4cf44adb66eb07fdef0ac849b83b14e92158b787d4b6407201553eeb"
     },
     {
       "path": "docs/upgrading.md",
       "file": "src/content/docs/upgrading.md",
-      "sourceHash": "864bbef18cfaf567ae44aeb31b562a9ff3c71b92bfd11df55c8d7b4840813f6e",
-      "contentHash": "512357202cea731bc3b3dd0d76fd463c5e4866e91fc5e7a2688efae07b85652b"
-    },
-    {
-      "path": "docs/native-api-abi.md",
-      "file": "src/content/docs/native-api-abi.md",
-      "sourceHash": "ae327bd483416c98e9ee0fde31a1eccbb909dc9d720e70cf3ba1e960a04bb5a9",
-      "contentHash": "c9184fc4e1fff870e8597b3ef8166bd812306166a29f2680c9fcf835e6f8a723"
-    },
-    {
-      "path": "docs/ast.md",
-      "file": "src/content/docs/ast.md",
-      "sourceHash": "0e93573fcdfeb414edb02a339867b3e013320415bfc7135d3444d9fc02de5078",
-      "contentHash": "c99c5a976e532dbb17f42d271011f725351f00aabbfab1084084eec40783ba7b"
-    },
-    {
-      "path": "docs/semantics.md",
-      "file": "src/content/docs/semantics.md",
-      "sourceHash": "ac43ec3374f399edc1bc184058e24c33fd96385c6199be2c7b80d4137792074e",
-      "contentHash": "d20d5fa4bf5d0c660f9353df8cfde20830b1c46009f88d504b7a0a4cc6212d82"
-    },
-    {
-      "path": "docs/validated-ast.md",
-      "file": "src/content/docs/validated-ast.md",
-      "sourceHash": "ccabd4ba21b8a49f4106fae59cce94fee5d29efb7762807c08e262c8a52f6131",
-      "contentHash": "ec58470356be978ad35d3919c8c226a26ed5c79302f1d7c6396dac2ea09c5c8c"
-    },
-    {
-      "path": "docs/cpp-ir.md",
-      "file": "src/content/docs/cpp-ir.md",
-      "sourceHash": "bb842d7716f531f7113b3527255ea15b08ab51b6c62fc7977c49b5147f078bf0",
-      "contentHash": "c9c5b66ed60066b0d77b0547252030071fd733bda8eb5b439ed3790ff47bb11b"
-    },
-    {
-      "path": "docs/transpiler.md",
-      "file": "src/content/docs/transpiler.md",
-      "sourceHash": "eece3a34e7c5fc8f398831773874261c8e714352f80252a2ddab2ef8435eb7f2",
-      "contentHash": "e1dd1ab9be0af3a8de190799be4853df95c388960b71662a20fe61b25f921fa6"
-    },
-    {
-      "path": "docs/compiler-correctness.md",
-      "file": "src/content/docs/compiler-correctness.md",
-      "sourceHash": "618f362b02e65a2a1a4f44f484727cc6e14606ab6b254da67534e5ce17c640bc",
-      "contentHash": "0f69ad216d72090bf372c5b6dcb0ff16c46597658c973853197e45b3a5b62a2e"
-    },
-    {
-      "path": "docs/compiler-conformance.md",
-      "file": "src/content/docs/compiler-conformance.md",
-      "sourceHash": "a54488d1331d7ab5ab91c8f5d260ded3296cef89bd3536b73aae511d677007af",
-      "contentHash": "2f8a140e8552478938083abfce5eb02c3d3429d778c37d401bad82caa8bf787b"
-    },
-    {
-      "path": "docs/compiler-profiles.md",
-      "file": "src/content/docs/compiler-profiles.md",
-      "sourceHash": "7b955d77e6aaadc5d711f750e81fa06721f63d47ced9da8a32cff176d0575137",
-      "contentHash": "7626e21614248182d3861d50d2954c239f76b5c67b3081addafbefaeb7ae50fb"
-    },
-    {
-      "path": "docs/fuzzing.md",
-      "file": "src/content/docs/fuzzing.md",
-      "sourceHash": "8ce326dc7f4642d46d63aab65e217b0d9418275f4816e473aef52e0a3faaf6ec",
-      "contentHash": "6eb65f4febe4bc2dd68618c7032d4b60a528b8f95166d9530b3450933d514233"
-    },
-    {
-      "path": "docs/framework-semantics.md",
-      "file": "src/content/docs/framework-semantics.md",
-      "sourceHash": "ff5f719b413ca59c9d4c0f75913b7175edd1377d76d0117486f337c091cb1253",
-      "contentHash": "d2e91daa35beeeb12c968a52e589c047299408788a84a3218903dea491e085a8"
-    },
-    {
-      "path": "docs/runtime-correctness.md",
-      "file": "src/content/docs/runtime-correctness.md",
-      "sourceHash": "fc3464452a55b61701ef1a8734be4c5580ab1ed626d60d09cc62e5fe383f7bc4",
-      "contentHash": "a735261de9618dd875a8d29383828bdaba61e5a87f92a5b61a0946345a582e97"
-    },
-    {
-      "path": "docs/database-correctness.md",
-      "file": "src/content/docs/database-correctness.md",
-      "sourceHash": "443d6ac83d3a51f443623f268397f9b1939381772fa5de511bfe4c88eec7e1aa",
-      "contentHash": "a21d689549d734b4f3a7d433ba292a2b22ad631fbcac8ad18e79439e00f44277"
+      "sourceHash": "c5999747027216ab12c0531c5149f4e20920c9bf7b9e07fa756cba3e367920dd",
+      "contentHash": "55ae1597eeb64b6c9e6e2b7c392bb7f1598d5354dae36679c85f43ef4385a685"
     }
   ]
 }

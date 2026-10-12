@@ -1,11 +1,10 @@
 ---
 title: "The Gungnir Language"
-description: "The Gungnir Language: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use gungnir language in your Gungnir application."
 slug: "language"
 group: "Language"
 groupOrder: 2
-order: 10
-status: development
+order: 2
 sourcePath: "docs/language.md"
 ---
 
@@ -80,7 +79,7 @@ controller ReportController {
 }
 ```
 
-Gungnir lowers asynchronous application code onto its coroutine-based C++ runtime.
+Use async actions for supported asynchronous services.
 
 ## Modules
 
@@ -97,5 +96,3 @@ See [Expressions](/docs/expressions/) and [Statements](/docs/statements/).
 ## Framework integration
 
 The language is integrated with Gungnir's routing, ORM, validation, dependency injection, authorization, queues, notifications, mail, views, and other framework services. Framework misuse is diagnosed before native C++ compilation whenever it can be determined statically.
-
-For the compiler architecture itself, see the contributor reference in the [documentation index](/docs/).

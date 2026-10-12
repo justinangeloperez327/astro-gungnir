@@ -1,48 +1,27 @@
 ---
-title: "Upgrading Gungnir"
-description: "Upgrading Gungnir: current Gungnir APIs, usage, configuration, and documented limits."
+title: "Upgrading to 1.0.0"
+description: "Learn how to use upgrading to 1.0.0 in your Gungnir application."
 slug: "upgrading"
-group: "Compatibility"
-groupOrder: 10
-order: 11
-status: development
+group: "Testing & Deployment"
+groupOrder: 7
+order: 7
 sourcePath: "docs/upgrading.md"
 ---
 
-> **Status: Development.** Development builds have no public compatibility version. Pin exact commits or artifacts when evaluating main and rebuild generated/native code after framework changes.
+Install the SDK and CLI together, then rebuild existing applications with the
+matching toolchain. Do not mix historical preview packages with 1.0 headers or
+libraries.
 
-## Historical releases
+## Upgrade an application
 
-Published historical releases such as `0.9.0` remain valid historical artifacts, but they do not describe the current development contract on `main`.
+1. Download the selected SDK and verify its SHA-256 checksum.
+2. Check `gungnir --version` and `gungnirc --version`.
+3. Back up application data and preserve `.env`, bootstrap settings and source.
+4. Run source checks and `gungnir build`; resolve errors before deployment.
+5. Run application tests and preview migration plans before applying migrations.
 
-## Moving from a historical release to development
+Use a separate build directory when changing toolchains or adapter features.
+Rebuild native application code when the platform, runtime or dependencies change.
 
-1. Read [CHANGELOG.md](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/CHANGELOG.md).
-2. Install/build the exact development revision you intend to test.
-3. Verify:
-
-   ```sh
-   gungnir --version
-   gungnirc --version
-   gungnirc --print-contract
-   ```
-
-4. Development builds should report `development` contract identities.
-5. Run `gungnirc <entry>.gnr --check`.
-6. Regenerate/rebuild all generated C++.
-7. Rebuild native application code.
-8. Run the complete application test suite.
-9. Plan database migrations before applying them.
-10. Re-run workload-specific integration, security and performance tests.
-
-## Development compatibility
-
-Do not assume source or ABI compatibility between arbitrary development commits.
-
-The project tries to evolve coherently and regression tests protect implemented behavior, but the framework remains free to make necessary design changes until the 1.0 completeness gate is closed.
-
-## Future 1.0
-
-When the framework is complete, a final coordinated release change will assign the stable 1.0 package/language/compiler/native API/ABI contracts.
-
-See [Development Status](/docs/status/) and [Stability](/docs/stability/).
+See [Installation](/docs/installation/) and [SDK Packages](/docs/sdk-packages/) for the
+published core SDK and capabilities available from current source.

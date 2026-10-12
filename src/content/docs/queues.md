@@ -1,11 +1,10 @@
 ---
 title: "Queues and Jobs"
-description: "Queues and Jobs: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use queues and jobs in your Gungnir application."
 slug: "queues"
-group: "Application"
+group: "Application Services"
 groupOrder: 6
-order: 12
-status: development
+order: 5
 sourcePath: "docs/queues.md"
 ---
 
