@@ -1,11 +1,10 @@
 ---
 title: "Listeners"
-description: "Listeners: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use listeners in your Gungnir application."
 slug: "listeners"
-group: "Application"
+group: "Application Services"
 groupOrder: 6
-order: 11
-status: development
+order: 4
 sourcePath: "docs/listener.md"
 ---
 

@@ -1,11 +1,10 @@
 ---
 title: "Production and Deployment"
-description: "Production and Deployment: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use production and deployment in your Gungnir application."
 slug: "production"
 group: "Testing & Deployment"
-groupOrder: 9
-order: 11
-status: development
+groupOrder: 7
+order: 3
 sourcePath: "docs/production.md"
 ---
 
@@ -20,7 +19,28 @@ HTTP production limits now include `max_active_dispatches` in addition to connec
 
 Register required dependency checks, configure HTTP limits/timeouts, choose TLS or a reverse proxy, and run workers/scheduler under an appropriate host. See [Production Resilience](/docs/production-resilience/) for the Gungnir contract.
 
+For a complete installed application example, follow [Deploy an application on
+Linux](/docs/production-deployment/). It connects real Nginx TLS, Supervisor-managed
+HTTP/worker/scheduler processes, shared SQLite/Redis persistence, health probes,
+verified backups, restart recovery and manual release promotion.
+
+Use the [application load measurements](/docs/performance/) to measure
+HTTP concurrency, real SQLite operations, process memory and request draining
+on your hardware. The shipped workload measures one native loopback process;
+capacity planning must include your application's dependencies and deployment.
+
 ## Shutdown contract
+
+Generated HTTP and background executables handle signals through native
+cancellation. The HTTP executable drains the listener and calls application
+shutdown, including configured tracing and metric exporter cleanup. Native
+applications can pass a `CancellationToken` to `Application::run` or
+`Application::listen` when using their own process supervision.
+
+Optional OTLP export has separate flush/shutdown deadlines and observable drop
+counts. Budget process shutdown for HTTP/work draining and exporter cleanup.
+See [External Observability](/docs/external-observability/) for collector wiring,
+TLS/authentication, structured logs and the verified delivery contract.
 
 `Supervisor::shutdown()` is bounded by its configured supervisor timeout and returns the names of runtimes that still report running. For HTTP, `Application::is_running()` now covers the complete active/draining listen lifecycle rather than only listener admission.
 
@@ -34,13 +54,3 @@ Cancellation remains cooperative. User code that blocks or ignores cancellation 
 ## Limits
 
 The Health object does not install HTTP endpoints automatically; `live()` is not an external process probe. Probe callbacks are isolated and fail closed, but applications still decide which dependencies belong in liveness versus readiness. Runtime lifecycle hardening does not remove the need for workload-specific load testing, dependency health checks, deployment probes and external process supervision.
-
-
-
-- [include/gungnir/production/health.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/production/health.hpp)
-- [include/gungnir/production/runtime_host.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/production/runtime_host.hpp)
-- [include/gungnir/production/supervisor.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/production/supervisor.hpp)
-- [include/gungnir/http/runtime.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/http/runtime.hpp)
-- [Runtime Correctness](/docs/runtime-correctness/)
-
-See the [documentation index](/docs/), [getting started](/docs/getting-started/), and [target design](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/docs/design/production.md).

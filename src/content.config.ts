@@ -11,7 +11,6 @@ const docs = defineCollection({
     group: z.string(),
     groupOrder: z.number().int().nonnegative(),
     order: z.number().int().nonnegative(),
-    status: z.literal('development').default('development'),
     sourcePath: z.string().optional(),
   }),
 });

@@ -1,11 +1,10 @@
 ---
 title: "Database"
-description: "Database: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use database in your Gungnir application."
 slug: "database"
 group: "Database & ORM"
-groupOrder: 7
-order: 10
-status: development
+groupOrder: 4
+order: 2
 sourcePath: "docs/database.md"
 ---
 
@@ -14,6 +13,10 @@ Gungnir provides a unified database layer for application connections, queries, 
 ## Connections
 
 Applications configure named database connections through environment and configuration values. A default connection is used unless a model or operation selects another connection.
+
+The [application SDK](/docs/sdk-packages/) includes SQLite. Other database adapters
+require a custom source build with their native dependencies. A core SDK can run
+an HTTP application with `DB_CONNECTION` empty.
 
 ## Supported databases
 
@@ -45,7 +48,14 @@ database.transaction(() => {
 });
 ```
 
-Nested transaction behavior follows the selected database driver's transaction/savepoint capabilities.
+The callback runs synchronously with no parameters. Its return value is returned
+by `database.transaction`; an exception rolls back the scope before propagating.
+ORM operations inside the callback use the same leased connection. Nested
+transactions use savepoints on SQLite, PostgreSQL, MySQL and SQL Server.
+
+The current MongoDB adapter supports document persistence but does not implement
+transaction sessions or savepoints. It rejects transaction work before invoking
+the callback, including when the server itself has a replica-set topology.
 
 ## Queries
 
@@ -70,3 +80,5 @@ Models can select a named connection through model metadata, allowing an applica
 ## MongoDB
 
 MongoDB uses the same application database manager but retains document-database semantics where SQL concepts do not apply.
+
+See the adapter guides for supported database configuration and dependencies.

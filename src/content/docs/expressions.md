@@ -1,26 +1,48 @@
 ---
 title: "Expressions"
-description: "Expressions: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use expressions in your Gungnir application."
 slug: "expressions"
 group: "Language"
 groupOrder: 2
-order: 14
-status: development
+order: 6
 sourcePath: "docs/expressions.md"
 ---
 
-## Overview
-The structured frontend parses typed literals, calls, members, indexing, lists, objects, arrows, unary/binary operators, ternaries, `await`, safe field access and null coalescing. Arrows receive callback parameter types from migration/collection contexts and capture referenced outer values by value. Optional values can be narrowed by simple null comparisons in if/else branches.
+Expressions produce values for bindings, arguments and return statements.
 
-## Scope
-String interpolation, general native operators, safe optional method calls and general flow-sensitive narrowing are not supported. Await expressions inside null coalescing require a separate binding. Native APIs must be declared through compiler bindings. Framework compatibility expressions continue through the legacy parser.
+## Values and operators
 
+Use string, number, boolean and null literals; lists and objects; member access;
+indexing; calls; arithmetic; comparisons; and boolean operators.
+Parentheses control evaluation order.
 
+```gnr
+function string label(bool enabled) {
+    return enabled ? "Enabled" : "Disabled";
+}
 
-- [Structured compiler API](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/language/compiler.hpp)
-- [Structured compiler tests](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/tests/structured_language.cpp)
+function string fallback(string? value) {
+    return value ?? "Default";
+}
+```
 
-- [include/gungnir/language/ast.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/language/ast.hpp)
-- [src/language/parser.cpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/src/language/parser.cpp)
+## Callbacks
 
-See the [documentation index](/docs/), [getting started](/docs/getting-started/), and [target design](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/docs/design/expressions.md).
+Arrow callbacks are used by collections, migrations and other services:
+
+```gnr
+const active = users.filter((user) => user.active);
+const names = active.map((user) => user.name);
+```
+
+Collection and migration operations supply the callback's parameter types.
+Referenced outer values are captured by value.
+
+## Optional access
+
+Use a null check to handle optional values before accessing their contents.
+Safe field access and null coalescing are available; safe optional method calls
+are not supported. Bind an awaited result separately before using it with `??`.
+
+String interpolation is not supported; concatenate strings with `+`.
+See [Types](/docs/language-types/), [Statements](/docs/statements/) and [Collections](/docs/collections/).

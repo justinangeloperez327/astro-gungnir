@@ -1,11 +1,10 @@
 ---
 title: "Storage"
-description: "Storage: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use storage in your Gungnir application."
 slug: "storage"
-group: "Runtime & Infrastructure"
-groupOrder: 8
-order: 12
-status: development
+group: "Application Services"
+groupOrder: 6
+order: 11
 sourcePath: "docs/storage.md"
 ---
 

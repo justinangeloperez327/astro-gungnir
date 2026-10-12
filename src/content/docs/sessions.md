@@ -1,11 +1,10 @@
 ---
 title: "Sessions"
-description: "Sessions: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use sessions in your Gungnir application."
 slug: "sessions"
-group: "Runtime & Infrastructure"
-groupOrder: 8
-order: 10
-status: development
+group: "Security"
+groupOrder: 5
+order: 4
 sourcePath: "docs/session.md"
 ---
 
@@ -67,6 +66,8 @@ See [Authentication](/docs/auth/).
 ## Drivers
 
 Applications can configure session persistence appropriate to their deployment. Process-local storage is suitable for development and tests; shared production deployments should use a shared session backend.
+
+The Redis store writes complete snapshots with server-side expiration. Concurrent requests use last-writer-wins semantics; rotation cleanup is separate from saving. Shared persistence does not serialize request updates or prevent an old in-flight snapshot from recreating a removed identifier. See [Distributed coordination](/docs/cache-coordination/) for shared deployment settings and limits.
 
 ## Cookies
 

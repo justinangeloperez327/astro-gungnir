@@ -1,11 +1,10 @@
 ---
 title: "Middleware"
-description: "Middleware: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use middleware in your Gungnir application."
 slug: "middleware"
-group: "Framework"
-groupOrder: 4
-order: 12
-status: development
+group: "HTTP"
+groupOrder: 3
+order: 4
 sourcePath: "docs/middleware.md"
 ---
 

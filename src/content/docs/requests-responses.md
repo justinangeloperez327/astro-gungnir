@@ -1,11 +1,10 @@
 ---
 title: "Requests"
-description: "Requests: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use requests in your Gungnir application."
 slug: "requests-responses"
-group: "Framework"
-groupOrder: 4
-order: 13
-status: development
+group: "HTTP"
+groupOrder: 3
+order: 5
 sourcePath: "docs/request.md"
 ---
 

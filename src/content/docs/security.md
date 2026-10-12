@@ -1,11 +1,10 @@
 ---
 title: "Security"
-description: "Security: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use security in your Gungnir application."
 slug: "security"
 group: "Security"
 groupOrder: 5
-order: 12
-status: development
+order: 5
 sourcePath: "docs/security.md"
 ---
 
@@ -17,13 +16,9 @@ Gungnir hardens the HTTP trust boundary: ambiguous HTTP/1 request framing is rej
 Configure the trusted proxy boundary, host validation, CORS, rate limits, session cookies and body/header limits for the actual application. Enforce authorization at the operation boundary. See [Security Hardening](/docs/security-hardening/) for the tested Gungnir contract.
 
 ## Scope
-These mechanisms do not establish a blanket security audit. Raw view output bypasses escaping; model view conversion does not promise hidden-field filtering; session authentication needs application credential verification. Validate all trust boundaries with the selected runtime configuration.
-
-
-
-- [include/gungnir/http/security.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/http/security.hpp)
-- [include/gungnir/security/random.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/security/random.hpp)
-- [include/gungnir/session/middleware.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/session/middleware.hpp)
-- [include/gungnir/auth/authorization.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/auth/authorization.hpp)
-
-See the [documentation index](/docs/), [getting started](/docs/getting-started/), and [target design](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/docs/design/security.md).
+Raw view output bypasses escaping. Models passed through the canonical view API
+respect `hidden` and `visible`, including nested model lists. Session guards
+verify passwords through the configured credential provider; persistent sessions
+and remember tokens require explicitly configured stores. Enforce resource
+policies at the operation boundary and configure deployment trust boundaries.
+See [Authentication](/docs/auth/), [Policies](/docs/policies/), and [Views](/docs/views/).

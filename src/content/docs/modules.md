@@ -1,30 +1,48 @@
 ---
 title: "Modules"
-description: "Modules: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use modules in your Gungnir application."
 slug: "modules"
 group: "Language"
 groupOrder: 2
-order: 16
-status: development
+order: 8
 sourcePath: "docs/modules.md"
 ---
 
-## Overview
-`gungnirc ROOT --project` compiles `.gnr` modules together. A dotted module name maps to its path relative to ROOT; an explicit `module` declaration must match. Imports may use aliases, for example `import billing as Billing;` followed by `Billing::invoice()`. Top-level declarations are exported by default; `export` is accepted explicitly. Missing imports, cycles, duplicate aliases/declarations and ambiguous imported names are diagnosed. Dependency order and file order are deterministic.
+Organize application code in `.gnr` modules. A dotted module name maps to its
+path relative to the project root.
 
-## Application builds and incremental output
+For `math.gnr`:
 
-New `gungnir` projects use the same validated module graph for application builds. All imports are checked on every assembly, including transitive dependencies and deleted modules. `CppEmitter::emit_units` emits a shared declaration header and one implementation file per module. Files are rewritten only when their content changes. CMake tracks the shared interface, native bootstrap headers, and implementation dependencies across CLI invocations: body-only edits usually rebuild one module; interface changes conservatively rebuild dependents through the shared header. Removed modules are removed from the build's source list. Failed validation leaves previously generated output intact.
+```gnr
+module math;
 
-This is incremental native compilation, not a persisted parser/semantic cache. Changes that alter generated symbol identities may also regenerate other implementation files. Standalone `gungnirc ROOT --project` still expects only structured modules. Application route/bootstrap handling belongs to `gungnir build`; see [CLI and code generation](/docs/cli/).
+function int add(int left, int right) {
+    return left + right;
+}
+```
 
+For another module:
 
+```gnr
+import math as Math;
 
-- [Structured compiler API](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/language/compiler.hpp)
-- [Structured compiler tests](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/tests/structured_language.cpp)
+function int result() {
+    return Math::add(2, 3);
+}
+```
 
-- [include/gungnir/language/module.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/language/module.hpp)
-- [include/gungnir/language/dependency_graph.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/language/dependency_graph.hpp)
-- [src/cli/project.cpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/src/cli/project.cpp)
+## Imports and names
 
-See the [documentation index](/docs/), [getting started](/docs/getting-started/), and [target design](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/docs/design/modules.md).
+An explicit `module` declaration must match the file's path. Top-level
+declarations are exported by default; `export` can also be written explicitly.
+Use import aliases to distinguish declarations with the same name.
+Missing imports, import cycles, duplicate aliases and ambiguous names are errors.
+
+## Application builds
+
+Run `gungnir build` to build the application, including its routes and imported
+modules. The CLI reuses unchanged build output during development.
+For standalone language modules, `gungnirc ROOT --project` checks and compiles
+modules together; application routes and bootstrap belong to `gungnir build`.
+
+See [CLI Commands](/docs/cli/) and [Routing](/docs/routing/).

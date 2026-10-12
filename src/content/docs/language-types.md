@@ -1,28 +1,62 @@
 ---
 title: "Language Types"
-description: "Language Types: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use language types in your Gungnir application."
 slug: "language-types"
 group: "Language"
 groupOrder: 2
-order: 11
-status: development
+order: 3
 sourcePath: "docs/language-types.md"
 ---
 
-## Overview
-The structured validator interns resolved types and records a TypeId for every expression. Known calls, return paths, const writes, conditions, callback signatures, optionals and declared field access are checked. Integer literals are range-checked, decimal/hex/binary literals and separators are normalized, and single/double quotes both create strings. Unicode escapes must denote valid scalar values.
+Use declared types for function parameters, results and application fields.
+Local bindings can infer their type from an initial value.
 
-Common-type selection is centralized for conditional expressions, inferred returns and arithmetic results. It is symmetric: operand/branch order does not change the semantic result. `null` combined with a concrete value infers an optional `T?`; matching decimal arithmetic retains the semantic `decimal` type; and mixed numeric families are accepted only through the current widening table (`int -> double`, `int -> decimal`, `uint64 -> decimal`). Signed/unsigned mixing, `uint64 -> double`, and implicit `double <-> decimal` conversion are rejected.
+## Common types
 
-## Scope
-The existing numeric `decimal` alias uses double precision. `Decimal` is a separate exact stored value; `exactDecimal('123.4500')` constructs it from a string, and model `decimal` casts use it. `string()` preserves its representation; `toDouble()` explicitly converts to binary floating point. It has no implicit arithmetic conversion. Unknown native types/calls require explicit compiler bindings. Collection type inference may use JSON values for heterogeneous lists; runtime model casting is a separate concern.
+| Type | Use |
+| --- | --- |
+| `string` | Text; single and double quotes both create strings |
+| `bool` | `true` or `false` |
+| `int` | Signed integer values |
+| `uint64` | Unsigned 64-bit integer values |
+| `double`, `decimal` | Floating-point numeric values |
+| `Decimal` | Exact stored decimal values created from strings |
+| `Json` | Structured application data |
+| `T?` | An optional value of type `T` |
+| `List<T>`, `Map<K, V>` | Typed lists and maps |
+| `Collection<Model>` | A collection of model records |
+| `Request`, `Response` | HTTP input and output |
 
+Models and other application declarations can also be used as types.
 
+## Optional values
 
-- [Structured compiler API](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/language/compiler.hpp)
-- [Structured compiler tests](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/tests/structured_language.cpp)
+An optional value can contain a value or `null`. Check it before using it:
 
-- [include/gungnir/language/types.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/language/types.hpp)
-- [include/gungnir/language/type_system.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/language/type_system.hpp)
+```gnr
+function string displayName(string? name) {
+    if (name == null) {
+        return "Guest";
+    }
+    return name;
+}
+```
 
-See the [documentation index](/docs/), [getting started](/docs/getting-started/), and [target design](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/docs/design/language-types.md).
+Use `??` for a fallback. Combining a concrete value with `null` produces an
+optional value.
+
+## Numeric values
+
+Integer literals must fit their type. Decimal, hexadecimal and binary integer
+literals and digit separators are accepted. Automatic numeric widening supports
+`int` to `double`, `int` to `decimal`, and `uint64` to `decimal`.
+Signed/unsigned mixing, `uint64` to `double`, and implicit conversion between
+`double` and `decimal` are rejected.
+
+The lowercase `decimal` numeric type uses double precision. Use `Decimal` for
+exact stored values: `exactDecimal('123.4500')` preserves the string's decimal
+representation. `string()` preserves that representation; `toDouble()` explicitly
+converts it to floating point. Exact stored decimals have no implicit arithmetic
+conversion. Model `decimal` casts use the exact stored value.
+
+See [Models](/docs/models/), [Collections](/docs/collections/) and [Functions](/docs/functions-async/).

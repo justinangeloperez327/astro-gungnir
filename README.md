@@ -1,139 +1,65 @@
-# Gungnir Website
+# Gungnir Documentation Website
 
-Official documentation website for **Gungnir**, an expressive web framework built in C++23.
+The Astro website for **Gungnir**, an expressive web framework built in C++23.
+The public guides explain installation, application code, HTTP, databases,
+security, services, testing and deployment.
 
-The site is built with Astro and Tailwind CSS 4. Documentation content is managed through Astro Content Collections and indexed after each production build with Pagefind.
+## Run locally
 
-## Documentation Source
+Use Node.js 22.23.3 or a newer supported version and npm:
 
-The public documentation imports current implementation guides from `justinangeloperez327/gungnir`, with the exact source commit and content hashes recorded in `src/data/gungnir-source.json`. Every page links to that framework commit, and imported pages also link to their source guide. Gungnir reports **Development**, with experimental compatibility; 1.0 requires the final completeness gate.
+```sh
+npm install
+npm run dev
+```
 
-Current top-level guides are imported. Future-facing `docs/design/` documents and native implementation references remain clearly linked to the framework repository rather than presented as website implementation guides. Existing public documentation URLs are preserved.
+Open `http://localhost:4321`. The site uses Astro, Tailwind CSS and light/dark
+themes with the Gungnir blue, white, silver and black palette. The logo lives in
+`public/images/logo-alt.png`.
 
-To refresh from a clean local framework checkout:
+## Build and search
+
+```sh
+npm run build
+npm run preview
+```
+
+The production build clears old output, renders the guides, creates the
+Pagefind search index, and checks local links and section anchors. Search opens
+with Ctrl+K / Cmd+K or `/`. Search requires a production build.
+
+## Update the guides
+
+Sync from a clean checkout of `justinangeloperez327/gungnir`:
 
 ```sh
 npm run docs:sync -- ../gungnir
 npm run build
 ```
 
-The sync script rewrites repository-relative guide links to website routes and keeps implementation references pinned to the imported commit. Website overview, configuration, and directory-structure pages remain curated and should be reviewed against the new checkout during each refresh. Change import transformations in the sync script rather than editing imported Markdown directly.
+The sync script imports an explicit selection of application guides and removes
+obsolete pages. Navigation, previous/next links and search use that collection.
+Compiler internals, engineering audits, contributor references and development
+plans are excluded.
 
-## Documentation Architecture
+Reader-oriented replacements live in `scripts/guides/`; other presentation
+changes live in `scripts/public-guides.mjs`. Review these against the framework
+when refreshing. Modify those sources rather than the generated Markdown in
+`src/content/docs/`.
 
-Documentation content lives in:
-
-~~~text
-src/content/docs/
-~~~
-
-Each document declares its title, description, URL slug, navigation group, group order, page order, development status, and optional source path. Astro validates this metadata through `src/content.config.ts`.
-
-The route `src/pages/docs/[...slug].astro` renders the collection while preserving public URLs such as:
-
-~~~text
-/docs/
-/docs/routing/
-/docs/models/
-~~~
-
-The documentation UI is componentized under:
-
-~~~text
-src/components/docs/
-├── Callout.astro
-├── CodeEnhancer.astro
-├── DocsHeader.astro
-├── DocsSidebar.astro
-├── DocsToc.astro
-├── MobileDocsNav.astro
-├── PrevNext.astro
-└── Search.astro
-~~~
-
-Navigation and previous/next links are generated from collection metadata rather than maintained separately in the layout.
-
-## Search
-
-Pagefind generates a static full-text search index after Astro builds:
-
-~~~bash
-npm run build
-~~~
-
-The build script runs:
-
-~~~text
-astro build
-→ pagefind --site dist
-~~~
-
-Search opens with **Ctrl+K / Cmd+K** or the **/** shortcut and returns matching pages and documentation sections.
-
-## Design System
-
-The interface uses the Gungnir colorway:
-
-- Blue: `#145DA0`
-- White: `#FFFFFF`
-- Silver: `#C7CBD1`
-- Black: `#0B0D10`
-
-Tailwind design tokens are defined in `src/styles/global.css`.
-
-### Theme
-
-The site supports light and dark modes. On the first visit, the theme follows the operating-system preference. A manual selection is persisted in `localStorage` under `gungnir-theme`, and the theme is applied in the document head before paint to avoid a light/dark flash.
-
-Dark mode uses the existing Gungnir palette with near-black navy surfaces rather than pure black, while keeping blue for interactive state and code blocks as the darkest surfaces.
-
-The visual language intentionally uses blue sparingly for active state, links, focus, and the Gungnir spear-point navigation accent. White remains the primary surface, silver provides structure, and black carries typography and code.
-
-## Public Images
-
-Public assets live in:
-
-~~~text
-public/images/
-~~~
-
-The primary site logo is:
-
-~~~text
-public/images/logo-alt.png
-~~~
-
-## Requirements
-
-- Node.js 22.23.3 or newer supported release
-- npm
-
-## Development
-
-~~~bash
-npm install
-npm run dev
-~~~
-
-The development server is available at `http://localhost:4321`.
-
-Pagefind indexes production output, so full-text search is generated by `npm run build`, not by the Astro development server.
-
-## Commands
+`src/data/gungnir-source.json` records the exact framework commit, version and
+content hashes. Guide links point to that revision. The installation guides
+distinguish published 1.0.0 core downloads from current-source SDK features.
 
 | Command | Action |
 | --- | --- |
-| `npm run dev` | Start the local development server |
-| `npm run build` | Build Astro and generate the Pagefind index |
-| `npm run build:site` | Build Astro without running Pagefind |
-| `npm run preview` | Preview the production build locally |
-| `npm run astro -- --help` | Run Astro CLI commands |
-| `npm run docs:sync -- ../gungnir` | Refresh guides from a clean framework checkout |
-| `npm run docs:check` | Verify imported content against the source manifest |
-| `npm run docs:check -- --built` | Also verify built local links and section anchors |
+| `npm run dev` | Start the development server |
+| `npm run build` | Clean, build, index search and validate the site |
+| `npm run build:site` | Clean and build without indexing search |
+| `npm run preview` | Preview the production build |
+| `npm run docs:sync -- ../gungnir` | Refresh the application guides |
+| `npm run docs:check` | Verify content and collection membership |
+| `npm run docs:check -- --built` | Also check rendered pages, links and anchors |
 
-## CI
-
-GitHub Actions installs dependencies and runs the full production build, including Pagefind indexing, imported-content verification, and built link/anchor checks, on pushes to `main`, pull requests targeting `main`, and manual workflow runs.
-
-Deployment is intentionally not configured until a deployment platform is selected.
+GitHub Actions runs the full production build on main pushes, pull requests and
+manual workflow runs. Hosting is managed separately.

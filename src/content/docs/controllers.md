@@ -1,11 +1,10 @@
 ---
 title: "Controllers"
-description: "Controllers: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use controllers in your Gungnir application."
 slug: "controllers"
-group: "Framework"
-groupOrder: 4
-order: 10
-status: development
+group: "HTTP"
+groupOrder: 3
+order: 3
 sourcePath: "docs/controller.md"
 ---
 

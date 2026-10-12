@@ -1,11 +1,10 @@
 ---
 title: "Responses"
-description: "Responses: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use responses in your Gungnir application."
 slug: "responses"
-group: "Framework"
-groupOrder: 4
-order: 14
-status: development
+group: "HTTP"
+groupOrder: 3
+order: 6
 sourcePath: "docs/response.md"
 ---
 

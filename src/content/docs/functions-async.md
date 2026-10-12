@@ -1,26 +1,46 @@
 ---
 title: "Functions"
-description: "Functions: current Gungnir APIs, usage, configuration, and documented limits."
+description: "Learn how to use functions in your Gungnir application."
 slug: "functions-async"
 group: "Language"
 groupOrder: 2
-order: 12
-status: development
+order: 4
 sourcePath: "docs/functions.md"
 ---
 
-## Overview
-Use `function int add(int left, int right = 2) { return left + right; }` with `gungnirc --strict`. Functions require declared return types. Calls support literal defaults and named arguments; supplied arguments are evaluated in source order. Framework methods infer their documented response/decision/void contracts. Public, protected and private members are checked.
+Declare a function with a result type, name and typed parameters:
 
-## Scope
-Defaults currently require literal constants. Native overload resolution, variadic functions and general class inheritance are outside this profile. Async calls require explicit `await` inside an async callable.
+```gnr
+function int add(int left, int right = 2) {
+    return left + right;
+}
 
+function int total() {
+    return add(left: 3, right: 4);
+}
+```
 
+## Parameters and results
 
-- [Structured compiler API](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/language/compiler.hpp)
-- [Structured compiler tests](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/tests/structured_language.cpp)
+Functions require a declared result type. Default arguments currently require
+literal constants. Calls accept positional or named arguments, and supplied
+arguments are evaluated in source order.
 
-- [include/gungnir/language/ast.hpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/include/gungnir/language/ast.hpp)
-- [src/language/parser.cpp](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/src/language/parser.cpp)
+Return a value compatible with the declared result. Use `void` when a function
+does not return a value. Controllers and other framework declarations can omit
+a method's result type when its framework role determines the result.
 
-See the [documentation index](/docs/), [getting started](/docs/getting-started/), and [target design](https://github.com/justinangeloperez327/gungnir/blob/d21b71cb6ce62edc0f706ca4296716b9d2dd4d70/docs/design/functions.md).
+## Asynchronous functions
+
+```gnr
+async function int answer() {
+    return 42;
+}
+
+async function int result() {
+    return await answer();
+}
+```
+
+Await asynchronous calls inside an asynchronous function or method.
+See [Async and Await](/docs/async/) and [Controllers](/docs/controllers/).
