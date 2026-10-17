@@ -1,6 +1,6 @@
 ---
 title: "Security Hardening"
-description: "Learn how to use security hardening in your Gungnir application."
+description: "Set allowed hosts, trusted proxies, CORS, rate limits and cookie protections."
 slug: "security-hardening"
 group: "Security"
 groupOrder: 5

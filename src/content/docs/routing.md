@@ -1,6 +1,6 @@
 ---
 title: "Routing"
-description: "Learn how to use routing in your Gungnir application."
+description: "Connect URLs to controller actions with named routes, groups and model binding."
 slug: "routing"
 group: "HTTP"
 groupOrder: 3

@@ -1,6 +1,6 @@
 ---
 title: "SQL Server Adapter"
-description: "Learn how to use sql server adapter in your Gungnir application."
+description: "Connect to Microsoft SQL Server with the optional native adapter."
 slug: "sqlserver"
 group: "Database & ORM"
 groupOrder: 4

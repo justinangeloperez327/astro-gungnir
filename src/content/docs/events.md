@@ -1,6 +1,6 @@
 ---
 title: "Events"
-description: "Learn how to use events in your Gungnir application."
+description: "Declare application events and dispatch them to registered listeners."
 slug: "events"
 group: "Application Services"
 groupOrder: 6

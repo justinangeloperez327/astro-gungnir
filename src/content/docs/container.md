@@ -1,6 +1,6 @@
 ---
 title: "Dependency Injection"
-description: "Learn how to use dependency injection in your Gungnir application."
+description: "Inject application services and choose shared or request-scoped dependencies."
 slug: "container"
 group: "Application Services"
 groupOrder: 6

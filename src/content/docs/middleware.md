@@ -1,6 +1,6 @@
 ---
 title: "Middleware"
-description: "Learn how to use middleware in your Gungnir application."
+description: "Run shared request-handling logic before and after your controller actions."
 slug: "middleware"
 group: "HTTP"
 groupOrder: 3

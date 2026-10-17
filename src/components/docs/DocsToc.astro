@@ -6,18 +6,59 @@ interface Heading {
 }
 
 const { headings = [] } = Astro.props as { headings: Heading[] };
-const visible = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
+const visible = headings.filter(
+  (heading) => heading.depth === 2 || heading.depth === 3,
+);
 ---
 
 {visible.length > 0 && (
   <nav aria-label="On this page">
-    <p class="mb-3 text-[11px] font-bold uppercase tracking-[0.13em] text-gungnir-muted/70">On this page</p>
+    <p class="mb-3 text-[11px] font-bold uppercase tracking-[0.13em] text-gungnir-muted dark:text-gungnir-dark-muted">
+      On this page
+    </p>
     <div>
       {visible.map((heading) => (
-        <a class:list={['docs-toc-link', heading.depth === 3 && 'toc-h3']} href={`#${heading.slug}`}>
+        <a
+          class:list={["docs-toc-link", heading.depth === 3 && "toc-h3"]}
+          href={`#${heading.slug}`}
+        >
           {heading.text}
         </a>
       ))}
     </div>
   </nav>
 )}
+
+<script>
+  const links = [
+    ...document.querySelectorAll<HTMLAnchorElement>(".docs-toc-link"),
+  ];
+  if ("IntersectionObserver" in window && links.length) {
+    const visible = new Set<string>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) =>
+          entry.isIntersecting
+            ? visible.add(entry.target.id)
+            : visible.delete(entry.target.id),
+        );
+        const active = links.find((link) =>
+          visible.has(decodeURIComponent(link.hash.slice(1))),
+        );
+        if (active)
+          links.forEach((link) =>
+            link === active
+              ? link.setAttribute("aria-current", "true")
+              : link.removeAttribute("aria-current"),
+          );
+      },
+      { rootMargin: "-100px 0px -55% 0px" },
+    );
+    links.forEach((link) => {
+      const heading = document.getElementById(
+        decodeURIComponent(link.hash.slice(1)),
+      );
+      if (heading) observer.observe(heading);
+    });
+  }
+</script>

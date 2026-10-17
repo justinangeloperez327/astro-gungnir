@@ -1,6 +1,6 @@
 ---
 title: "Configuration"
-description: "Learn how to use configuration in your Gungnir application."
+description: "Read environment settings and inject typed configuration into your application."
 slug: "configuration"
 group: "Getting Started"
 groupOrder: 1

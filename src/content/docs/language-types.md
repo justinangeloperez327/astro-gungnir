@@ -1,6 +1,6 @@
 ---
 title: "Language Types"
-description: "Learn how to use language types in your Gungnir application."
+description: "Work with strings, numbers, optional values, collections and application types."
 slug: "language-types"
 group: "Language"
 groupOrder: 2

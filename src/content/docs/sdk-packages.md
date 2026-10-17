@@ -1,6 +1,6 @@
 ---
 title: "SDK Packages"
-description: "Learn how to use sdk packages in your Gungnir application."
+description: "Choose a core, application or custom SDK with the adapters your project needs."
 slug: "sdk-packages"
 group: "Getting Started"
 groupOrder: 1
@@ -32,6 +32,19 @@ packages are built on Ubuntu 24.04. Use a matching compiler/platform runtime.
 The Windows setup executable installs the complete selected SDK and updates the
 current user's PATH. Open a new terminal after installation. For a portable
 package, extract the whole directory and add its `bin` directory to PATH.
+
+For an installer built from current source, open the repository's
+[Windows Installer workflow](https://github.com/justinangeloperez327/gungnir/actions/workflows/installer-ci.yml),
+select **Run workflow**, and choose the branch you want to install. After both
+profiles pass, download the **application-installer** or **core-installer**
+artifact from that run (artifact names also include the platform and run ID).
+Extract the artifact and run its `-setup.exe`. Choose application for SQLite and
+password authentication. GitHub requires you to sign in to download artifacts.
+
+Each artifact includes a `.sha256` checksum and `build-info.json` identifying its
+source commit. These builds include changes on the selected branch; an existing
+GitHub Release continues to contain the code from its original tag. Setup
+replaces the existing SDK, so close running Gungnir programs before upgrading.
 
 ```sh
 gungnir --version

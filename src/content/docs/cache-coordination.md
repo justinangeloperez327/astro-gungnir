@@ -1,6 +1,6 @@
 ---
 title: "Distributed coordination"
-description: "Learn how to use distributed coordination in your Gungnir application."
+description: "Configure Redis for shared values, quotas, sessions and coordination."
 slug: "cache-coordination"
 group: "Application Services"
 groupOrder: 6

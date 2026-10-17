@@ -1,6 +1,6 @@
 ---
 title: "Validation"
-description: "Learn how to use validation in your Gungnir application."
+description: "Validate request data with rules for values, nested objects, arrays and files."
 slug: "validation"
 group: "HTTP"
 groupOrder: 3

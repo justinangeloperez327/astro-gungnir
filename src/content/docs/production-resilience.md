@@ -1,6 +1,6 @@
 ---
 title: "Production Resilience"
-description: "Learn how to use production resilience in your Gungnir application."
+description: "Manage readiness, overload, bounded retries and graceful shutdown."
 slug: "production-resilience"
 group: "Testing & Deployment"
 groupOrder: 7

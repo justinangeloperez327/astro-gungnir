@@ -1,6 +1,6 @@
 ---
 title: "ORM Relationships"
-description: "Learn how to use orm relationships in your Gungnir application."
+description: "Connect related models and eager load the records your application needs."
 slug: "relationships"
 group: "Database & ORM"
 groupOrder: 4

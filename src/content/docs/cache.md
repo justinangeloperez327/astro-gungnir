@@ -1,6 +1,6 @@
 ---
 title: "Cache"
-description: "Learn how to use cache in your Gungnir application."
+description: "Store cached values, use expiration and coordinate work with cache locks."
 slug: "cache"
 group: "Application Services"
 groupOrder: 6

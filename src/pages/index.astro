@@ -1,133 +1,244 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import source from '../data/gungnir-source.json';
-
-const controllerExample = `controller HomeController {
-    Response index() {
-        return text("Hello from Gungnir");
-    }
-}
-
-Route::get("/", HomeController::index);`;
-
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CodeWorkbench from "../components/home/CodeWorkbench.astro";
+import Icon from "../components/ui/Icon.astro";
+import source from "../data/gungnir-source.json";
 const features = [
-  ['01', 'Application Code', 'Write typed functions, modules, collections and async actions in .gnr files.'],
-  ['02', 'Models & Controllers', 'Organize your application with models, controllers, middleware, migrations and policies.'],
-  ['03', 'Model-centric ORM', 'Query, paginate, eager load relationships, use soft deletes, and keep persistence behavior attached to models.'],
-  ['04', 'Routing & HTTP', 'Use named routes, nested groups, constraints, model binding, structured validation, multipart uploads, and server-rendered views.'],
-  ['05', 'Views & Delivery', 'Render HTML with Spear templates and send email and notifications from your application.'],
-  ['06', 'Application Services', 'Use cache and storage, run queued jobs and scheduled tasks, and collect application logs and telemetry.'],
+  [
+    "code",
+    "Routes to real responses",
+    "Named routes, middleware, model binding, validation and file uploads. Give every request a clear path.",
+    "/docs/routing/",
+    "HTTP & routing",
+  ],
+  [
+    "database",
+    "Work with your data",
+    "Models, migrations and a typed ORM. Query records, eager load relationships and control what you expose.",
+    "/docs/models/",
+    "Models & ORM",
+  ],
+  [
+    "window",
+    "HTML, with Spear",
+    "Build server-rendered pages with familiar HTML, escaped expressions, layouts and Blade-like directives.",
+    "/docs/views/",
+    "Views & templates",
+  ],
+  [
+    "shield",
+    "Access with intention",
+    "Authenticate users, persist sessions and authorize operations with resource policies.",
+    "/docs/auth/",
+    "Authentication & policies",
+  ],
+  [
+    "clock",
+    "Work beyond the request",
+    "Dispatch events, queue jobs, schedule recurring tasks and send application mail and notifications.",
+    "/docs/queues/",
+    "Jobs & application services",
+  ],
+  [
+    "terminal",
+    "Ready for the next step",
+    "Configure adapters, inspect logs and telemetry, and deploy with explicit health checks and process supervision.",
+    "/docs/production/",
+    "Configuration & deployment",
+  ],
+];
+const paths = [
+  [
+    "terminal",
+    "Start a project",
+    "Install the SDK, create an app and run it locally.",
+    "/docs/getting-started/",
+  ],
+  [
+    "code",
+    "Learn the language",
+    "Types, functions and the application building blocks.",
+    "/docs/language/",
+  ],
+  [
+    "book",
+    "Find a guide",
+    "Browse HTTP, data, security and service documentation.",
+    "/docs/",
+  ],
 ];
 ---
 
-<BaseLayout>
-  <main id="main-content">
-    <section class="relative overflow-hidden border-b border-gungnir-line bg-white dark:border-gungnir-dark-line dark:bg-gungnir-dark">
-      <img
-        src="/images/logo-alt.png"
-        alt=""
-        aria-hidden="true"
-        class="pointer-events-none absolute right-[-12%] top-1/2 hidden w-[58rem] -translate-y-1/2 select-none opacity-[0.025] grayscale dark:brightness-0 dark:invert dark:opacity-[0.035] lg:block"
-      />
-      <div class="absolute left-0 top-0 h-full w-1 bg-gungnir-blue" aria-hidden="true"></div>
-
-      <div class="relative mx-auto grid w-full max-w-[1440px] items-center gap-14 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-[1.08fr_.92fr] lg:gap-20 lg:px-8 lg:py-28 xl:py-32">
-        <div class="max-w-3xl">
-          <div class="mb-6 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.14em] text-gungnir-blue">
-            <span class="h-px w-8 bg-gungnir-blue"></span>
-            Expressive C++23 web framework
-          </div>
-
-          <h1 class="max-w-[13ch] text-5xl font-bold leading-[0.96] tracking-[-0.055em] text-gungnir-ink dark:text-gungnir-dark-text sm:text-6xl lg:text-7xl xl:text-[5.15rem]">
-            GUNGNIR is an expressive web framework built in C++23.
+<BaseLayout
+  title="Gungnir"
+  description="An expressive C++23 web framework. Build native applications with .gnr models, controllers, routes, an ORM, Spear views and background jobs."
+>
+  <main id="main-content" class="homepage">
+    <section class="home-hero" aria-labelledby="hero-title">
+      <div class="site-container hero-grid">
+        <div class="hero-copy">
+          <a class="release-label" href="/docs/installation/">
+            <span class="release-indicator" aria-hidden="true"></span>Gungnir{" "}
+            {source.version}
+            <span class="release-divider">/</span>Stable release
+            <Icon name="external" size={15} />
+          </a>
+          <p class="eyebrow hero-eyebrow">The expressive C++23 web framework</p>
+          <h1 id="hero-title">
+            Expressive code.
+            <br />
+            <span>Native applications.</span>
           </h1>
-
-          <p class="mt-7 max-w-2xl text-lg leading-8 text-gungnir-muted dark:text-gungnir-dark-muted sm:text-xl">
-            Build native web applications with familiar models, controllers, routes, validation, authentication and database access.
+          <p class="hero-description">
+            Build your backend with familiar models, controllers and routes.
+            Write it in <code>.gnr</code>. Run it as a native application.
           </p>
-
-          <p class="mt-4 text-sm text-gungnir-muted dark:text-gungnir-dark-muted">
-            Stable {source.version}. <a href="/docs/sdk-packages/" class="text-gungnir-blue underline dark:text-gungnir-blue-light">Choose an SDK for the features you need.</a>
-          </p>
-
-          <div class="mt-9 flex flex-wrap gap-3">
-            <a href="/docs/getting-started/" class="inline-flex min-h-12 items-center justify-center rounded-lg bg-gungnir-blue px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-gungnir-blue-deep focus-visible:ring-4 focus-visible:ring-gungnir-blue/15">
-              Get started
-              <span class="ml-2" aria-hidden="true">→</span>
+          <div class="hero-actions">
+            <a class="button-primary" href="/docs/getting-started/">
+              Start building
+              <Icon name="arrow" size={18} />
             </a>
-            <a href="/docs/" class="inline-flex min-h-12 items-center justify-center rounded-lg border border-gungnir-line bg-white px-5 text-sm font-semibold text-gungnir-ink transition hover:border-gungnir-silver hover:bg-gungnir-silver-soft dark:border-gungnir-dark-line dark:bg-gungnir-dark-soft dark:text-gungnir-dark-text dark:hover:border-gungnir-silver/35 dark:hover:bg-gungnir-dark-elevated">
-              Documentation
+            <a class="button-secondary" href="/docs/">
+              Read the docs
+              <Icon name="book" size={17} />
             </a>
           </div>
-
-          <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-semibold text-gungnir-muted dark:text-gungnir-dark-muted">
-            <span>Expressive syntax</span>
-            <span class="h-1 w-1 rounded-full bg-gungnir-silver"></span>
-            <span>Strongly typed</span>
-            <span class="h-1 w-1 rounded-full bg-gungnir-silver"></span>
-            <span>Native C++23</span>
-          </div>
+          <p class="hero-footnote">
+            For APIs, server-rendered web apps and backend services.
+          </p>
         </div>
-
-        <div class="relative lg:pl-4">
-          <div class="absolute -inset-4 -z-10 border border-gungnir-line bg-gungnir-silver-soft dark:border-gungnir-dark-line dark:bg-gungnir-dark-soft"></div>
-          <div class="overflow-hidden rounded-lg border border-black/80 bg-gungnir-ink shadow-2xl shadow-black/10">
-            <div class="flex min-h-11 items-center justify-between border-b border-white/10 px-4">
-              <span class="font-mono text-[10px] font-bold tracking-[0.1em] text-gungnir-silver">GNR</span>
-              <span class="font-mono text-[11px] text-gungnir-silver">HomeController.gnr + routes/web.gnr</span>
-            </div>
-            <pre class="overflow-x-auto p-5 text-[13px] leading-7 text-white sm:p-7 sm:text-sm"><code>{controllerExample}</code></pre>
-          </div>
+        <CodeWorkbench />
+      </div>
+    </section>
+    <section class="start-strip" aria-labelledby="start-title">
+      <div class="site-container start-strip-inner">
+        <div>
+          <p class="eyebrow">From the terminal</p>
+          <h2 id="start-title">Your first application.</h2>
+        </div>
+        <div class="terminal-command">
+          <span aria-hidden="true">$</span>
+          <code>gungnir new hello</code>
+          <a
+            href="/docs/getting-started/"
+            aria-label="View installation and first application instructions"
+          >
+            <Icon name="arrow" />
+          </a>
+        </div>
+        <p>
+          Install the SDK first.
+          <br />
+          <a href="/docs/sdk-packages/">
+            Choose your package <span aria-hidden="true">↗</span>
+          </a>
+        </p>
+      </div>
+    </section>
+    <section
+      class="capabilities-section site-container"
+      aria-labelledby="capabilities-title"
+    >
+      <div class="section-intro">
+        <p class="eyebrow">Build with Gungnir</p>
+        <h2 id="capabilities-title">
+          A framework for the
+          <br />
+          application you have in mind.
+        </h2>
+        <p>
+          From the first route to background work.
+          <br />
+          Explore the pieces as you need them.
+        </p>
+      </div>
+      <div class="capabilities-grid">
+        {features.map(([icon, title, description, href, link]) => (
+          <article class="capability">
+            <Icon name={icon} size={26} />
+            <h3>{title}</h3>
+            <p>{description}</p>
+            <a href={href}>
+              {link}
+              <Icon name="arrow" size={16} />
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+    <section class="data-section">
+      <div class="site-container data-section-inner">
+        <div>
+          <p class="eyebrow">Your data, your choice</p>
+          <h2>
+            Connect the database
+            <br />
+            your application needs.
+          </h2>
+          <p>
+            Use SQLite or configure a native adapter for your database. Models
+            keep querying, relationships and serialization together.
+          </p>
+          <a class="text-link" href="/docs/database/">
+            Database configuration
+            <Icon name="arrow" size={17} />
+          </a>
+        </div>
+        <div class="database-list" aria-label="Supported database adapters">
+          {[
+            ["SQLite", "/docs/sdk-packages/"],
+            ["PostgreSQL", "/docs/postgresql/"],
+            ["MySQL / MariaDB", "/docs/mysql/"],
+            ["SQL Server", "/docs/sqlserver/"],
+            ["MongoDB", "/docs/mongodb/"],
+          ].map(([name, url]) => (
+            <a href={url}>
+              <span>{name}</span>
+              <Icon name="external" size={18} />
+            </a>
+          ))}
+          <p>
+            Adapters require an SDK built with their dependencies. MongoDB
+            retains document-database semantics.
+          </p>
         </div>
       </div>
     </section>
-
-    <section class="border-b border-gungnir-line bg-gungnir-silver-soft/45 dark:border-gungnir-dark-line dark:bg-gungnir-dark-soft/55">
-      <div class="mx-auto w-full max-w-[1440px] px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
-        <div class="grid gap-10 lg:grid-cols-[.7fr_1.3fr] lg:gap-16">
-          <div class="max-w-md">
-            <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.14em] text-gungnir-blue">
-              <span class="h-px w-7 bg-gungnir-blue"></span>
-              Build with Gungnir
-            </p>
-            <h2 class="mt-4 text-3xl font-bold tracking-[-0.035em] text-gungnir-ink dark:text-gungnir-dark-text sm:text-4xl">
-              The tools your application needs.
-            </h2>
-            <p class="mt-5 text-base leading-7 text-gungnir-muted dark:text-gungnir-dark-muted">
-              Handle requests, work with data, render pages and run background jobs. Configure the services your application uses as it grows.
-            </p>
-          </div>
-
-          <div class="grid gap-px overflow-hidden rounded-lg border border-gungnir-line bg-gungnir-line dark:border-gungnir-dark-line dark:bg-gungnir-dark-line sm:grid-cols-2">
-            {features.map(([number, title, description]) => (
-              <article class="group bg-white p-6 transition hover:bg-gungnir-silver-soft/60 dark:bg-gungnir-dark dark:hover:bg-gungnir-dark-elevated sm:p-7">
-                <div class="flex items-start gap-4">
-                  <span class="mt-0.5 font-mono text-xs font-bold text-gungnir-blue">{number}</span>
-                  <div>
-                    <h3 class="text-base font-semibold text-gungnir-ink dark:text-gungnir-dark-text">{title}</h3>
-                    <p class="mt-2 text-sm leading-6 text-gungnir-muted dark:text-gungnir-dark-muted">{description}</p>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+    <section
+      class="site-container learning-section"
+      aria-labelledby="learn-title"
+    >
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">The documentation</p>
+          <h2 id="learn-title">Make your next move.</h2>
         </div>
-      </div>
-    </section>
-
-    <section class="bg-white dark:bg-gungnir-dark">
-      <div class="mx-auto flex w-full max-w-[1440px] flex-col gap-8 px-4 py-16 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8 lg:py-20">
-        <div class="max-w-2xl">
-          <p class="text-xs font-bold uppercase tracking-[0.14em] text-gungnir-blue">Documentation</p>
-          <h2 class="mt-3 text-3xl font-bold tracking-[-0.035em] text-gungnir-ink dark:text-gungnir-dark-text">Start with one route.</h2>
-          <p class="mt-3 text-base leading-7 text-gungnir-muted dark:text-gungnir-dark-muted">
-            Install Gungnir, create an application and add your first controller. Follow the guides for routing, data, security and deployment.
-          </p>
-        </div>
-        <a href="/docs/getting-started/" class="inline-flex min-h-12 shrink-0 items-center justify-center rounded-lg border border-gungnir-ink bg-gungnir-ink px-5 text-sm font-semibold text-white transition hover:border-gungnir-blue hover:bg-gungnir-blue">
-          Open installation guide
+        <a class="text-link" href="/docs/">
+          All guides
+          <Icon name="arrow" size={17} />
         </a>
       </div>
+      <div class="learning-grid">
+        {paths.map(([icon, title, detail, href]) => (
+          <a class="learning-path" href={href}>
+            <Icon name={icon} size={24} />
+            <h3>{title}</h3>
+            <p>{detail}</p>
+            <Icon class="path-arrow" name="arrow" size={19} />
+          </a>
+        ))}
+      </div>
+      <aside class="sdk-note">
+        <span class="note-label">SDK note</span>
+        <p>
+          Published {source.version} downloads contain the core SDK. Spear,
+          typed delivery, and the SQLite/password application SDK require
+          current source.{" "}
+          <a href="/docs/sdk-packages/">
+            Check feature availability and current installers.
+          </a>
+        </p>
+      </aside>
     </section>
   </main>
 </BaseLayout>

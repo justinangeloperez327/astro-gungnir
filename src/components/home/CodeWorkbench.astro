@@ -1,0 +1,152 @@
+---
+import { highlight } from "../../lib/highlight";
+const examples = [
+  {
+    id: "http",
+    label: "HTTP",
+    file: "HomeController",
+    code: `controller HomeController {
+    Response index() {
+        return json({
+            message: "Hello from Gungnir"
+        });
+    }
+}`,
+    route: 'Route::get("/", HomeController::index);',
+    note: "An action. A route. Your first endpoint.",
+    guide: "/docs/routing/",
+    link: "Explore routing",
+  },
+  {
+    id: "data",
+    label: "Data",
+    file: "ProjectController",
+    code: `controller ProjectController {
+    index() {
+        const projects = Project::where("active", true)
+            .orderBy("name")
+            .get();
+        return json(projects);
+    }
+}`,
+    route: 'Route::get("/projects", ProjectController::index);',
+    note: "Query records and return model collections.",
+    guide: "/docs/orm/",
+    link: "Explore the ORM",
+  },
+  {
+    id: "views",
+    label: "Views",
+    file: "PageController",
+    code: `controller PageController {
+    index() {
+        return view("welcome", {
+            title: "Built with Gungnir"
+        });
+    }
+}`,
+    route: 'Route::get("/", PageController::index);',
+    note: "Render HTML with your application data.",
+    guide: "/docs/views/",
+    link: "Explore Spear",
+  },
+];
+---
+
+<div class="workbench" data-workbench>
+  <div class="workbench-top">
+    <span>
+      Your application, in <strong>.gnr</strong>
+    </span>
+    <span>C++23 framework</span>
+  </div>
+  <div class="workbench-tabs" role="tablist" aria-label="Application examples">
+    {examples.map((e, i) => (
+      <button
+        type="button"
+        role="tab"
+        id={`tab-${e.id}`}
+        aria-controls={`example-${e.id}`}
+        aria-selected={i === 0 ? "true" : "false"}
+        tabindex={i === 0 ? 0 : -1}
+        data-example-tab={e.id}
+      >
+        {e.label}
+      </button>
+    ))}
+  </div>
+  {examples.map((e, i) => (
+    <section
+      id={`example-${e.id}`}
+      role="tabpanel"
+      aria-labelledby={`tab-${e.id}`}
+      tabindex="0"
+      hidden={i !== 0}
+      data-example-panel={e.id}
+    >
+      <p class="workbench-filename">app/controllers/{e.file}.gnr</p>
+      <pre
+        class="source-code"
+        tabindex="0"
+        aria-label="Controller example"
+      ><code set:html={highlight(e.code)}/></pre>
+      <div class="workbench-route">
+        <span>routes/web.gnr</span>
+        <pre
+          tabindex="0"
+          aria-label="Route example"
+        ><code set:html={highlight(e.route)}/></pre>
+      </div>
+      <div class="workbench-note">
+        <span>{e.note}</span>
+        <a href={e.guide}>
+          {e.link}
+          <span aria-hidden="true"> ↗</span>
+        </a>
+      </div>
+    </section>
+  ))}
+</div>
+<noscript>
+  <p class="example-fallback">
+    Browse the <a href="/docs/orm/">ORM</a> and <a href="/docs/views/">Spear</a>{" "}
+    guides for more examples.
+  </p>
+</noscript>
+<script>
+  const root = document.querySelector("[data-workbench]");
+  if (root) {
+    const tabs = [
+      ...root.querySelectorAll<HTMLButtonElement>("[data-example-tab]"),
+    ];
+    const panels = [
+      ...root.querySelectorAll<HTMLElement>("[data-example-panel]"),
+    ];
+    const select = (index: number, focus = false) => {
+      tabs.forEach((tab, i) => {
+        tab.setAttribute("aria-selected", String(i === index));
+        tab.tabIndex = i === index ? 0 : -1;
+      });
+      panels.forEach((panel, i) => (panel.hidden = i !== index));
+      if (focus) tabs[index].focus();
+    };
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => select(index));
+      tab.addEventListener("keydown", (event) => {
+        const next =
+          event.key === "ArrowRight"
+            ? (index + 1) % tabs.length
+            : event.key === "ArrowLeft"
+              ? (index + tabs.length - 1) % tabs.length
+              : event.key === "Home"
+                ? 0
+                : event.key === "End"
+                  ? tabs.length - 1
+                  : -1;
+        if (next < 0) return;
+        event.preventDefault();
+        select(next, true);
+      });
+    });
+  }
+</script>

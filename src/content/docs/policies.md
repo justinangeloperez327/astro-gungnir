@@ -1,6 +1,6 @@
 ---
 title: "Policies and Authorization"
-description: "Learn how to use policies and authorization in your Gungnir application."
+description: "Authorize actions against application resources with typed policy decisions."
 slug: "policies"
 group: "Security"
 groupOrder: 5

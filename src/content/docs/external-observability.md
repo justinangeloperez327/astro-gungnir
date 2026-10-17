@@ -1,6 +1,6 @@
 ---
 title: "External observability"
-description: "Learn how to use external observability in your Gungnir application."
+description: "Export traces and metrics to a collector and configure structured logs."
 slug: "external-observability"
 group: "Application Services"
 groupOrder: 6

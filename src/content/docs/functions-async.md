@@ -1,6 +1,6 @@
 ---
 title: "Functions"
-description: "Learn how to use functions in your Gungnir application."
+description: "Declare typed functions, use named arguments and return results."
 slug: "functions-async"
 group: "Language"
 groupOrder: 2

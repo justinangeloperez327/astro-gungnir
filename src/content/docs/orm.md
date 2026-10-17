@@ -1,6 +1,6 @@
 ---
 title: "ORM"
-description: "Learn how to use orm in your Gungnir application."
+description: "Query, create, update and delete records through typed models."
 slug: "orm"
 group: "Database & ORM"
 groupOrder: 4

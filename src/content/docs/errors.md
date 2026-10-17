@@ -1,6 +1,6 @@
 ---
 title: "Errors and Diagnostics"
-description: "Learn how to use errors and diagnostics in your Gungnir application."
+description: "Find source errors, handle application failures and return useful HTTP responses."
 slug: "errors"
 group: "Language"
 groupOrder: 2

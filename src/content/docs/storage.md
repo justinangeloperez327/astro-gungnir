@@ -1,6 +1,6 @@
 ---
 title: "Storage"
-description: "Learn how to use storage in your Gungnir application."
+description: "Read and write files through configured application storage disks."
 slug: "storage"
 group: "Application Services"
 groupOrder: 6

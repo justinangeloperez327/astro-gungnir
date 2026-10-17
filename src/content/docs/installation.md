@@ -1,6 +1,6 @@
 ---
 title: "Install Gungnir 1.0.0"
-description: "Learn how to use install gungnir 1.0.0 in your Gungnir application."
+description: "Install the published 1.0.0 release on Windows or Linux and check its available features."
 slug: "installation"
 group: "Getting Started"
 groupOrder: 1

@@ -1,6 +1,6 @@
 ---
 title: "Upgrading to 1.0.0"
-description: "Learn how to use upgrading to 1.0.0 in your Gungnir application."
+description: "Update your SDK, rebuild your application and verify it before deployment."
 slug: "upgrading"
 group: "Testing & Deployment"
 groupOrder: 7

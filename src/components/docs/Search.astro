@@ -1,45 +1,76 @@
 ---
 ---
 
-<div class="w-auto md:w-full md:max-w-md">
+<div class="w-auto md:w-[220px]">
   <button
     type="button"
-    class="group inline-flex h-10 w-10 items-center justify-center gap-3 rounded-lg border border-gungnir-line bg-gungnir-silver-soft text-sm text-gungnir-muted transition hover:border-gungnir-silver hover:bg-white dark:border-gungnir-dark-line dark:bg-gungnir-dark-soft dark:text-gungnir-dark-muted dark:hover:border-gungnir-silver/40 dark:hover:bg-gungnir-dark-elevated md:w-full md:justify-start md:px-3.5"
+    class="group inline-flex h-10 w-10 items-center justify-center gap-3 rounded-sm border border-gungnir-line bg-gungnir-silver-soft text-sm text-gungnir-muted transition hover:border-gungnir-silver hover:bg-white dark:border-gungnir-dark-line dark:bg-gungnir-dark-soft dark:text-gungnir-dark-muted dark:hover:border-gungnir-silver/40 dark:hover:bg-gungnir-dark-elevated md:w-full md:justify-start md:px-3.5"
     data-search-open
     aria-haspopup="dialog"
     aria-controls="docs-search-dialog"
     aria-label="Search documentation"
     aria-keyshortcuts="Control+K Meta+K /"
   >
-    <svg class="h-4 w-4 shrink-0 transition group-hover:text-gungnir-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+    <svg
+      class="h-4 w-4 shrink-0 transition group-hover:text-gungnir-blue"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+      aria-hidden="true"
+    >
       <circle cx="11" cy="11" r="7"></circle>
       <path d="m20 20-3.5-3.5"></path>
     </svg>
-    <span class="hidden min-w-0 flex-1 truncate text-left md:block">Search documentation</span>
-    <span class="hidden rounded border border-gungnir-line bg-white px-1.5 py-0.5 text-[10px] font-semibold text-gungnir-muted dark:border-gungnir-dark-line dark:bg-gungnir-dark dark:text-gungnir-dark-muted md:inline">⌘ K</span>
+    <span class="hidden min-w-0 flex-1 truncate text-left md:block">
+      Search documentation
+    </span>
+    <span class="hidden rounded border border-gungnir-line bg-white px-1.5 py-0.5 text-[10px] font-semibold text-gungnir-muted dark:border-gungnir-dark-line dark:bg-gungnir-dark dark:text-gungnir-dark-muted md:inline">
+      ⌘ K
+    </span>
   </button>
 
   <dialog
     id="docs-search-dialog"
-    class="m-auto w-[min(92vw,720px)] rounded-2xl border border-gungnir-line bg-white p-0 text-gungnir-ink shadow-2xl backdrop:bg-gungnir-ink/45 backdrop:backdrop-blur-sm dark:border-gungnir-dark-line dark:bg-gungnir-dark-elevated dark:text-gungnir-dark-text"
+    aria-label="Search documentation"
+    class="m-auto w-[min(92vw,720px)] rounded-sm border border-gungnir-line bg-white p-0 text-gungnir-ink shadow-2xl backdrop:bg-gungnir-ink/45 backdrop:backdrop-blur-sm dark:border-gungnir-dark-line dark:bg-gungnir-dark-elevated dark:text-gungnir-dark-text"
     data-search-dialog
   >
     <div class="border-b border-gungnir-line p-3 dark:border-gungnir-dark-line sm:p-4">
       <label class="relative block">
         <span class="sr-only">Search Gungnir documentation</span>
-        <svg class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gungnir-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <svg
+          class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gungnir-muted"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          aria-hidden="true"
+        >
           <circle cx="11" cy="11" r="7"></circle>
           <path d="m20 20-3.5-3.5"></path>
         </svg>
         <input
-          class="h-12 w-full rounded-xl border border-gungnir-line bg-gungnir-silver-soft pl-12 pr-12 text-base text-gungnir-ink outline-none transition placeholder:text-gungnir-muted/65 focus:border-gungnir-blue focus:bg-white focus:ring-4 focus:ring-gungnir-blue/10 dark:border-gungnir-dark-line dark:bg-gungnir-dark-soft dark:text-gungnir-dark-text dark:placeholder:text-gungnir-dark-muted/70 dark:focus:border-gungnir-blue-light dark:focus:bg-gungnir-dark"
+          class="h-12 w-full rounded-sm border border-gungnir-line bg-gungnir-silver-soft pl-12 pr-12 text-base text-gungnir-ink outline-none transition placeholder:text-gungnir-muted/65 focus:border-gungnir-blue focus:bg-white focus:ring-4 focus:ring-gungnir-blue/10 dark:border-gungnir-dark-line dark:bg-gungnir-dark-soft dark:text-gungnir-dark-text dark:placeholder:text-gungnir-dark-muted/70 dark:focus:border-gungnir-blue-light dark:focus:bg-gungnir-dark"
           type="search"
           autocomplete="off"
           placeholder="Search routing, models, validation..."
           data-search-input
         />
-        <button type="button" class="absolute right-2 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-lg text-gungnir-muted transition hover:bg-white hover:text-gungnir-ink dark:text-gungnir-dark-muted dark:hover:bg-gungnir-dark-elevated dark:hover:text-white" aria-label="Close search" data-search-close>
-          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <button
+          type="button"
+          class="absolute right-2 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-sm text-gungnir-muted transition hover:bg-white hover:text-gungnir-ink dark:text-gungnir-dark-muted dark:hover:bg-gungnir-dark-elevated dark:hover:text-white"
+          aria-label="Close search"
+          data-search-close
+        >
+          <svg
+            class="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
             <path d="M6 6l12 12M18 6 6 18"></path>
           </svg>
         </button>
@@ -47,9 +78,18 @@
     </div>
 
     <div class="max-h-[min(64vh,580px)] overflow-y-auto p-3 sm:p-4">
-      <div class="rounded-xl border border-dashed border-gungnir-line px-5 py-10 text-center dark:border-gungnir-dark-line" data-search-empty>
-        <p class="text-sm font-semibold text-gungnir-ink">Search the Gungnir documentation</p>
-        <p class="mt-1 text-xs leading-5 text-gungnir-muted">Results include matching pages and sections.</p>
+      <div
+        class="rounded-sm border border-dashed border-gungnir-line px-5 py-10 text-center dark:border-gungnir-dark-line"
+        data-search-empty
+        role="status"
+        aria-live="polite"
+      >
+        <p class="text-sm font-semibold text-gungnir-ink">
+          Search the Gungnir documentation
+        </p>
+        <p class="mt-1 text-xs leading-5 text-gungnir-muted">
+          Results include matching pages and sections.
+        </p>
       </div>
       <div class="space-y-2" data-search-results></div>
     </div>
@@ -63,23 +103,26 @@
 
 <script is:inline>
   (() => {
-    const dialog = document.querySelector('[data-search-dialog]');
-    const input = document.querySelector('[data-search-input]');
-    const results = document.querySelector('[data-search-results]');
-    const empty = document.querySelector('[data-search-empty]');
-    const opener = document.querySelector('[data-search-open]');
-    const closeButton = document.querySelector('[data-search-close]');
+    const dialog = document.querySelector("[data-search-dialog]");
+    const input = document.querySelector("[data-search-input]");
+    const results = document.querySelector("[data-search-results]");
+    const empty = document.querySelector("[data-search-empty]");
+    const opener = document.querySelector("[data-search-open]");
+    const closeButton = document.querySelector("[data-search-close]");
 
     if (!dialog || !input || !results || !empty || !opener) return;
 
     let pagefindPromise;
     let activeIndex = -1;
+    let revision = 0;
 
     const loadPagefind = async () => {
-      pagefindPromise ??= import('/pagefind/pagefind.js').then(async (pagefind) => {
-        await pagefind.init();
-        return pagefind;
-      });
+      pagefindPromise ??= import("/pagefind/pagefind.js").then(
+        async (pagefind) => {
+          await pagefind.init();
+          return pagefind;
+        },
+      );
       return pagefindPromise;
     };
 
@@ -89,113 +132,150 @@
       try {
         await loadPagefind();
       } catch {
-        empty.innerHTML = '<p class="text-sm font-semibold text-gungnir-ink">Search index unavailable</p><p class="mt-1 text-xs leading-5 text-gungnir-muted">Run a production build to generate the Pagefind index.</p>';
+        empty.innerHTML =
+          '<p class="text-sm font-semibold text-gungnir-ink">Search index unavailable</p><p class="mt-1 text-xs leading-5 text-gungnir-muted">Browse the guides or try searching again later.</p>';
       }
     };
 
     const close = () => {
+      revision++;
       dialog.close();
-      input.value = '';
+      opener.focus();
+      input.value = "";
       results.replaceChildren();
       empty.hidden = false;
       activeIndex = -1;
     };
 
     const setActive = (index) => {
-      const links = [...results.querySelectorAll('a')];
+      const links = [...results.querySelectorAll("a")];
       if (!links.length) return;
       activeIndex = Math.max(0, Math.min(index, links.length - 1));
-      links.forEach((link, i) => link.classList.toggle('search-result-active', i === activeIndex));
-      links[activeIndex].scrollIntoView({ block: 'nearest' });
+      links.forEach((link, i) =>
+        link.classList.toggle("search-result-active", i === activeIndex),
+      );
+      links[activeIndex].scrollIntoView({ block: "nearest" });
     };
 
     const renderResults = async (query) => {
+      const currentRevision = ++revision;
       if (query.trim().length < 2) {
         results.replaceChildren();
         empty.hidden = false;
-        empty.innerHTML = '<p class="text-sm font-semibold text-gungnir-ink">Keep typing</p><p class="mt-1 text-xs leading-5 text-gungnir-muted">Enter at least two characters to search.</p>';
+        empty.innerHTML =
+          '<p class="text-sm font-semibold text-gungnir-ink">Keep typing</p><p class="mt-1 text-xs leading-5 text-gungnir-muted">Enter at least two characters to search.</p>';
         return;
       }
 
       try {
         const pagefind = await loadPagefind();
         const search = await pagefind.debouncedSearch(query, {}, 180);
-        if (!search) return;
+        if (!search || currentRevision !== revision || !dialog.open) return;
 
-        const pages = await Promise.all(search.results.slice(0, 8).map((result) => result.data()));
+        const pages = await Promise.all(
+          search.results.slice(0, 8).map((result) => result.data()),
+        );
+        if (currentRevision !== revision || !dialog.open) return;
         results.replaceChildren();
         activeIndex = -1;
 
-        const items = pages.flatMap((page) => {
-          const sections = page.sub_results?.length ? page.sub_results.slice(0, 3) : [];
-          return sections.length ? sections.map((section) => ({
-            title: section.title || page.meta?.title || 'Documentation',
-            url: section.url || page.url,
-            excerpt: section.excerpt || page.excerpt,
-          })) : [{
-            title: page.meta?.title || 'Documentation',
-            url: page.url,
-            excerpt: page.excerpt,
-          }];
-        }).slice(0, 10);
+        const items = pages
+          .flatMap((page) => {
+            const sections = page.sub_results?.length
+              ? page.sub_results.slice(0, 3)
+              : [];
+            return sections.length
+              ? sections.map((section) => ({
+                  title: section.title || page.meta?.title || "Documentation",
+                  url: section.url || page.url,
+                  excerpt: section.excerpt || page.excerpt,
+                }))
+              : [
+                  {
+                    title: page.meta?.title || "Documentation",
+                    url: page.url,
+                    excerpt: page.excerpt,
+                  },
+                ];
+          })
+          .slice(0, 10);
 
         empty.hidden = items.length > 0;
         if (!items.length) {
-          empty.innerHTML = '<p class="text-sm font-semibold text-gungnir-ink">No results</p><p class="mt-1 text-xs leading-5 text-gungnir-muted">Try a broader term or another API name.</p>';
+          empty.innerHTML =
+            '<p class="text-sm font-semibold text-gungnir-ink">No results</p><p class="mt-1 text-xs leading-5 text-gungnir-muted">Try a broader term or another API name.</p>';
           return;
         }
 
         items.forEach((item) => {
-          const link = document.createElement('a');
+          const link = document.createElement("a");
           link.href = item.url;
-          link.className = 'search-result block rounded-xl border border-transparent px-4 py-3 no-underline transition hover:border-gungnir-line hover:bg-gungnir-silver-soft dark:hover:border-gungnir-dark-line dark:hover:bg-gungnir-dark-soft';
-          const title = document.createElement('div');
-          title.className = 'text-sm font-semibold text-gungnir-ink';
+          link.className =
+            "search-result block rounded-sm border border-transparent px-4 py-3 no-underline transition hover:border-gungnir-line hover:bg-gungnir-silver-soft dark:hover:border-gungnir-dark-line dark:hover:bg-gungnir-dark-soft";
+          const title = document.createElement("div");
+          title.className = "text-sm font-semibold text-gungnir-ink";
           title.textContent = item.title;
-          const excerpt = document.createElement('div');
-          excerpt.className = 'mt-1 line-clamp-2 text-xs leading-5 text-gungnir-muted';
-          excerpt.innerHTML = item.excerpt || '';
+          const excerpt = document.createElement("div");
+          excerpt.className =
+            "mt-1 line-clamp-2 text-xs leading-5 text-gungnir-muted";
+          excerpt.innerHTML = item.excerpt || "";
           link.append(title, excerpt);
           results.append(link);
         });
       } catch {
+        if (currentRevision !== revision || !dialog.open) return;
         results.replaceChildren();
         empty.hidden = false;
-        empty.innerHTML = '<p class="text-sm font-semibold text-gungnir-ink">Search is unavailable</p><p class="mt-1 text-xs leading-5 text-gungnir-muted">The Pagefind search bundle could not be loaded.</p>';
+        empty.innerHTML =
+          '<p class="text-sm font-semibold text-gungnir-ink">Search is unavailable</p><p class="mt-1 text-xs leading-5 text-gungnir-muted">Browse the guides or try searching again later.</p>';
       }
     };
 
-    opener.addEventListener('click', open);
-    closeButton?.addEventListener('click', close);
-    input.addEventListener('input', () => renderResults(input.value));
+    opener.addEventListener("click", open);
+    closeButton?.addEventListener("click", close);
+    dialog.addEventListener("cancel", (event) => {
+      event.preventDefault();
+      close();
+    });
+    input.addEventListener("input", () => renderResults(input.value));
 
-    input.addEventListener('keydown', (event) => {
-      const links = [...results.querySelectorAll('a')];
-      if (event.key === 'ArrowDown') {
+    input.addEventListener("keydown", (event) => {
+      const links = [...results.querySelectorAll("a")];
+      if (event.key === "Escape") {
+        event.preventDefault();
+        close();
+      } else if (event.key === "ArrowDown") {
         event.preventDefault();
         setActive(activeIndex + 1);
-      } else if (event.key === 'ArrowUp') {
+      } else if (event.key === "ArrowUp") {
         event.preventDefault();
         setActive(activeIndex <= 0 ? links.length - 1 : activeIndex - 1);
-      } else if (event.key === 'Enter' && activeIndex >= 0 && links[activeIndex]) {
+      } else if (
+        event.key === "Enter" &&
+        activeIndex >= 0 &&
+        links[activeIndex]
+      ) {
         event.preventDefault();
         links[activeIndex].click();
       }
     });
 
-    document.addEventListener('keydown', (event) => {
+    document.addEventListener("keydown", (event) => {
       const target = event.target;
-      const typing = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target?.isContentEditable;
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+      const typing =
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target?.isContentEditable;
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
         open();
-      } else if (event.key === '/' && !typing) {
+      } else if (event.key === "/" && !typing) {
         event.preventDefault();
         open();
       }
     });
 
-    dialog.addEventListener('click', (event) => {
+    dialog.addEventListener("click", (event) => {
       if (event.target === dialog) close();
     });
   })();

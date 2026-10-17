@@ -1,6 +1,6 @@
 ---
 title: "MySQL Adapter"
-description: "Learn how to use mysql adapter in your Gungnir application."
+description: "Configure the MySQL adapter for MySQL or MariaDB connections."
 slug: "mysql"
 group: "Database & ORM"
 groupOrder: 4

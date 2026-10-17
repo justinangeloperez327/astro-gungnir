@@ -1,6 +1,6 @@
 ---
 title: "Sessions"
-description: "Learn how to use sessions in your Gungnir application."
+description: "Keep user state across requests and select a session store for your deployment."
 slug: "sessions"
 group: "Security"
 groupOrder: 5

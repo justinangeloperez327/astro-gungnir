@@ -1,6 +1,6 @@
 ---
 title: "Migrations"
-description: "Learn how to use migrations in your Gungnir application."
+description: "Create and change database schemas with application migrations."
 slug: "migrations"
 group: "Database & ORM"
 groupOrder: 4

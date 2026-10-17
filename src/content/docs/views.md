@@ -1,6 +1,6 @@
 ---
 title: "Views and Spear"
-description: "Learn how to use views and spear in your Gungnir application."
+description: "Render server-side HTML with Spear expressions, directives, layouts and includes."
 slug: "views"
 group: "HTTP"
 groupOrder: 3
@@ -274,5 +274,5 @@ auto html = app.views().render_spear_text("@if(enabled){{ title }}@endif",
     {{"enabled", true}, {"title", "Spear"}});
 ```
 
-A runnable [Spear application example](https://github.com/justinangeloperez327/gungnir/blob/f0d60363fc199cb2650379298242f202628bdc5e/examples/spear/README.md) is installed
+A runnable [Spear application example](https://github.com/justinangeloperez327/gungnir/blob/890a22ac8b6c5ef1d08f83fdde4a7bd0d267c68a/examples/spear/README.md) is installed
 under `share/gungnir/examples/spear`.

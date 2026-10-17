@@ -1,6 +1,6 @@
 ---
 title: "CLI and Code Generation"
-description: "Learn how to use cli and code generation in your Gungnir application."
+description: "Create projects, generate application files, build, run and manage background processes."
 slug: "cli"
 group: "Getting Started"
 groupOrder: 1

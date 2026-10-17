@@ -1,6 +1,6 @@
 ---
 title: "Getting Started"
-description: "Learn how to use getting started in your Gungnir application."
+description: "Install Gungnir, create your first application and run it locally."
 slug: "getting-started"
 group: "Getting Started"
 groupOrder: 1
@@ -52,7 +52,7 @@ editable native bootstrap, and build metadata. Current source also generates
 See [Views and Spear](/docs/views/) for current-source templates.
 
 For a minimal controller, use the same shape as the
-[verified Hello example](https://github.com/justinangeloperez327/gungnir/blob/f0d60363fc199cb2650379298242f202628bdc5e/examples/hello/README.md):
+[verified Hello example](https://github.com/justinangeloperez327/gungnir/blob/890a22ac8b6c5ef1d08f83fdde4a7bd0d267c68a/examples/hello/README.md):
 
 ```gnr
 controller HomeController {
