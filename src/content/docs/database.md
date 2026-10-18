@@ -1,6 +1,6 @@
 ---
 title: "Database"
-description: "Learn how to use database in your Gungnir application."
+description: "Configure connections, execute queries and group persistence operations in transactions."
 slug: "database"
 group: "Database & ORM"
 groupOrder: 4

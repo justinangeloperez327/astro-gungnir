@@ -1,6 +1,6 @@
 ---
 title: "Logging and Observability"
-description: "Learn how to use logging and observability in your Gungnir application."
+description: "Write application logs and record traces and measurements."
 slug: "logging-observability"
 group: "Application Services"
 groupOrder: 6

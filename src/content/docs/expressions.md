@@ -1,6 +1,6 @@
 ---
 title: "Expressions"
-description: "Learn how to use expressions in your Gungnir application."
+description: "Write values, operators, callbacks and optional expressions."
 slug: "expressions"
 group: "Language"
 groupOrder: 2

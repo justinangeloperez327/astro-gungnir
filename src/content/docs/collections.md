@@ -1,6 +1,6 @@
 ---
 title: "Collections"
-description: "Learn how to use collections in your Gungnir application."
+description: "Filter, sort, transform and iterate model collections in memory."
 slug: "collections"
 group: "Database & ORM"
 groupOrder: 4

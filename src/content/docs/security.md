@@ -1,6 +1,6 @@
 ---
 title: "Security"
-description: "Learn how to use security in your Gungnir application."
+description: "Configure application trust boundaries, security middleware and safe responses."
 slug: "security"
 group: "Security"
 groupOrder: 5

@@ -1,6 +1,6 @@
 ---
 title: "Controllers"
-description: "Learn how to use controllers in your Gungnir application."
+description: "Handle requests, validate input and return responses from application actions."
 slug: "controllers"
 group: "HTTP"
 groupOrder: 3

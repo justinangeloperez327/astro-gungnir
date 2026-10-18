@@ -1,6 +1,6 @@
 ---
 title: "Statements"
-description: "Learn how to use statements in your Gungnir application."
+description: "Control application flow with bindings, conditions, loops and returns."
 slug: "statements"
 group: "Language"
 groupOrder: 2

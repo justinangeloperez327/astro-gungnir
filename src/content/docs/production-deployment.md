@@ -1,6 +1,6 @@
 ---
 title: "Deploy an application on Linux"
-description: "Learn how to use deploy an application on linux in your Gungnir application."
+description: "Deploy a Linux application with Nginx, supervised processes and shared services."
 slug: "production-deployment"
 group: "Testing & Deployment"
 groupOrder: 7
@@ -8,7 +8,7 @@ order: 4
 sourcePath: "docs/production-deployment.md"
 ---
 
-The [production deployment example](https://github.com/justinangeloperez327/gungnir/blob/f0d60363fc199cb2650379298242f202628bdc5e/examples/production-deployment/README.md)
+The [production deployment example](https://github.com/justinangeloperez327/gungnir/blob/890a22ac8b6c5ef1d08f83fdde4a7bd0d267c68a/examples/production-deployment/README.md)
 provides a tested reference for running a Gungnir application on one Linux host.
 It uses Nginx for HTTPS, Supervisor for process supervision, SQLite for records,
 Redis for persistent cache/sessions/queues/leases, and a local storage directory.

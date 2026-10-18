@@ -1,6 +1,6 @@
 ---
 title: "The Gungnir Language"
-description: "Learn how to use gungnir language in your Gungnir application."
+description: "Learn the .gnr declarations, types and functions used to write Gungnir applications."
 slug: "language"
 group: "Language"
 groupOrder: 2

@@ -1,6 +1,6 @@
 ---
 title: "PostgreSQL Adapter"
-description: "Learn how to use postgresql adapter in your Gungnir application."
+description: "Configure the PostgreSQL adapter and connect your application to a server."
 slug: "postgresql"
 group: "Database & ORM"
 groupOrder: 4

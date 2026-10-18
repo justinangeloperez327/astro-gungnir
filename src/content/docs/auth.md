@@ -1,6 +1,6 @@
 ---
 title: "Authentication"
-description: "Learn how to use authentication in your Gungnir application."
+description: "Authenticate users, configure password verification and persist identity across requests."
 slug: "auth"
 group: "Security"
 groupOrder: 5

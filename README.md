@@ -63,3 +63,27 @@ distinguish published 1.0.0 core downloads from current-source SDK features.
 
 GitHub Actions runs the full production build on main pushes, pull requests and
 manual workflow runs. Hosting is managed separately.
+
+## Website verification
+
+The homepage uses keyboard-accessible HTTP, data and view examples, local fonts,
+and an optimized version of the existing logo. It uses static Astro output and
+keeps Pagefind search lazy-loaded. Dark mode is the default; a saved light-mode
+choice persists between pages.
+
+```sh
+npm ci
+npm run build
+npx playwright install --with-deps chromium
+npm run test:e2e
+```
+
+Playwright checks desktop and mobile navigation, example tabs, search, theme
+persistence, clipboard behavior, horizontal overflow and automated WCAG AA rules.
+CI runs these checks against the production build. To use an existing browser
+locally, set `CHROMIUM_EXECUTABLE_PATH` to its executable.
+
+Design targets are LCP <= 1.2 seconds, INP <= 200 ms and CLS <= 0.1 at p75,
+with <= 30 KB gzip of initial JavaScript per page. These are targets, not field
+measurements. The local Lighthouse review aims for accessibility >= 95 and
+performance >= 90. No React runtime or client-side rendering framework is added.

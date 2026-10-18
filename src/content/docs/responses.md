@@ -1,6 +1,6 @@
 ---
 title: "Responses"
-description: "Learn how to use responses in your Gungnir application."
+description: "Return JSON, HTML, redirects, files and other HTTP responses."
 slug: "responses"
 group: "HTTP"
 groupOrder: 3

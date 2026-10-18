@@ -1,6 +1,6 @@
 ---
 title: "Notifications"
-description: "Learn how to use notifications in your Gungnir application."
+description: "Deliver application messages through mail, database or configured channels."
 slug: "notifications"
 group: "Application Services"
 groupOrder: 6

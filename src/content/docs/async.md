@@ -1,6 +1,6 @@
 ---
 title: "Async and Await"
-description: "Learn how to use async and await in your Gungnir application."
+description: "Use async and await in application functions and request handlers."
 slug: "async"
 group: "Language"
 groupOrder: 2

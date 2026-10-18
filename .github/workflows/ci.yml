@@ -33,7 +33,13 @@ jobs:
           package-manager-cache: false
 
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
 
       - name: Build production site
         run: npm run build
+
+      - name: Install browser for end-to-end checks
+        run: npx playwright install --with-deps chromium
+
+      - name: Test interactions, responsive layouts and accessibility
+        run: npm run test:e2e

@@ -1,6 +1,6 @@
 ---
 title: "Scheduler"
-description: "Learn how to use scheduler in your Gungnir application."
+description: "Run recurring application tasks and coordinate scheduled work."
 slug: "scheduler"
 group: "Application Services"
 groupOrder: 6

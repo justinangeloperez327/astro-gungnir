@@ -1,6 +1,6 @@
 ---
 title: "Listeners"
-description: "Learn how to use listeners in your Gungnir application."
+description: "Handle typed events with focused application logic."
 slug: "listeners"
 group: "Application Services"
 groupOrder: 6

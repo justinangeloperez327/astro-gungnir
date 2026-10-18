@@ -1,6 +1,6 @@
 ---
 title: "Application Load and Performance"
-description: "Learn how to use application load and performance in your Gungnir application."
+description: "Measure application throughput, latency, memory and CPU with the load tool."
 slug: "performance"
 group: "Testing & Deployment"
 groupOrder: 7

@@ -1,6 +1,6 @@
 ---
 title: "MongoDB Adapter"
-description: "Learn how to use mongodb adapter in your Gungnir application."
+description: "Store and query documents with the MongoDB adapter and its supported operations."
 slug: "mongodb"
 group: "Database & ORM"
 groupOrder: 4

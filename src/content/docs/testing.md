@@ -1,6 +1,6 @@
 ---
 title: "Testing Gungnir Applications"
-description: "Learn how to use testing gungnir applications in your Gungnir application."
+description: "Check application source, test HTTP behavior and verify persistence and services."
 slug: "testing"
 group: "Testing & Deployment"
 groupOrder: 7

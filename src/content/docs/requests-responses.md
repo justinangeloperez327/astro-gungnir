@@ -1,6 +1,6 @@
 ---
 title: "Requests"
-description: "Learn how to use requests in your Gungnir application."
+description: "Read request input, headers, route parameters and uploaded files."
 slug: "requests-responses"
 group: "HTTP"
 groupOrder: 3

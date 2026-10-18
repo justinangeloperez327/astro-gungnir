@@ -1,6 +1,6 @@
 ---
 title: "Queues and Jobs"
-description: "Learn how to use queues and jobs in your Gungnir application."
+description: "Dispatch background jobs, start workers and handle retries and failures."
 slug: "queues"
 group: "Application Services"
 groupOrder: 6

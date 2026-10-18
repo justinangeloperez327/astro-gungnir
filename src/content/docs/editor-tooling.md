@@ -1,6 +1,6 @@
 ---
 title: "Editor tooling"
-description: "Learn how to use editor tooling in your Gungnir application."
+description: "Connect your editor to the Gungnir language server and format .gnr files."
 slug: "editor-tooling"
 group: "Getting Started"
 groupOrder: 1

@@ -1,6 +1,6 @@
 ---
 title: "Models"
-description: "Learn how to use models in your Gungnir application."
+description: "Define application data, table settings, casts and serialization rules."
 slug: "models"
 group: "Database & ORM"
 groupOrder: 4

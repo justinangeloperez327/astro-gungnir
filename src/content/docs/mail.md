@@ -1,6 +1,6 @@
 ---
 title: "Mail"
-description: "Learn how to use mail in your Gungnir application."
+description: "Compose, send and queue email with recipients, templates and attachments."
 slug: "mail"
 group: "Application Services"
 groupOrder: 6

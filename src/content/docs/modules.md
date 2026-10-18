@@ -1,6 +1,6 @@
 ---
 title: "Modules"
-description: "Learn how to use modules in your Gungnir application."
+description: "Organize application code in modules and import the declarations you need."
 slug: "modules"
 group: "Language"
 groupOrder: 2

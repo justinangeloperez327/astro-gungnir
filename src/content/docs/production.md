@@ -1,6 +1,6 @@
 ---
 title: "Production and Deployment"
-description: "Learn how to use production and deployment in your Gungnir application."
+description: "Configure health checks, capacity limits and shutdown for deployed applications."
 slug: "production"
 group: "Testing & Deployment"
 groupOrder: 7
