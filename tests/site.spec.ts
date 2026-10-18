@@ -165,3 +165,99 @@ test("site remains readable when browser storage is blocked", async ({
   await expect(page.locator("html")).not.toHaveClass(/dark/);
   expect(errors).toEqual([]);
 });
+
+test("themes remain consistent with reduced motion and across tabs", async ({
+  page,
+  context,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/docs/validation/");
+  const other = await context.newPage();
+  await other.goto("/");
+  for (const theme of ["light", "dark"]) {
+    await page.getByRole("button", { name: `Switch to ${theme} mode` }).click();
+    const expected =
+      theme === "dark" ? "rgb(16, 19, 26)" : "rgb(255, 255, 255)";
+    await expect(page.locator("body")).toHaveCSS("background-color", expected);
+    await expect(other.locator("body")).toHaveCSS("background-color", expected);
+    await expect(page.locator("html")).toHaveCSS("color-scheme", theme);
+    await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute(
+      "content",
+      theme === "dark" ? "#10131a" : "#ffffff",
+    );
+    await expect(page.locator("html")).toHaveCSS("scroll-behavior", "auto");
+    await page
+      .getByRole("button", { name: "Search documentation", exact: true })
+      .click();
+    const dialog = page.getByRole("dialog", {
+      name: "Search documentation",
+      exact: true,
+    });
+    await expect(dialog).toHaveCSS("background-color", expected);
+    await dialog.getByRole("searchbox").fill("validation");
+    await expect(dialog.locator(".search-result").first()).toBeVisible();
+    const results = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+      .analyze();
+    expect(
+      results.violations.map(({ id, nodes }) => ({
+        id,
+        targets: nodes.map((node) => node.target),
+      })),
+    ).toEqual([]);
+    await dialog.getByRole("searchbox").press("Escape");
+  }
+});
+
+test("mobile navigation follows the selected theme", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(!isMobile, "Drawer is only shown on narrow screens");
+  await page.goto("/docs/");
+  for (const theme of ["dark", "light"]) {
+    if (theme === "light")
+      await page.getByRole("button", { name: "Switch to light mode" }).click();
+    await page.getByRole("button", { name: "Browse documentation" }).click();
+    const dialog = page.getByRole("dialog", {
+      name: "Documentation",
+      exact: true,
+    });
+    await expect(dialog).toHaveCSS(
+      "background-color",
+      theme === "dark" ? "rgb(16, 19, 26)" : "rgb(255, 255, 255)",
+    );
+    const results = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+      .analyze();
+    expect(results.violations.map(({ id }) => id)).toEqual([]);
+    await dialog
+      .getByRole("button", { name: "Close documentation navigation" })
+      .click();
+  }
+});
+
+test("header and content fit intermediate screen widths", async ({
+  page,
+  isMobile,
+}) => {
+  for (const width of isMobile ? [320, 640] : [641, 768, 1024, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of ["/", "/docs/validation/"]) {
+      await page.goto(route);
+      await page.evaluate(() => document.fonts.ready);
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+        `${route} at ${width}px`,
+      ).toBe(true);
+      await expect(
+        page.getByRole("button", { name: "Switch to light mode" }),
+      ).toBeInViewport();
+      await expect(
+        page.getByRole("button", { name: "Search documentation", exact: true }),
+      ).toBeInViewport();
+    }
+  }
+});

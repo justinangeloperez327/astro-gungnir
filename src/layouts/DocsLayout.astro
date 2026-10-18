@@ -30,57 +30,37 @@ const { entry, docs, headings, previous, next } = Astro.props;
   description={entry.data.description}
   docs={true}
 >
-  <div class="bg-transparent">
-    <div class="mx-auto grid w-full max-w-[1480px] grid-cols-1 px-4 sm:px-6 lg:grid-cols-[224px_minmax(0,760px)] lg:gap-10 lg:px-8 xl:grid-cols-[224px_minmax(0,780px)_200px] xl:gap-10 2xl:gap-12">
-      <aside class="sticky top-20 hidden max-h-[calc(100vh-6rem)] overflow-y-auto py-9 pr-3 lg:block">
+  <div class="docs-shell">
+    <div class="docs-grid">
+      <aside class="docs-sidebar">
         <DocsSidebar docs={docs} currentSlug={entry.data.slug} />
       </aside>
 
-      <main id="main-content" class="min-w-0 py-8 sm:py-10 lg:py-12">
+      <main id="main-content" class="docs-main">
         <MobileDocsNav docs={docs} currentSlug={entry.data.slug} />
 
-        <nav
-          class="doc-breadcrumb mb-6 flex items-center gap-2 text-xs font-medium text-gungnir-muted"
-          aria-label="Breadcrumb"
-        >
-          <a
-            href="/docs/"
-            class="text-gungnir-blue no-underline transition hover:text-gungnir-blue-deep dark:text-gungnir-blue-light dark:hover:text-white"
-          >
+        <nav class="doc-breadcrumb" aria-label="Breadcrumb">
+          <a href="/docs/" class="breadcrumb-link">
             Documentation
           </a>
-          <span class="text-gungnir-silver" aria-hidden="true">
+          <span class="breadcrumb-divider" aria-hidden="true">
             /
           </span>
           <span aria-current="page">{entry.data.title}</span>
         </nav>
 
-        <article
-          class="docs-content max-w-[72ch]"
-          data-doc-content
-          data-pagefind-body
-        >
+        <article class="docs-content" data-doc-content data-pagefind-body>
           <header class="doc-header">
-            <div class="mb-3 flex items-center gap-2">
-              <span class="docs-category inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.13em] text-gungnir-blue">
-                <span class="h-px w-6 bg-gungnir-blue"></span>
-                {entry.data.group}
-              </span>
+            <div class="docs-category-row">
+              <span class="docs-category">{entry.data.group}</span>
             </div>
-            <h1 class="text-4xl font-bold tracking-[-0.04em] text-gungnir-ink dark:text-gungnir-dark-text sm:text-5xl">
-              {entry.data.title}
-            </h1>
-            <p class="guide-description max-w-[66ch]">
-              {entry.data.description}
-            </p>
+            <h1>{entry.data.title}</h1>
+            <p class="guide-description">{entry.data.description}</p>
           </header>
 
           <slot />
 
-          <p
-            class="mt-10 border-t border-gungnir-line pt-4 text-xs text-gungnir-muted dark:border-gungnir-dark-line dark:text-gungnir-dark-muted"
-            data-pagefind-ignore
-          >
+          <p class="guide-source" data-pagefind-ignore>
             {entry.data.sourcePath && (
               <a
                 href={`https://github.com/${source.repository}/blob/${source.commit}/${entry.data.sourcePath}`}
@@ -96,7 +76,7 @@ const { entry, docs, headings, previous, next } = Astro.props;
         <CodeEnhancer />
       </main>
 
-      <aside class="sticky top-24 hidden max-h-[calc(100vh-7rem)] overflow-y-auto py-12 xl:block">
+      <aside class="docs-toc">
         <DocsToc headings={headings} />
       </aside>
     </div>

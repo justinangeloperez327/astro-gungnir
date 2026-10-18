@@ -3,7 +3,7 @@
 
 <button
   type="button"
-  class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-sm border border-gungnir-line bg-white text-gungnir-muted transition hover:border-gungnir-silver hover:bg-gungnir-silver-soft hover:text-gungnir-ink dark:border-gungnir-dark-line dark:bg-gungnir-dark-soft dark:text-gungnir-dark-muted dark:hover:border-gungnir-silver/40 dark:hover:bg-gungnir-dark-elevated dark:hover:text-white"
+  class="theme-toggle icon-button"
   data-theme-toggle
   aria-label="Switch theme"
   title="Switch theme"
@@ -30,45 +30,3 @@
     <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path>
   </svg>
 </button>
-
-<script is:inline>
-  (() => {
-    const storageKey = "gungnir-theme";
-
-    const updateButtons = () => {
-      const dark = document.documentElement.classList.contains("dark");
-      document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
-        const label = dark ? "Switch to light mode" : "Switch to dark mode";
-        button.setAttribute("aria-label", label);
-        button.setAttribute("title", label);
-      });
-    };
-
-    const setTheme = (theme, persist = true) => {
-      const dark = theme === "dark";
-      document.documentElement.classList.toggle("dark", dark);
-      document.documentElement.style.colorScheme = dark ? "dark" : "light";
-      document
-        .querySelector('meta[name="theme-color"]')
-        ?.setAttribute("content", dark ? "#07111f" : "#f8fafc");
-      if (persist) {
-        try {
-          localStorage.setItem(storageKey, theme);
-        } catch {}
-      }
-      updateButtons();
-    };
-
-    document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
-      button.addEventListener("click", () => {
-        setTheme(
-          document.documentElement.classList.contains("dark")
-            ? "light"
-            : "dark",
-        );
-      });
-    });
-
-    updateButtons();
-  })();
-</script>
