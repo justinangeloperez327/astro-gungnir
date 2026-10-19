@@ -69,7 +69,11 @@ manual workflow runs. Hosting is managed separately.
 The homepage uses keyboard-accessible HTTP, data and view examples, local fonts,
 and an optimized version of the existing logo. It uses static Astro output and
 keeps Pagefind search lazy-loaded. Dark mode is the default; a saved light-mode
-choice persists between pages.
+choice persists between pages and syncs across open tabs. The Laravel-inspired
+layout uses locally hosted Inter, compact grouped navigation and a shared set of
+semantic CSS colors in `src/styles/global.css`. Homepage styles live in
+`src/styles/home.css`; both themes cover code panels, search and mobile menus.
+Reduced-motion preferences affect animation without changing theme colors.
 
 ```sh
 npm ci

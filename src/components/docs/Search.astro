@@ -1,10 +1,10 @@
 ---
 ---
 
-<div class="w-auto md:w-[220px]">
+<div class="search">
   <button
     type="button"
-    class="group inline-flex h-10 w-10 items-center justify-center gap-3 rounded-sm border border-gungnir-line bg-gungnir-silver-soft text-sm text-gungnir-muted transition hover:border-gungnir-silver hover:bg-white dark:border-gungnir-dark-line dark:bg-gungnir-dark-soft dark:text-gungnir-dark-muted dark:hover:border-gungnir-silver/40 dark:hover:bg-gungnir-dark-elevated md:w-full md:justify-start md:px-3.5"
+    class="search-open"
     data-search-open
     aria-haspopup="dialog"
     aria-controls="docs-search-dialog"
@@ -12,7 +12,7 @@
     aria-keyshortcuts="Control+K Meta+K /"
   >
     <svg
-      class="h-4 w-4 shrink-0 transition group-hover:text-gungnir-blue"
+      class="h-4 w-4 shrink-0"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -22,25 +22,23 @@
       <circle cx="11" cy="11" r="7"></circle>
       <path d="m20 20-3.5-3.5"></path>
     </svg>
-    <span class="hidden min-w-0 flex-1 truncate text-left md:block">
-      Search documentation
-    </span>
-    <span class="hidden rounded border border-gungnir-line bg-white px-1.5 py-0.5 text-[10px] font-semibold text-gungnir-muted dark:border-gungnir-dark-line dark:bg-gungnir-dark dark:text-gungnir-dark-muted md:inline">
-      ⌘ K
+    <span class="search-label">Search docs</span>
+    <span class="search-shortcut" data-search-shortcut>
+      Ctrl K
     </span>
   </button>
 
   <dialog
     id="docs-search-dialog"
     aria-label="Search documentation"
-    class="m-auto w-[min(92vw,720px)] rounded-sm border border-gungnir-line bg-white p-0 text-gungnir-ink shadow-2xl backdrop:bg-gungnir-ink/45 backdrop:backdrop-blur-sm dark:border-gungnir-dark-line dark:bg-gungnir-dark-elevated dark:text-gungnir-dark-text"
+    class="search-dialog"
     data-search-dialog
   >
-    <div class="border-b border-gungnir-line p-3 dark:border-gungnir-dark-line sm:p-4">
-      <label class="relative block">
+    <div class="search-input-row">
+      <label class="search-input-wrap">
         <span class="sr-only">Search Gungnir documentation</span>
         <svg
-          class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gungnir-muted"
+          class="search-input-icon"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -51,7 +49,7 @@
           <path d="m20 20-3.5-3.5"></path>
         </svg>
         <input
-          class="h-12 w-full rounded-sm border border-gungnir-line bg-gungnir-silver-soft pl-12 pr-12 text-base text-gungnir-ink outline-none transition placeholder:text-gungnir-muted/65 focus:border-gungnir-blue focus:bg-white focus:ring-4 focus:ring-gungnir-blue/10 dark:border-gungnir-dark-line dark:bg-gungnir-dark-soft dark:text-gungnir-dark-text dark:placeholder:text-gungnir-dark-muted/70 dark:focus:border-gungnir-blue-light dark:focus:bg-gungnir-dark"
+          class="search-input"
           type="search"
           autocomplete="off"
           placeholder="Search routing, models, validation..."
@@ -59,7 +57,7 @@
         />
         <button
           type="button"
-          class="absolute right-2 top-1/2 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-sm text-gungnir-muted transition hover:bg-white hover:text-gungnir-ink dark:text-gungnir-dark-muted dark:hover:bg-gungnir-dark-elevated dark:hover:text-white"
+          class="search-close icon-button"
           aria-label="Close search"
           data-search-close
         >
@@ -77,24 +75,22 @@
       </label>
     </div>
 
-    <div class="max-h-[min(64vh,580px)] overflow-y-auto p-3 sm:p-4">
+    <div class="search-body">
       <div
-        class="rounded-sm border border-dashed border-gungnir-line px-5 py-10 text-center dark:border-gungnir-dark-line"
+        class="search-empty"
         data-search-empty
         role="status"
         aria-live="polite"
       >
-        <p class="text-sm font-semibold text-gungnir-ink">
-          Search the Gungnir documentation
-        </p>
-        <p class="mt-1 text-xs leading-5 text-gungnir-muted">
+        <p class="search-result-title">Search the Gungnir documentation</p>
+        <p class="search-result-excerpt">
           Results include matching pages and sections.
         </p>
       </div>
-      <div class="space-y-2" data-search-results></div>
+      <div class="search-results" data-search-results></div>
     </div>
 
-    <div class="flex items-center justify-between border-t border-gungnir-line bg-gungnir-silver-soft/60 px-4 py-2.5 text-[11px] text-gungnir-muted dark:border-gungnir-dark-line dark:bg-gungnir-dark-soft dark:text-gungnir-dark-muted">
+    <div class="search-footer">
       <span>↑ ↓ navigate · Enter open</span>
       <span>Esc close</span>
     </div>
@@ -112,6 +108,9 @@
 
     if (!dialog || !input || !results || !empty || !opener) return;
 
+    const shortcut = document.querySelector("[data-search-shortcut]");
+    if (shortcut && /Mac|iPhone|iPad/.test(navigator.platform))
+      shortcut.textContent = "⌘ K";
     let pagefindPromise;
     let activeIndex = -1;
     let revision = 0;
@@ -133,7 +132,7 @@
         await loadPagefind();
       } catch {
         empty.innerHTML =
-          '<p class="text-sm font-semibold text-gungnir-ink">Search index unavailable</p><p class="mt-1 text-xs leading-5 text-gungnir-muted">Browse the guides or try searching again later.</p>';
+          '<p class="search-result-title">Search index unavailable</p><p class="search-result-excerpt">Browse the guides or try searching again later.</p>';
       }
     };
 
@@ -163,7 +162,7 @@
         results.replaceChildren();
         empty.hidden = false;
         empty.innerHTML =
-          '<p class="text-sm font-semibold text-gungnir-ink">Keep typing</p><p class="mt-1 text-xs leading-5 text-gungnir-muted">Enter at least two characters to search.</p>';
+          '<p class="search-result-title">Keep typing</p><p class="search-result-excerpt">Enter at least two characters to search.</p>';
         return;
       }
 
@@ -203,21 +202,19 @@
         empty.hidden = items.length > 0;
         if (!items.length) {
           empty.innerHTML =
-            '<p class="text-sm font-semibold text-gungnir-ink">No results</p><p class="mt-1 text-xs leading-5 text-gungnir-muted">Try a broader term or another API name.</p>';
+            '<p class="search-result-title">No results</p><p class="search-result-excerpt">Try a broader term or another API name.</p>';
           return;
         }
 
         items.forEach((item) => {
           const link = document.createElement("a");
           link.href = item.url;
-          link.className =
-            "search-result block rounded-sm border border-transparent px-4 py-3 no-underline transition hover:border-gungnir-line hover:bg-gungnir-silver-soft dark:hover:border-gungnir-dark-line dark:hover:bg-gungnir-dark-soft";
+          link.className = "search-result";
           const title = document.createElement("div");
-          title.className = "text-sm font-semibold text-gungnir-ink";
+          title.className = "search-result-title";
           title.textContent = item.title;
           const excerpt = document.createElement("div");
-          excerpt.className =
-            "mt-1 line-clamp-2 text-xs leading-5 text-gungnir-muted";
+          excerpt.className = "search-result-excerpt";
           excerpt.innerHTML = item.excerpt || "";
           link.append(title, excerpt);
           results.append(link);
@@ -227,7 +224,7 @@
         results.replaceChildren();
         empty.hidden = false;
         empty.innerHTML =
-          '<p class="text-sm font-semibold text-gungnir-ink">Search is unavailable</p><p class="mt-1 text-xs leading-5 text-gungnir-muted">Browse the guides or try searching again later.</p>';
+          '<p class="search-result-title">Search is unavailable</p><p class="search-result-excerpt">Browse the guides or try searching again later.</p>';
       }
     };
 

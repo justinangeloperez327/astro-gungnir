@@ -1,10 +1,9 @@
 ---
-import "@fontsource/ibm-plex-sans/latin-400.css";
-import "@fontsource/ibm-plex-sans/latin-500.css";
-import "@fontsource/ibm-plex-sans/latin-600.css";
-import "@fontsource/barlow-condensed/latin-600.css";
-import displayFont from "@fontsource/barlow-condensed/files/barlow-condensed-latin-600-normal.woff2?url";
-import bodyFont from "@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2?url";
+import "@fontsource/inter/latin-400.css";
+import "@fontsource/inter/latin-500.css";
+import "@fontsource/inter/latin-600.css";
+import "@fontsource/inter/latin-700.css";
+import bodyFont from "@fontsource/inter/files/inter-latin-400-normal.woff2?url";
 import "../styles/global.css";
 import DocsHeader from "../components/docs/DocsHeader.astro";
 import { Image } from "astro:assets";
@@ -32,17 +31,10 @@ const pageTitle =
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#07111f" />
+    <meta name="theme-color" content="#10131a" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <link
-      rel="preload"
-      href={displayFont}
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
     <link
       rel="preload"
       href={bodyFont}
@@ -52,16 +44,53 @@ const pageTitle =
     />
     <script is:inline>
       (() => {
+        const key = "gungnir-theme";
+        const apply = (theme) => {
+          const dark = theme !== "light";
+          const root = document.documentElement;
+          root.classList.toggle("dark", dark);
+          root.style.colorScheme = dark ? "dark" : "light";
+          document
+            .querySelector('meta[name="theme-color"]')
+            ?.setAttribute("content", dark ? "#10131a" : "#ffffff");
+          document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+            const label = dark ? "Switch to light mode" : "Switch to dark mode";
+            button.setAttribute("aria-label", label);
+            button.setAttribute("title", label);
+          });
+        };
         let saved;
         try {
-          saved = localStorage.getItem("gungnir-theme");
+          saved = localStorage.getItem(key);
         } catch {}
-        const dark = saved !== "light";
-        document.documentElement.classList.toggle("dark", dark);
-        document.documentElement.style.colorScheme = dark ? "dark" : "light";
-        document
-          .querySelector('meta[name="theme-color"]')
-          ?.setAttribute("content", dark ? "#07111f" : "#f8fafc");
+        apply(saved);
+        document.addEventListener("click", (event) => {
+          if (
+            !(event.target instanceof Element) ||
+            !event.target.closest("[data-theme-toggle]")
+          )
+            return;
+          const theme = document.documentElement.classList.contains("dark")
+            ? "light"
+            : "dark";
+          apply(theme);
+          try {
+            localStorage.setItem(key, theme);
+          } catch {}
+        });
+        document.addEventListener(
+          "DOMContentLoaded",
+          () =>
+            apply(
+              document.documentElement.classList.contains("dark")
+                ? "dark"
+                : "light",
+            ),
+          { once: true },
+        );
+        window.addEventListener("storage", (event) => {
+          if (event.key === key || event.key === null) apply(event.newValue);
+        });
       })();
     </script>
     <title>{pageTitle}</title>

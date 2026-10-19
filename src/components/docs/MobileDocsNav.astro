@@ -10,10 +10,10 @@ interface Props {
 const { docs, currentSlug } = Astro.props;
 ---
 
-<div class="lg:hidden">
+<div class="mobile-docs">
   <button
     type="button"
-    class="mb-7 inline-flex h-11 w-full items-center justify-between rounded-sm border border-gungnir-line bg-gungnir-silver-soft px-4 text-sm font-semibold text-gungnir-ink dark:border-gungnir-dark-line dark:bg-gungnir-dark-soft dark:text-gungnir-dark-text"
+    class="mobile-nav-open"
     data-mobile-nav-open
     aria-expanded="false"
     aria-haspopup="dialog"
@@ -21,7 +21,7 @@ const { docs, currentSlug } = Astro.props;
   >
     <span>Browse documentation</span>
     <svg
-      class="h-4 w-4 text-gungnir-muted"
+      class="h-4 w-4"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -35,20 +35,17 @@ const { docs, currentSlug } = Astro.props;
   <dialog
     id="mobile-docs-nav"
     aria-labelledby="mobile-nav-title"
-    class="m-0 ml-auto h-dvh w-[min(88vw,360px)] max-h-none max-w-none border-0 bg-white p-0 shadow-2xl backdrop:bg-gungnir-ink/40 dark:bg-gungnir-dark-elevated"
+    class="mobile-nav-dialog"
     data-mobile-nav-dialog
   >
-    <div class="flex h-full flex-col">
-      <div class="flex h-16 shrink-0 items-center justify-between border-b border-gungnir-line px-4 dark:border-gungnir-dark-line">
-        <span
-          id="mobile-nav-title"
-          class="text-sm font-bold text-gungnir-ink dark:text-gungnir-dark-text"
-        >
+    <div class="mobile-nav-inner">
+      <div class="mobile-nav-header">
+        <span id="mobile-nav-title" class="mobile-nav-title">
           Documentation
         </span>
         <button
           type="button"
-          class="inline-flex h-10 w-10 items-center justify-center rounded-sm text-gungnir-muted hover:bg-gungnir-silver-soft hover:text-gungnir-ink dark:text-gungnir-dark-muted dark:hover:bg-gungnir-dark-soft dark:hover:text-white"
+          class="icon-button"
           data-mobile-nav-close
           aria-label="Close documentation navigation"
         >
@@ -64,7 +61,7 @@ const { docs, currentSlug } = Astro.props;
           </svg>
         </button>
       </div>
-      <div class="flex-1 overflow-y-auto px-3 py-5">
+      <div class="mobile-nav-body">
         <DocsSidebar docs={docs} currentSlug={currentSlug} />
       </div>
     </div>
